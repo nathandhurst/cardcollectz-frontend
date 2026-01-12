@@ -1,0 +1,607 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardCollectz – Home</title>
+  <style>
+    :root {
+      --cc-primary: #2D8CFF;
+      --cc-secondary: #00E2FF;
+      --cc-text: #E6E6E6;
+      --cc-bg: #050505;
+      --cc-card: #0B0B0B;
+      --cc-border: #1F2933;
+      --cc-success: #2FDBA5;
+      --cc-danger: #f97373;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
+      color: var(--cc-text);
+    }
+
+    /* header (same as catalog) */
+    .cc-header-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #020617;
+      border-bottom: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .cc-header {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px 8px;
+    }
+    .cc-header-top {
+      display: grid;
+      grid-template-columns: auto minmax(320px, 1.6fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+    .cc-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .cc-logo-text {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .cc-search-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      background: #0b1220;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(15,23,42,1);
+    }
+    .cc-search-input {
+      border: none;
+      background: transparent;
+      color: #f9fafb;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    .cc-search-input::placeholder {
+      color: rgba(148,163,184,0.9);
+    }
+    .cc-search-icon {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: rgba(148,163,184,0.9);
+      border-left: 1px solid rgba(30,64,175,0.7);
+    }
+    .cc-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .cc-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .cc-sell-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 18px rgba(45,140,255,0.9);
+    }
+    .cc-avatar-wrap { position: relative; }
+    .cc-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border: 1px solid rgba(148,163,184,0.8);
+      background-size: cover;
+      background-position: center;
+      box-shadow:
+        0 0 0 1px rgba(45,140,255,0.5),
+        0 0 16px rgba(0,226,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+    .cc-avatar-menu {
+      position: absolute;
+      top: 115%;
+      right: 0;
+      background: rgba(3,7,18,0.98);
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.8);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+      min-width: 170px;
+      padding: 6px 0;
+      display: none;
+      z-index: 60;
+    }
+    .cc-avatar-menu.open { display: block; }
+    .cc-avatar-menu button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 13px;
+      padding: 7px 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .cc-avatar-menu button:hover {
+      background: rgba(15,23,42,0.96);
+    }
+    .cc-menu-sep {
+      height: 1px;
+      margin: 4px 0;
+      background: rgba(31,41,55,0.95);
+    }
+
+    /* hero + sell form */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 18px 18px 36px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-title {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 14px;
+      color: rgba(148,163,184,0.9);
+      margin-bottom: 14px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .hero-secondary {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.8);
+      padding: 7px 14px;
+      font-size: 13px;
+      background: transparent;
+      color: rgba(209,213,219,0.95);
+      cursor: pointer;
+    }
+
+    .card {
+      background: rgba(15,23,42,0.97);
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.45);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.7);
+      padding: 16px 16px 18px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .card-subtitle {
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+      margin-bottom: 10px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .field label {
+      font-size: 12px;
+      color: rgba(148,163,184,0.95);
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.96);
+      color: #f9fafb;
+      padding: 7px 10px;
+      font-size: 13px;
+      outline: none;
+    }
+    .field textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 16px rgba(37,99,235,0.7);
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .status.error { color: var(--cc-danger); }
+    .status.success { color: var(--cc-success); }
+  </style>
+</head>
+<body>
+
+<div class="cc-header-shell">
+  <div class="cc-header">
+    <div class="cc-header-top">
+      <div class="cc-logo" onclick="location.href='catalog.html'">
+        <span class="cc-logo-text">CardCollectz</span>
+      </div>
+
+      <div class="cc-search-shell">
+        <input
+          id="navSearch"
+          class="cc-search-input"
+          type="text"
+          placeholder="Search cards…"
+        />
+        <div class="cc-search-icon">🔍</div>
+      </div>
+
+      <div class="cc-header-actions">
+        <button class="cc-icon-btn" type="button" title="Messages">✉️</button>
+        <button class="cc-icon-btn" type="button" title="Notifications">🔔</button>
+        <button class="cc-icon-btn" type="button" title="Favourites" onclick="location.href='favourites.html'">♥</button>
+
+        <div class="cc-avatar-wrap">
+          <div id="navAvatar" class="cc-avatar"></div>
+          <div id="avatarMenu" class="cc-avatar-menu">
+            <button type="button" onclick="location.href='account.html'">Account</button>
+            <button type="button" onclick="location.href='my-listings.html'">My listings</button>
+            <button type="button" onclick="location.href='favourites.html'">Favourites</button>
+            <button type="button" onclick="location.href='my-offers.html'">My offers</button>
+            <div class="cc-menu-sep"></div>
+            <button type="button" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+
+        <button class="cc-sell-btn" type="button" onclick="document.getElementById('sellSection').scrollIntoView({behavior:'smooth'});">
+          Sell now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="page">
+  <section class="hero">
+    <div>
+      <div class="hero-title">
+        Trade your <span>grails</span> with serious collectors.
+      </div>
+      <div class="hero-subtitle">
+        CardCollectz is a focused marketplace for trading cards. List in seconds, get offers fast, and keep track of your deals across web and mobile.
+      </div>
+      <div class="hero-actions">
+        <button class="btn-primary" type="button" onclick="location.href='catalog.html'">
+          Browse listings
+        </button>
+        <button class="hero-secondary" type="button" onclick="document.getElementById('sellSection').scrollIntoView({behavior:'smooth'});">
+          List a card
+        </button>
+      </div>
+    </div>
+
+    <article id="sellSection" class="card">
+      <div class="card-title">Create a listing</div>
+      <div class="card-subtitle" id="sellSubtitle">
+        List a card in a few seconds.
+      </div>
+
+      <div id="sellForm">
+        <div class="field">
+          <label>Title</label>
+          <input id="title" type="text" placeholder="e.g. Buggy OP09 anniversary promo" />
+        </div>
+
+        <div class="field">
+          <label>Description</label>
+          <textarea id="description" placeholder="Condition, set, colours, shipping, etc."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Price (£)</label>
+          <input id="price" type="number" step="0.01" min="0" />
+        </div>
+
+        <div class="field">
+          <label>Condition</label>
+          <select id="condition">
+            <option value="">Select condition</option>
+            <option value="Mint">Mint</option>
+            <option value="Near Mint">Near Mint</option>
+            <option value="Lightly Played">Lightly Played</option>
+            <option value="Moderately Played">Moderately Played</option>
+            <option value="Heavily Played">Heavily Played</option>
+            <option value="Damaged">Damaged</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Photos</label>
+          <input id="images" type="file" accept="image/*" multiple />
+          <span style="font-size:11px;color:rgba(148,163,184,0.9);">
+            Add front, back and any detail shots. First image will be the cover.
+          </span>
+        </div>
+
+        <button class="btn-primary" type="button" onclick="createListing()">
+          Publish listing
+        </button>
+
+        <div id="status" class="status"></div>
+      </div>
+    </article>
+  </section>
+</main>
+
+<script>
+  const API_BASE = 'https://cardcollectz-api.onrender.com';
+  const authToken = localStorage.getItem("cc_token");
+  const currentUsername = localStorage.getItem("cc_username");
+
+  function logout() {
+    localStorage.removeItem("cc_token");
+    localStorage.removeItem("cc_username");
+    localStorage.removeItem("cc_email");
+    window.location.href = "login.html";
+  }
+
+  function initAvatarNav() {
+    const avatar = document.getElementById("navAvatar");
+    const menu = document.getElementById("avatarMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) logoutBtn.onclick = logout;
+
+    if (authToken && avatar) {
+      fetch(API_BASE + "/users/me", {
+        headers: { Authorization: "Bearer " + authToken },
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          const initial =
+            user?.username?.[0] || currentUsername?.[0] || "?";
+          if (user?.profileImage) {
+            avatar.style.backgroundImage =
+              `url(data:image/*;base64,${user.profileImage})`;
+            avatar.textContent = "";
+          } else {
+            avatar.textContent = initial.toUpperCase();
+          }
+        })
+        .catch(() => {
+          avatar.textContent = (currentUsername?.[0] || "?").toUpperCase();
+        });
+    } else if (avatar) {
+      avatar.textContent = "?";
+    }
+
+    if (avatar && menu) {
+      avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!authToken) {
+          window.location.href = "login.html";
+          return;
+        }
+        menu.classList.toggle("open");
+      });
+      document.addEventListener("click", (e) => {
+        if (!menu.contains(e.target) && e.target !== avatar) {
+          menu.classList.remove("open");
+        }
+      });
+    }
+
+    const sellSubtitle = document.getElementById("sellSubtitle");
+    const sellForm = document.getElementById("sellForm");
+    if (!authToken) {
+      sellSubtitle.textContent = "Login to create a listing.";
+      sellForm.innerHTML = `
+        <p style="font-size:13px;color:rgba(148,163,184,0.9);margin-bottom:10px;">
+          You need an account to publish listings.
+        </p>
+        <button class="btn-primary" type="button" onclick="location.href='login.html'">
+          Login / Register
+        </button>
+      `;
+    }
+  }
+
+  function searchToCatalog() {
+    const q = (document.getElementById("navSearch")?.value || "").trim();
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    const url = "catalog.html" + (params.toString() ? "?" + params : "");
+    window.location.href = url;
+  }
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result || "";
+        const base64 = String(result).split(",").pop();
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function createListing() {
+    if (!authToken) {
+      location.href = "login.html";
+      return;
+    }
+
+    const title = document.getElementById("title").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const priceRaw = document.getElementById("price").value;
+    const condition = document.getElementById("condition").value;
+    const files = document.getElementById("images").files;
+    const status = document.getElementById("status");
+    status.textContent = "";
+    status.className = "status";
+
+    if (!title || !priceRaw) {
+      status.textContent = "Title and price are required.";
+      status.classList.add("error");
+      return;
+    }
+
+    const price = parseFloat(priceRaw);
+    if (isNaN(price) || price <= 0) {
+      status.textContent = "Enter a valid price.";
+      status.classList.add("error");
+      return;
+    }
+
+    status.textContent = "Uploading photos…";
+
+    const images = [];
+    if (files && files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const base64 = await fileToBase64(files[i]);
+        images.push(base64);
+      }
+    }
+
+    status.textContent = "Creating listing…";
+
+    try {
+      const res = await fetch(API_BASE + "/listings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authToken,
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          condition,
+          images,
+        }),
+      });
+
+      const text = await res.text();
+      let data;
+      try { data = text ? JSON.parse(text) : null; } catch { data = null; }
+
+      if (!res.ok) {
+        let msg = "Failed to create listing.";
+        if (data && data.message) {
+          msg = Array.isArray(data.message)
+            ? data.message.join(", ")
+            : data.message;
+        }
+        status.textContent = msg;
+        status.classList.add("error");
+        return;
+      }
+
+      status.textContent = "Listing published!";
+      status.classList.add("success");
+
+      // basic reset
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("condition").value = "";
+      document.getElementById("images").value = "";
+
+      // go to listing
+      if (data && data.id) {
+        setTimeout(() => {
+          window.location.href = "listing.html?id=" + data.id;
+        }, 500);
+      }
+    } catch (err) {
+      console.error(err);
+      status.textContent = "Network error creating listing.";
+      status.classList.add("error");
+    }
+  }
+
+  window.addEventListener("load", () => {
+    initAvatarNav();
+
+    const searchInput = document.getElementById("navSearch");
+    if (searchInput) {
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          searchToCatalog();
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardCollectz – Profile</title>
+  <style>
+    :root {
+      --cc-primary: #2D8CFF;
+      --cc-secondary: #00E2FF;
+      --cc-premium: #CFA64A;
+      --cc-success: #2FDBA5;
+      --cc-text: #E6E6E6;
+      --cc-border: #1F2933;
+      --cc-bg: #050505;
+      --cc-card: #0B0B0B;
+    }
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
+      color: var(--cc-text);
+    }
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(3,7,18,0.96), rgba(3,7,18,0.92));
+      border-bottom: 1px solid rgba(15,23,42,0.75);
+    }
+    .nav {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .nav-links a {
+      font-size: 13px;
+      margin-right: 10px;
+      color: rgba(209,213,219,0.9);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    .nav-links a:hover {
+      border-color: rgba(148,163,184,0.8);
+      background: rgba(15,23,42,0.9);
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+    .nav-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border: 1px solid rgba(148,163,184,0.8);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
+    }
+    .nav-username {
+      opacity: 0.9;
+    }
+    .nav-btn {
+      border-radius: 999px;
+      padding: 7px 16px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: rgba(226,232,240,0.9);
+    }
+    .nav-btn.primary {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 18px rgba(37,99,235,0.45);
+    }
+
+    .nav-dropdown {
+      position: absolute;
+      right: 0;
+      top: 130%;
+      min-width: 160px;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(31,41,55,0.9);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.9);
+      padding: 6px 0;
+      font-size: 13px;
+      display: none;
+      z-index: 70;
+    }
+    .nav-dropdown a,
+    .nav-dropdown button {
+      width: 100%;
+      text-align: left;
+      padding: 6px 12px;
+      background: transparent;
+      border: none;
+      color: rgba(229,231,235,0.95);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    .nav-dropdown a:hover,
+    .nav-dropdown button:hover {
+      background: rgba(30,64,175,0.35);
+    }
+
+    .page {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
+    }
+    .profile-header {
+      margin-top: 16px;
+      margin-bottom: 16px;
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.85), rgba(15,23,42,0.98));
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,0.9);
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(15,23,42,0.9);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border: 2px solid rgba(148,163,184,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #e5e7eb;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+    .profile-main {
+      flex: 1;
+      min-width: 0;
+    }
+    .profile-username-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .profile-username {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .badge-verified {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .profile-handle {
+      font-size: 13px;
+      color: rgba(148,163,184,0.95);
+    }
+    .profile-bio {
+      margin-top: 6px;
+      font-size: 13px;
+      color: rgba(229,231,235,0.95);
+      white-space: pre-wrap;
+    }
+    .profile-meta {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+    }
+    .profile-meta-item {
+      display: flex;
+      gap: 4px;
+      align-items: baseline;
+    }
+    .profile-meta-label {
+      opacity: 0.8;
+    }
+    .profile-meta-value {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+    .rating-stars {
+      display: inline-flex;
+      gap: 1px;
+      font-size: 14px;
+    }
+    .rating-star {
+      color: #4b5563;
+    }
+    .rating-star.full {
+      color: var(--cc-premium);
+    }
+
+    .profile-actions {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .btn-message {
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: transparent;
+      color: rgba(226,232,240,0.9);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .catalog-card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 20px 60px rgba(15,23,42,0.85);
+    }
+    .catalog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .catalog-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .catalog-meta {
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+    }
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+    .listing-tile {
+      position: relative;
+      background: #020617;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(30,64,175,0.55);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.12s ease;
+    }
+    .listing-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.9);
+      border-color: rgba(59,130,246,0.9);
+    }
+    .tile-img-wrap {
+      background: radial-gradient(circle at top, #020617, #000);
+      position: relative;
+      padding-top: 132%;
+      overflow: hidden;
+    }
+    .tile-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .tile-body {
+      padding: 8px 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .tile-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: rgba(148,163,184,0.9);
+    }
+    .tile-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .tile-condition {
+      font-size: 11px;
+      color: var(--cc-success);
+    }
+    .tile-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 4px;
+    }
+    .tile-price {
+      font-weight: 700;
+      font-size: 15px;
+      color: #f9fafb;
+    }
+    .tile-date {
+      font-size: 10px;
+      color: rgba(148,163,184,0.7);
+      margin-top: 2px;
+    }
+
+    .skeleton-card {
+      border-radius: 12px;
+      background: linear-gradient(90deg, #020617 25%, #111827 50%, #020617 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.2s ease-in-out infinite;
+      height: 260px;
+    }
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .debug {
+      margin-top: 12px;
+      background: #020617;
+      color: #e5e7eb;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 11px;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
+      .nav-left { flex-wrap: wrap; }
+      .profile-header { align-items: flex-start; }
+      .profile-actions {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-shell">
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo" onclick="window.location.href='catalog.html'">
+          CardCollectz
+        </div>
+        <div class="nav-links">
+          <a href="catalog.html">Listings</a>
+          <a href="my-listings.html">My listings</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="my-offers.html">My offers</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <div id="navProfileBtn" class="nav-user">
+          <div id="navAvatar" class="nav-avatar"></div>
+          <span id="navUser" class="nav-username">…</span>
+          <div id="navDropdown" class="nav-dropdown">
+            <a id="navProfileLink" href="#">View profile</a>
+            <a href="account.html">Account settings</a>
+            <a href="my-listings.html">My listings</a>
+            <a href="my-offers.html">My offers</a>
+            <button type="button" onclick="logout()">Logout</button>
+          </div>
+        </div>
+        <button class="nav-btn primary" type="button"
+          onclick="window.location.href='index.html#sellSection'">
+          Sell now
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <main class="page">
+    <section class="profile-header">
+      <div id="profileAvatar" class="profile-avatar">?</div>
+      <div class="profile-main">
+        <div class="profile-username-row">
+          <div id="profileUsername" class="profile-username">@seller</div>
+          <span id="profileVerified" class="badge-verified" style="display:none;">Verified</span>
+        </div>
+        <div id="profileHandle" class="profile-handle">Seller on CardCollectz</div>
+        <div id="profileBio" class="profile-bio" style="display:none;"></div>
+
+        <div class="profile-meta">
+          <div class="profile-meta-item">
+            <span class="profile-meta-label">Listings</span>
+            <span id="metaListingsCount" class="profile-meta-value">0</span>
+          </div>
+          <div class="profile-meta-item">
+            <span class="profile-meta-label">Trades</span>
+            <span id="metaTrades" class="profile-meta-value">0</span>
+          </div>
+          <div class="profile-meta-item">
+            <span class="profile-meta-label">Rating</span>
+            <span class="profile-meta-value">
+              <span class="rating-stars" id="ratingStars"></span>
+              <span id="ratingText" style="margin-left:4px;"></span>
+            </span>
+          </div>
+          <div class="profile-meta-item">
+            <span class="profile-meta-label">Active since</span>
+            <span id="metaSince" class="profile-meta-value">–</span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button type="button" class="btn-message" onclick="alert('Messaging coming soon!')">
+          Message seller
+        </button>
+      </div>
+    </section>
+
+    <section class="catalog-card">
+      <div class="catalog-header">
+        <div class="catalog-title">Listings from this seller</div>
+        <div class="catalog-meta" id="catalogMeta">Loading listings…</div>
+      </div>
+      <div id="listingsContainer" class="catalog-grid"></div>
+      <pre id="debug" class="debug">Waiting…</pre>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = 'https://cardcollectz-api.onrender.com';
+    let authToken = null;
+    let currentUsername = null;
+    let currentEmail = null;
+    let currentProfileImage = null;
+    let allListings = [];
+
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    function logDebug(obj) {
+      const box = document.getElementById('debug');
+      if (box) box.textContent = JSON.stringify(obj, null, 2);
+    }
+
+    function logout() {
+      localStorage.removeItem('cc_token');
+      localStorage.removeItem('cc_email');
+      localStorage.removeItem('cc_username');
+      window.location.href = 'login.html';
+    }
+
+    function loadAuthOrRedirect() {
+      authToken = localStorage.getItem('cc_token');
+      currentUsername = localStorage.getItem('cc_username');
+      currentEmail = localStorage.getItem('cc_email');
+
+      if (!authToken || !currentUsername || !currentEmail) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      const navUser = document.getElementById('navUser');
+      if (navUser) navUser.textContent = '@' + currentUsername;
+
+      const navAvatar = document.getElementById('navAvatar');
+      if (navAvatar) {
+        const initial = currentUsername[0]?.toUpperCase() || '?';
+        navAvatar.textContent = initial;
+      }
+
+      const navProfileBtn = document.getElementById('navProfileBtn');
+      const dropdown = document.getElementById('navDropdown');
+      const navProfileLink = document.getElementById('navProfileLink');
+
+      if (navProfileBtn && dropdown) {
+        navProfileBtn.onclick = () => {
+          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+        document.addEventListener('click', (e) => {
+          if (!navProfileBtn.contains(e.target)) {
+            dropdown.style.display = 'none';
+          }
+        });
+      }
+
+      if (navProfileLink) {
+        navProfileLink.href =
+          'profile.html?username=' + encodeURIComponent(currentUsername);
+      }
+
+      fetchProfileAvatar();
+      return true;
+    }
+
+    async function fetchProfileAvatar() {
+      try {
+        const res = await fetch(API_BASE + '/users/me', {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || !data.profileImage) return;
+
+        currentProfileImage = data.profileImage;
+        const navAvatar = document.getElementById('navAvatar');
+        if (navAvatar) {
+          navAvatar.style.backgroundImage =
+            'url("data:image/*;base64,' + currentProfileImage + '")';
+          navAvatar.textContent = '';
+        }
+      } catch (err) {
+        console.error('Failed to load avatar', err);
+      }
+    }
+
+    function renderStars(rating) {
+      const starsContainer = document.getElementById('ratingStars');
+      if (!starsContainer) return;
+      starsContainer.innerHTML = '';
+      const value = Math.round((rating || 0) * 2) / 2; // round to 0.5
+
+      for (let i = 1; i <= 5; i++) {
+        const span = document.createElement('span');
+        span.className = 'rating-star' + (i <= value ? ' full' : '');
+        span.textContent = '★';
+        starsContainer.appendChild(span);
+      }
+    }
+
+    function renderProfileHeader(user, listings) {
+      const avatarEl = document.getElementById('profileAvatar');
+      const usernameEl = document.getElementById('profileUsername');
+      const handleEl = document.getElementById('profileHandle');
+      const listingsCountEl = document.getElementById('metaListingsCount');
+      const tradesEl = document.getElementById('metaTrades');
+      const sinceEl = document.getElementById('metaSince');
+      const bioEl = document.getElementById('profileBio');
+      const verifiedEl = document.getElementById('profileVerified');
+      const ratingTextEl = document.getElementById('ratingText');
+
+      const username = user.username;
+      const rating = user.rating ?? 0;
+      const ratingCount = user.ratingCount ?? 0;
+      const tradesCount = user.tradesCount ?? 0;
+
+      if (usernameEl) usernameEl.textContent = '@' + username;
+      if (handleEl) handleEl.textContent = 'Seller on CardCollectz';
+
+      if (avatarEl) {
+        if (user.profileImage) {
+          avatarEl.style.backgroundImage =
+            'url("data:image/*;base64,' + user.profileImage + '")';
+          avatarEl.textContent = '';
+        } else {
+          avatarEl.textContent = username[0]?.toUpperCase() || '?';
+        }
+      }
+
+      if (bioEl) {
+        if (user.bio) {
+          bioEl.textContent = user.bio;
+          bioEl.style.display = 'block';
+        } else {
+          bioEl.style.display = 'none';
+        }
+      }
+
+      if (verifiedEl) {
+        verifiedEl.style.display = user.isVerified ? 'inline-flex' : 'none';
+      }
+
+      if (listingsCountEl) {
+        listingsCountEl.textContent = String(user.listingsCount ?? listings.length);
+      }
+
+      if (tradesEl) tradesEl.textContent = String(tradesCount);
+
+      if (sinceEl && user.createdAt) {
+        sinceEl.textContent = new Date(user.createdAt).toLocaleDateString();
+      }
+
+      renderStars(rating);
+      if (ratingTextEl) {
+        if (ratingCount > 0) {
+          ratingTextEl.textContent = `${rating.toFixed(1)} (${ratingCount})`;
+        } else {
+          ratingTextEl.textContent = 'No ratings yet';
+        }
+      }
+    }
+
+    function renderListings(listings) {
+      const container = document.getElementById('listingsContainer');
+      const meta = document.getElementById('catalogMeta');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!listings || listings.length === 0) {
+        container.textContent = 'This seller has no listings yet.';
+        if (meta) meta.textContent = '0 listings';
+        return;
+      }
+
+      if (meta) {
+        meta.textContent = `${listings.length} listing${listings.length === 1 ? '' : 's'}`;
+      }
+
+      listings.forEach((item) => {
+        const tile = document.createElement('article');
+        tile.className = 'listing-tile';
+        tile.onclick = () => {
+          window.location.href = 'listing.html?id=' + item.id;
+        };
+
+        const mainImage = item.imageData || null;
+        if (mainImage) {
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'tile-img-wrap';
+          const img = document.createElement('img');
+          img.src = 'data:image/*;base64,' + mainImage;
+          imgWrap.appendChild(img);
+          tile.appendChild(imgWrap);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'tile-body';
+
+        const topRow = document.createElement('div');
+        topRow.className = 'tile-row-top';
+        const brand = document.createElement('span');
+        brand.textContent = 'CardCollectz';
+        const cond = document.createElement('span');
+        cond.className = 'tile-condition';
+        cond.textContent = item.condition || 'Condition not set';
+        topRow.appendChild(brand);
+        topRow.appendChild(cond);
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'tile-title';
+        titleEl.textContent = item.title;
+
+        const priceRow = document.createElement('div');
+        priceRow.className = 'tile-price-row';
+        const priceEl = document.createElement('span');
+        priceEl.className = 'tile-price';
+        priceEl.textContent = '£' + item.price;
+
+        priceRow.appendChild(priceEl);
+
+        const dateEl = document.createElement('div');
+        dateEl.className = 'tile-date';
+        dateEl.textContent = new Date(item.createdAt).toLocaleString();
+
+        body.appendChild(topRow);
+        body.appendChild(titleEl);
+        body.appendChild(priceRow);
+        body.appendChild(dateEl);
+
+        tile.appendChild(body);
+        container.appendChild(tile);
+      });
+    }
+
+    async function loadProfile() {
+      const username = getQueryParam('username');
+      if (!username) {
+        const meta = document.getElementById('catalogMeta');
+        if (meta) meta.textContent = 'No seller specified.';
+        return;
+      }
+
+      try {
+        const [userRes, listingsRes] = await Promise.all([
+          fetch(API_BASE + '/users/by-username/' + encodeURIComponent(username)),
+          fetch(API_BASE + '/listings?seller=' + encodeURIComponent(username)),
+        ]);
+
+        const userData = await userRes.json();
+        const listingsData = await listingsRes.json();
+
+        allListings = Array.isArray(listingsData) ? listingsData : [];
+        logDebug({ user: userData, listings: allListings });
+
+        renderProfileHeader(userData, allListings);
+        renderListings(allListings);
+      } catch (err) {
+        console.error(err);
+        logDebug({ error: String(err) });
+        const meta = document.getElementById('catalogMeta');
+        if (meta) meta.textContent = 'Failed to load profile.';
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const ok = loadAuthOrRedirect();
+      if (!ok) return;
+      loadProfile();
+    });
+  </script>
+</body>
+</html>

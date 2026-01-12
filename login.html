@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardCollectz – Login</title>
+  <style>
+    :root {
+      --cc-primary: #2D8CFF;
+      --cc-secondary: #00E2FF;
+      --cc-text: #E6E6E6;
+      --cc-bg: #050505;
+      --cc-card: #0B0B0B;
+      --cc-border: #1F2933;
+      --cc-danger: #f97373;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
+      color: var(--cc-text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .card {
+      width: 100%;
+      max-width: 380px;
+      background: rgba(15,23,42,0.92);
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,0.95);
+      box-shadow: 0 24px 80px rgba(15,23,42,0.9);
+      padding: 24px;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
+      margin-bottom: 16px;
+    }
+
+    label {
+      font-size: 13px;
+      margin-bottom: 4px;
+      display: block;
+    }
+    input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.9);
+      color: var(--cc-text);
+      padding: 8px 10px;
+      font-size: 14px;
+      outline: none;
+    }
+    input::placeholder {
+      color: rgba(148,163,184,0.8);
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+    .btn {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 9px 16px;
+      margin-top: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+    }
+    .link-row {
+      margin-top: 10px;
+      font-size: 13px;
+      text-align: center;
+      color: rgba(148,163,184,0.9);
+    }
+    .link-row a {
+      color: var(--cc-secondary);
+      text-decoration: none;
+    }
+    .link-row a:hover {
+      text-decoration: underline;
+    }
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      padding: 8px;
+      border-radius: 8px;
+      display: none;
+    }
+    .status.error {
+      background: rgba(239,68,68,0.18);
+      border: 1px solid rgba(239,68,68,0.6);
+      color: #fecaca;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">CardCollectz</div>
+    <div class="subtitle">Welcome back. Log in to your account.</div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Your username" />
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="••••••••" />
+    </div>
+
+    <button class="btn" onclick="login()">Log in</button>
+
+    <div id="status" class="status"></div>
+
+    <div class="link-row">
+      New here?
+      <a href="register.html">Create an account</a>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://cardcollectz-api.onrender.com';
+
+    async function login() {
+      const status = document.getElementById("status");
+      status.style.display = "none";
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !password) {
+        status.textContent = "Please enter username and password.";
+        status.className = "status error";
+        status.style.display = "block";
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE + "/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const rawText = await res.text();
+        let data;
+        try {
+          data = rawText ? JSON.parse(rawText) : null;
+        } catch {
+          data = null;
+        }
+
+        if (!res.ok) {
+          let msg = "Login failed.";
+          if (data && data.message) {
+            msg = Array.isArray(data.message) ? data.message.join(", ") : data.message;
+          } else if (rawText) {
+            msg = rawText;
+          }
+          status.textContent = msg;
+          status.className = "status error";
+          status.style.display = "block";
+          return;
+        }
+
+        // success
+        localStorage.setItem("cc_token", data.access_token);
+        localStorage.setItem("cc_username", data.username);
+        localStorage.setItem("cc_email", data.email);
+
+        window.location.href = "catalog.html";
+      } catch (err) {
+        status.textContent = "Network error. Please try again.";
+        status.className = "status error";
+        status.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

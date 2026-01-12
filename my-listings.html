@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardCollectz – My Listings</title>
+  <style>
+    :root {
+      --cc-primary: #2D8CFF;
+      --cc-secondary: #00E2FF;
+      --cc-text: #E6E6E6;
+      --cc-bg: #050505;
+      --cc-card: #0B0B0B;
+      --cc-border: #1F2933;
+      --cc-success: #2FDBA5;
+      --cc-danger: #f97373;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
+      color: var(--cc-text);
+    }
+
+    /* ====== HEADER (same as catalog, no dropdown row) ====== */
+    .cc-header-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #020617;
+      border-bottom: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .cc-header {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px 8px;
+    }
+
+    .cc-header-top {
+      display: grid;
+      grid-template-columns: auto minmax(320px, 1.6fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .cc-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .cc-logo-text {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .cc-search-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      background: #0b1220;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(15,23,42,1);
+    }
+
+    .cc-search-input {
+      border: none;
+      background: transparent;
+      color: #f9fafb;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    .cc-search-input::placeholder {
+      color: rgba(148,163,184,0.9);
+    }
+
+    .cc-search-icon {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: rgba(148,163,184,0.9);
+      border-left: 1px solid rgba(30,64,175,0.7);
+    }
+
+    .cc-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .cc-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .cc-sell-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 18px rgba(45,140,255,0.9);
+    }
+
+    .cc-avatar-wrap {
+      position: relative;
+    }
+
+    .cc-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border: 1px solid rgba(148,163,184,0.8);
+      background-size: cover;
+      background-position: center;
+      box-shadow:
+        0 0 0 1px rgba(45,140,255,0.5),
+        0 0 16px rgba(0,226,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+
+    .cc-avatar-menu {
+      position: absolute;
+      top: 115%;
+      right: 0;
+      background: rgba(3,7,18,0.98);
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.8);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+      min-width: 170px;
+      padding: 6px 0;
+      display: none;
+      z-index: 60;
+    }
+    .cc-avatar-menu.open { display: block; }
+    .cc-avatar-menu button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 13px;
+      padding: 7px 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .cc-avatar-menu button:hover {
+      background: rgba(15,23,42,0.96);
+    }
+    .cc-menu-sep {
+      height: 1px;
+      margin: 4px 0;
+      background: rgba(31,41,55,0.95);
+    }
+
+    /* sub filter bar (condition) */
+    .cc-subfilters {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 6px 18px 4px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+    }
+    .cc-subfilters select {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: #f9fafb;
+      padding: 4px 8px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    /* page */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 18px 32px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .page-meta {
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
+    }
+
+    .catalog-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .listing-tile {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.96), rgba(15,23,42,0.98));
+      border-radius: 16px;
+      border: 1px solid rgba(37,99,235,0.5);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,1),
+        0 0 18px rgba(0,226,255,0.32);
+      transform: translateY(0);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+    .listing-tile:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96,165,250,0.9);
+      box-shadow:
+        0 0 0 1px rgba(37,99,235,0.9),
+        0 0 26px rgba(0,226,255,0.7);
+    }
+
+    .tile-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #020617;
+      overflow: hidden;
+    }
+    .tile-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .tile-body {
+      padding: 9px 10px 10px;
+    }
+    .tile-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .tile-price {
+      font-size: 16px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .tile-meta {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+    }
+  </style>
+</head>
+<body>
+
+<div class="cc-header-shell">
+  <div class="cc-header">
+    <div class="cc-header-top">
+      <div class="cc-logo" onclick="location.href='catalog.html'">
+        <span class="cc-logo-text">CardCollectz</span>
+      </div>
+
+      <div class="cc-search-shell">
+        <input
+          id="navSearch"
+          class="cc-search-input"
+          type="text"
+          placeholder="Search your listings…"
+        />
+        <div class="cc-search-icon">🔍</div>
+      </div>
+
+      <div class="cc-header-actions">
+        <button class="cc-icon-btn" type="button" title="Messages">✉️</button>
+        <button class="cc-icon-btn" type="button" title="Notifications">🔔</button>
+        <button class="cc-icon-btn" type="button" title="Favourites" onclick="location.href='favourites.html'">♥</button>
+
+        <div class="cc-avatar-wrap">
+          <div id="navAvatar" class="cc-avatar"></div>
+          <div id="avatarMenu" class="cc-avatar-menu">
+            <button type="button" onclick="location.href='account.html'">Account</button>
+            <button type="button" onclick="location.href='my-listings.html'">My listings</button>
+            <button type="button" onclick="location.href='favourites.html'">Favourites</button>
+            <button type="button" onclick="location.href='my-offers.html'">My offers</button>
+            <div class="cc-menu-sep"></div>
+            <button type="button" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+
+        <button class="cc-sell-btn" type="button" onclick="location.href='index.html#sellSection'">
+          Sell now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cc-subfilters">
+  <span>Condition:</span>
+  <select id="conditionFilter">
+    <option value="">Any</option>
+    <option value="Mint">Mint</option>
+    <option value="Near Mint">Near Mint</option>
+    <option value="Lightly Played">Lightly Played</option>
+    <option value="Moderately Played">Moderately Played</option>
+    <option value="Heavily Played">Heavily Played</option>
+    <option value="Damaged">Damaged</option>
+  </select>
+</div>
+
+<main class="page">
+  <header class="page-header">
+    <h1 class="page-title">My listings</h1>
+    <div id="meta" class="page-meta">Loading…</div>
+  </header>
+
+  <section id="listingsContainer" class="catalog-grid"></section>
+</main>
+
+<script>
+  const API_BASE = 'https://cardcollectz-api.onrender.com';
+  const authToken = localStorage.getItem("cc_token");
+  const currentUsername = localStorage.getItem("cc_username");
+
+  if (!authToken || !currentUsername) {
+    window.location.href = "login.html";
+  }
+
+  function logout() {
+    localStorage.removeItem("cc_token");
+    localStorage.removeItem("cc_username");
+    localStorage.removeItem("cc_email");
+    window.location.href = "login.html";
+  }
+
+  function initAvatar() {
+    const avatar = document.getElementById("navAvatar");
+    const menu = document.getElementById("avatarMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) logoutBtn.onclick = logout;
+
+    if (authToken && avatar) {
+      fetch(API_BASE + "/users/me", {
+        headers: { Authorization: "Bearer " + authToken },
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          if (user?.profileImage) {
+            avatar.style.backgroundImage =
+              `url(data:image/*;base64,${user.profileImage})`;
+            avatar.textContent = "";
+          } else if (currentUsername) {
+            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
+          }
+        })
+        .catch(() => {
+          if (currentUsername) {
+            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
+          }
+        });
+    }
+
+    if (avatar && menu) {
+      avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("open");
+      });
+      document.addEventListener("click", (e) => {
+        if (!menu.contains(e.target) && e.target !== avatar) {
+          menu.classList.remove("open");
+        }
+      });
+    }
+  }
+
+  let allListings = [];
+
+  async function loadListings() {
+    const res = await fetch(
+      API_BASE + "/listings?seller=" + encodeURIComponent(currentUsername),
+      { headers: { Authorization: "Bearer " + authToken } }
+    );
+    const data = await res.json();
+    allListings = Array.isArray(data) ? data : [];
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById("navSearch")?.value || "").toLowerCase();
+    const cond = document.getElementById("conditionFilter")?.value || "";
+
+    let list = allListings.slice();
+
+    if (cond) {
+      list = list.filter(
+        (l) =>
+          String(l.condition || "").toLowerCase() === cond.toLowerCase()
+      );
+    }
+
+    if (q) {
+      list = list.filter((l) => {
+        const t = String(l.title || "").toLowerCase();
+        const d = String(l.description || "").toLowerCase();
+        return t.includes(q) || d.includes(q);
+      });
+    }
+
+    renderListings(list);
+  }
+
+  function renderListings(list) {
+    const container = document.getElementById("listingsContainer");
+    const meta = document.getElementById("meta");
+    container.innerHTML = "";
+
+    meta.textContent =
+      list.length + " listing" + (list.length === 1 ? "" : "s");
+
+    if (list.length === 0) {
+      const empty = document.createElement("div");
+      empty.style.fontSize = "13px";
+      empty.style.color = "rgba(148,163,184,0.9)";
+      empty.textContent = "You don't have any listings yet.";
+      container.appendChild(empty);
+      return;
+    }
+
+    list.forEach((item) => {
+      const tile = document.createElement("article");
+      tile.className = "listing-tile";
+      tile.onclick = () => {
+        window.location.href = "listing.html?id=" + item.id;
+      };
+
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "tile-img-wrap";
+
+      const mainImage =
+        item.imageData ||
+        (item.images && item.images.length > 0 ? item.images[0] : null);
+
+      if (mainImage) {
+        const img = document.createElement("img");
+        img.src = "data:image/*;base64," + mainImage;
+        imgWrap.appendChild(img);
+      }
+
+      const body = document.createElement("div");
+      body.className = "tile-body";
+      body.innerHTML = `
+        <div class="tile-title">${item.title}</div>
+        <div class="tile-price">£${item.price}</div>
+        <div class="tile-meta">${item.condition || ""}</div>
+      `;
+
+      tile.appendChild(imgWrap);
+      tile.appendChild(body);
+      container.appendChild(tile);
+    });
+  }
+
+  window.addEventListener("load", () => {
+    initAvatar();
+    loadListings();
+
+    const searchInput = document.getElementById("navSearch");
+    const condSelect = document.getElementById("conditionFilter");
+
+    if (searchInput) {
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          applyFilters();
+        }
+      });
+    }
+    if (condSelect) condSelect.addEventListener("change", applyFilters);
+  });
+</script>
+
+</body>
+</html>

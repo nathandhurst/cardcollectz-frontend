@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CardCollectz – My Offers</title>
+  <style>
+    :root {
+      --cc-primary: #2D8CFF;
+      --cc-secondary: #00E2FF;
+      --cc-text: #E6E6E6;
+      --cc-bg: #050505;
+      --cc-card: #0B0B0B;
+      --cc-border: #1F2933;
+      --cc-success: #2FDBA5;
+      --cc-danger: #f97373;
+      --cc-warning: #facc15;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
+      color: var(--cc-text);
+    }
+
+    /* ===== HEADER (same as catalog, no dropdown in search) ===== */
+    .cc-header-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #020617;
+      border-bottom: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .cc-header {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px 8px;
+    }
+    .cc-header-top {
+      display: grid;
+      grid-template-columns: auto minmax(320px, 1.6fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+    .cc-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .cc-logo-text {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .cc-search-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      background: #0b1220;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(15,23,42,1);
+    }
+    .cc-search-input {
+      border: none;
+      background: transparent;
+      color: #f9fafb;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    .cc-search-input::placeholder {
+      color: rgba(148,163,184,0.9);
+    }
+    .cc-search-icon {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: rgba(148,163,184,0.9);
+      border-left: 1px solid rgba(30,64,175,0.7);
+    }
+    .cc-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .cc-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .cc-sell-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 18px rgba(45,140,255,0.9);
+    }
+    .cc-avatar-wrap { position: relative; }
+    .cc-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      border: 1px solid rgba(148,163,184,0.8);
+      background-size: cover;
+      background-position: center;
+      box-shadow:
+        0 0 0 1px rgba(45,140,255,0.5),
+        0 0 16px rgba(0,226,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+    .cc-avatar-menu {
+      position: absolute;
+      top: 115%;
+      right: 0;
+      background: rgba(3,7,18,0.98);
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.8);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+      min-width: 170px;
+      padding: 6px 0;
+      display: none;
+      z-index: 60;
+    }
+    .cc-avatar-menu.open { display: block; }
+    .cc-avatar-menu button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 13px;
+      padding: 7px 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .cc-avatar-menu button:hover {
+      background: rgba(15,23,42,0.96);
+    }
+    .cc-menu-sep {
+      height: 1px;
+      margin: 4px 0;
+      background: rgba(31,41,55,0.95);
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 18px 32px;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .page-meta {
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
+    }
+
+    .offers-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .offer-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1.6fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(15,23,42,0.97);
+      border: 1px solid rgba(37,99,235,0.7);
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,1),
+        0 0 18px rgba(0,226,255,0.28);
+    }
+    @media (max-width: 800px) {
+      .offer-card {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: flex-start;
+      }
+    }
+
+    .offer-thumb {
+      width: 80px;
+      height: 104px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(148,163,184,0.7);
+      cursor: pointer;
+    }
+    .offer-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .offer-main-title {
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .offer-main-title:hover {
+      text-decoration: underline;
+    }
+    .offer-meta-line {
+      font-size: 12px;
+      color: rgba(148,163,184,0.9);
+      margin-top: 3px;
+    }
+    .offer-meta-line span.price {
+      font-weight: 600;
+      color: var(--cc-success);
+    }
+    .offer-meta-line span.seller {
+      cursor: pointer;
+      color: rgba(96,165,250,0.98);
+    }
+    .offer-meta-line span.seller:hover {
+      text-decoration: underline;
+    }
+
+    .offer-status {
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 3px 9px;
+      display: inline-block;
+    }
+    .status-pending {
+      background: rgba(250,204,21,0.1);
+      color: var(--cc-warning);
+      border: 1px solid rgba(250,204,21,0.8);
+    }
+    .status-accepted {
+      background: rgba(34,197,94,0.1);
+      color: var(--cc-success);
+      border: 1px solid rgba(34,197,94,0.8);
+    }
+    .status-rejected {
+      background: rgba(248,113,113,0.1);
+      color: var(--cc-danger);
+      border: 1px solid rgba(248,113,113,0.8);
+    }
+
+    .offer-amount {
+      font-size: 16px;
+      font-weight: 700;
+      text-align: right;
+      margin-bottom: 4px;
+    }
+    .offer-date {
+      font-size: 11px;
+      color: rgba(148,163,184,0.9);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+<div class="cc-header-shell">
+  <div class="cc-header">
+    <div class="cc-header-top">
+      <div class="cc-logo" onclick="location.href='catalog.html'">
+        <span class="cc-logo-text">CardCollectz</span>
+      </div>
+
+      <div class="cc-search-shell">
+        <input
+          id="navSearch"
+          class="cc-search-input"
+          type="text"
+          placeholder="Search your offers…"
+        />
+        <div class="cc-search-icon">🔍</div>
+      </div>
+
+      <div class="cc-header-actions">
+        <button class="cc-icon-btn" type="button" title="Messages">✉️</button>
+        <button class="cc-icon-btn" type="button" title="Notifications">🔔</button>
+        <button class="cc-icon-btn" type="button" title="Favourites" onclick="location.href='favourites.html'">♥</button>
+
+        <div class="cc-avatar-wrap">
+          <div id="navAvatar" class="cc-avatar"></div>
+          <div id="avatarMenu" class="cc-avatar-menu">
+            <button type="button" onclick="location.href='account.html'">Account</button>
+            <button type="button" onclick="location.href='my-listings.html'">My listings</button>
+            <button type="button" onclick="location.href='favourites.html'">Favourites</button>
+            <button type="button" onclick="location.href='my-offers.html'">My offers</button>
+            <div class="cc-menu-sep"></div>
+            <button type="button" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+
+        <button class="cc-sell-btn" type="button" onclick="location.href='index.html#sellSection'">
+          Sell now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="page">
+  <header class="page-header">
+    <h1 class="page-title">My offers</h1>
+    <div id="meta" class="page-meta">Loading…</div>
+  </header>
+
+  <section id="offersContainer" class="offers-list"></section>
+</main>
+
+<script>
+  const API_BASE = 'https://cardcollectz-api.onrender.com';
+  const authToken = localStorage.getItem("cc_token");
+  const currentUsername = localStorage.getItem("cc_username");
+
+  if (!authToken || !currentUsername) {
+    window.location.href = "login.html";
+  }
+
+  function logout() {
+    localStorage.removeItem("cc_token");
+    localStorage.removeItem("cc_username");
+    localStorage.removeItem("cc_email");
+    window.location.href = "login.html";
+  }
+
+  function initAvatar() {
+    const avatar = document.getElementById("navAvatar");
+    const menu = document.getElementById("avatarMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) logoutBtn.onclick = logout;
+
+    if (authToken && avatar) {
+      fetch(API_BASE + "/users/me", {
+        headers: { Authorization: "Bearer " + authToken },
+      })
+        .then((r) => r.json())
+        .then((user) => {
+          if (user?.profileImage) {
+            avatar.style.backgroundImage =
+              `url(data:image/*;base64,${user.profileImage})`;
+            avatar.textContent = "";
+          } else if (currentUsername) {
+            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
+          }
+        })
+        .catch(() => {
+          if (currentUsername) {
+            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
+          }
+        });
+    }
+
+    if (avatar && menu) {
+      avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("open");
+      });
+      document.addEventListener("click", (e) => {
+        if (!menu.contains(e.target) && e.target !== avatar) {
+          menu.classList.remove("open");
+        }
+      });
+    }
+  }
+
+  let allOffers = [];
+
+  async function loadOffers() {
+    try {
+      const res = await fetch(API_BASE + "/offers/my", {
+        headers: { Authorization: "Bearer " + authToken },
+      });
+      const data = await res.json();
+      allOffers = Array.isArray(data) ? data : [];
+      applyFilters();
+    } catch (err) {
+      console.error(err);
+      document.getElementById("meta").textContent =
+        "Failed to load offers.";
+    }
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById("navSearch")?.value || "").toLowerCase();
+    let list = allOffers.slice();
+
+    if (q) {
+      list = list.filter((o) => {
+        const t = String(o.listing?.title || "").toLowerCase();
+        const seller = String(o.listing?.sellerUsername || "").toLowerCase();
+        const status = String(o.status || "").toLowerCase();
+        return (
+          t.includes(q) || seller.includes(q) || status.includes(q)
+        );
+      });
+    }
+
+    renderOffers(list);
+  }
+
+  function renderOffers(list) {
+    const container = document.getElementById("offersContainer");
+    const meta = document.getElementById("meta");
+    container.innerHTML = "";
+
+    meta.textContent =
+      list.length + " offer" + (list.length === 1 ? "" : "s");
+
+    if (list.length === 0) {
+      const empty = document.createElement("div");
+      empty.style.fontSize = "13px";
+      empty.style.color = "rgba(148,163,184,0.9)";
+      empty.textContent = "You haven't made any offers yet.";
+      container.appendChild(empty);
+      return;
+    }
+
+    list.forEach((offer) => {
+      const card = document.createElement("article");
+      card.className = "offer-card";
+
+      const listing = offer.listing || {};
+      const main =
+        listing.imageData ||
+        (listing.images && listing.images.length ? listing.images[0] : null);
+
+      const thumb = document.createElement("div");
+      thumb.className = "offer-thumb";
+      if (main) {
+        const img = document.createElement("img");
+        img.src = "data:image/*;base64," + main;
+        thumb.appendChild(img);
+      }
+      thumb.onclick = () => {
+        if (listing.id) window.location.href = "listing.html?id=" + listing.id;
+      };
+
+      const mainCol = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "offer-main-title";
+      title.textContent = listing.title || "Listing";
+      title.onclick = () => {
+        if (listing.id) window.location.href = "listing.html?id=" + listing.id;
+      };
+
+      const metaLine = document.createElement("div");
+      metaLine.className = "offer-meta-line";
+      const sellerText = document.createElement("span");
+      sellerText.className = "seller";
+      sellerText.textContent = "@" + (listing.sellerUsername || "unknown");
+      sellerText.onclick = (e) => {
+        e.stopPropagation();
+        if (listing.sellerUsername) {
+          window.location.href =
+            "profile.html?username=" +
+            encodeURIComponent(listing.sellerUsername);
+        }
+      };
+
+      metaLine.innerHTML = `Listing price: <span class="price">£${listing.price || "0"}</span> · Seller: `;
+      metaLine.appendChild(sellerText);
+
+      mainCol.appendChild(title);
+      mainCol.appendChild(metaLine);
+
+      const side = document.createElement("div");
+      const amount = document.createElement("div");
+      amount.className = "offer-amount";
+      amount.textContent = "£" + offer.amount;
+
+      const status = document.createElement("div");
+      status.className = "offer-status";
+      const s = String(offer.status || "PENDING").toLowerCase();
+      if (s === "accepted") status.classList.add("status-accepted");
+      else if (s === "rejected") status.classList.add("status-rejected");
+      else status.classList.add("status-pending");
+      status.textContent =
+        s.charAt(0).toUpperCase() + s.slice(1);
+
+      const created = document.createElement("div");
+      created.className = "offer-date";
+      if (offer.createdAt) {
+        created.textContent =
+          "Sent " + new Date(offer.createdAt).toLocaleString();
+      }
+
+      side.appendChild(amount);
+      side.appendChild(status);
+      side.appendChild(created);
+
+      card.appendChild(thumb);
+      card.appendChild(mainCol);
+      card.appendChild(side);
+      container.appendChild(card);
+    });
+  }
+
+  window.addEventListener("load", () => {
+    initAvatar();
+    loadOffers();
+
+    const searchInput = document.getElementById("navSearch");
+    if (searchInput) {
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          applyFilters();
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
