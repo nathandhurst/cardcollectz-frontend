@@ -15,7 +15,6 @@
       --cc-card: #0B0B0B;
     }
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
@@ -45,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .logo {
       font-size: 22px;
@@ -57,32 +56,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .nav-links a {
-      font-size: 13px;
-      margin-right: 10px;
-      color: rgba(209,213,219,0.9);
-      text-decoration: none;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover {
-      border-color: rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.9);
-    }
-
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
+      flex: 2 1 0;
       justify-content: center;
-      max-width: 420px;
+      max-width: 640px;
     }
     .nav-search input[type="text"] {
       flex: 1;
       min-width: 0;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
@@ -94,7 +79,6 @@
       border-color: var(--cc-primary);
       box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
     }
-
     .search-btn {
       padding: 6px 10px;
       border-radius: 999px;
@@ -111,7 +95,6 @@
       border-color: var(--cc-primary);
       background: #020617;
     }
-
     .nav-search label {
       display: flex;
       align-items: center;
@@ -123,15 +106,42 @@
     .nav-search input[type="checkbox"] {
       width: 14px; height: 14px;
     }
-
     .nav-right {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 12px;
       white-space: nowrap;
+      flex: 0 0 auto;
     }
-
+    .icon-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-btn:hover {
+      border-color: var(--cc-primary);
+    }
+    .icon-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97373;
+      box-shadow: 0 0 6px rgba(248,113,113,0.9);
+      display: none;
+    }
     .nav-user {
       display: flex;
       align-items: center;
@@ -189,7 +199,6 @@
     .nav-dropdown button:hover {
       background: rgba(30,64,175,0.35);
     }
-
     .nav-btn {
       border-radius: 999px;
       padding: 7px 14px;
@@ -203,26 +212,15 @@
       color: #020617;
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
-
-    /* pull-to-refresh indicator */
-    .ptr-indicator {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: #0f172a;
-      background: #e0f2fe;
-      transform: translateY(-32px);
-      transition: transform 0.15s ease;
-      z-index: 30;
-    }
-    .ptr-indicator.visible {
-      transform: translateY(0);
+    @media (max-width: 900px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
 
     .page {
@@ -324,9 +322,11 @@
     }
     .tile-seller {
       font-size: 11px;
-      color: #9ca3af;
-      text-decoration: underline;
+      color: rgba(148,163,184,0.9);
       cursor: pointer;
+    }
+    .tile-seller:hover {
+      text-decoration: underline;
     }
     .tile-date {
       font-size: 10px;
@@ -347,55 +347,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15,23,42,0.75);
       color: #e5e7eb;
     }
     .fav-btn--active {
       background: #f97316;
       color: #111827;
     }
-
-    .debug {
-      margin-top: 12px;
-      background: #020617;
-      color: #e5e7eb;
-      padding: 8px;
-      border-radius: 8px;
-      font-size: 11px;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-wrap: wrap;
-      }
-      .nav-right {
-        order: 3;
-        width: 100%;
-        justify-content: flex-end;
-      }
-      .nav-left {
-        flex-wrap: wrap;
-      }
-    }
   </style>
 </head>
 <body>
-  <div id="ptrIndicator" class="ptr-indicator">Pull to refresh</div>
-
   <div class="nav-shell">
     <header class="nav">
       <div class="nav-left">
         <div class="logo" onclick="window.location.href='catalog.html'">
           CardCollectz
-        </div>
-        <div class="nav-links">
-          <a href="catalog.html">Listings</a>
-          <a href="my-listings.html">My listings</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="my-offers.html">My offers</a>
         </div>
       </div>
 
@@ -414,14 +380,32 @@
       </div>
 
       <div class="nav-right">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='messages.html'"
+          title="Messages"
+        >
+          ✉
+          <span id="navMsgDot" class="icon-dot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='my-offers.html'"
+          title="My offers"
+        >
+          🔔
+          <span id="navOffersDot" class="icon-dot"></span>
+        </button>
+
         <div id="navProfileBtn" class="nav-user">
           <div id="navAvatar" class="nav-avatar"></div>
           <span id="navUser" class="nav-username">…</span>
           <div id="navDropdown" class="nav-dropdown">
             <a id="navProfileLink" href="#">View profile</a>
             <a href="account.html">Account settings</a>
-            <a href="my-listings.html">My listings</a>
-            <a href="my-offers.html">My offers</a>
             <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
@@ -441,7 +425,6 @@
         <div class="catalog-meta" id="catalogMeta">Loading listings…</div>
       </div>
       <div id="listingsContainer" class="catalog-grid"></div>
-      <pre id="debug" class="debug">Waiting…</pre>
     </section>
   </main>
 
@@ -452,21 +435,6 @@
     let currentEmail = null;
     let authToken = null;
     let allListings = [];
-
-    function handleSearchClick() {
-      const qInput = document.getElementById('searchQuery');
-      const mineCheckbox = document.getElementById('onlyMine');
-      if (!qInput) return;
-      const q = qInput.value.trim();
-      const mine = mineCheckbox && mineCheckbox.checked;
-
-      let url = 'catalog.html';
-      const params = [];
-      if (q) params.push('q=' + encodeURIComponent(q));
-      if (mine) params.push('mine=1');
-      if (params.length) url += '?' + params.join('&');
-      window.location.href = url;
-    }
 
     function getFavourites() {
       const raw = localStorage.getItem('cc_favourites');
@@ -495,9 +463,28 @@
       applyFilters();
     }
 
-    function logDebug(obj) {
-      const box = document.getElementById('debug');
-      if (box) box.textContent = JSON.stringify(obj, null, 2);
+    function handleSearchClick() {
+      const qInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+      if (!qInput) return;
+      const q = qInput.value.trim();
+      const mine = mineCheckbox && mineCheckbox.checked;
+
+      let url = 'catalog.html';
+      const params = [];
+      if (q) params.push('q=' + encodeURIComponent(q));
+      if (mine) params.push('mine=1');
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
+
+    function updateNavBadges() {
+      const msgDot = document.getElementById('navMsgDot');
+      const offersDot = document.getElementById('navOffersDot');
+      const hasUnreadMessages = localStorage.getItem('cc_unread_messages') === '1';
+      const hasUnreadOffers = localStorage.getItem('cc_unread_offers') === '1';
+      if (msgDot) msgDot.style.display = hasUnreadMessages ? 'block' : 'none';
+      if (offersDot) offersDot.style.display = hasUnreadOffers ? 'block' : 'none';
     }
 
     function loadAuthOrRedirect() {
@@ -536,6 +523,7 @@
       }
 
       fetchNavAvatar();
+      updateNavBadges();
       return true;
     }
 
@@ -568,7 +556,6 @@
     function renderListings(listings) {
       const container = document.getElementById('listingsContainer');
       const meta = document.getElementById('catalogMeta');
-
       container.innerHTML = '';
 
       if (!listings || listings.length === 0) {
@@ -663,28 +650,27 @@
         const res = await fetch(API_BASE + '/listings');
         const data = await res.json();
         allListings = Array.isArray(data) ? data : [];
-        logDebug({ loadListingsResponse: allListings });
         applyFilters();
       } catch (err) {
         console.error(err);
-        logDebug({ error: String(err) });
         const meta = document.getElementById('catalogMeta');
         if (meta) meta.textContent = 'Failed to load listings.';
       }
     }
 
     function applyFilters() {
-      const searchInput = document.getElementById('searchQuery');
-      const mineCheckbox = document.getElementById('onlyMine');
-      const q = searchInput ? searchInput.value.toLowerCase() : '';
-      const onlyMine = mineCheckbox && mineCheckbox.checked;
+      const qEl = document.getElementById('searchQuery');
+      const mineEl = document.getElementById('onlyMine');
+      const q = (qEl?.value || '').toLowerCase();
+      const onlyMine = !!(mineEl && mineEl.checked);
 
       let filtered = allListings.slice();
 
       if (onlyMine && currentUsername) {
         filtered = filtered.filter(
           (l) =>
-            String(l.sellerUsername).toLowerCase() === currentUsername.toLowerCase(),
+            String(l.sellerUsername || '').toLowerCase() ===
+            currentUsername.toLowerCase(),
         );
       }
 
@@ -706,73 +692,19 @@
       renderListings(filtered);
     }
 
-    function setupPullToRefresh() {
-      const indicator = document.getElementById('ptrIndicator');
-      let startY = 0;
-      let currentY = 0;
-      let pulling = false;
-      const threshold = 70;
-
-      window.addEventListener(
-        'touchstart',
-        (e) => {
-          if (window.scrollY === 0) {
-            startY = e.touches[0].clientY;
-            currentY = startY;
-            pulling = true;
-          } else {
-            pulling = false;
-          }
-        },
-        { passive: true },
-      );
-
-      window.addEventListener(
-        'touchmove',
-        (e) => {
-          if (!pulling) return;
-          currentY = e.touches[0].clientY;
-          const diff = currentY - startY;
-          if (diff > 0) {
-            if (diff > 20) {
-              indicator.classList.add('visible');
-              indicator.textContent =
-                diff > threshold ? 'Release to refresh' : 'Pull to refresh';
-            }
-          }
-        },
-        { passive: true },
-      );
-
-      window.addEventListener('touchend', () => {
-        if (!pulling) return;
-        const diff = currentY - startY;
-        pulling = false;
-        indicator.classList.remove('visible');
-        if (diff > threshold && window.scrollY === 0) {
-          loadListings();
-        }
-      });
-    }
-
-    function initialiseSearchFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      const q = params.get('q') || '';
-      const mine = params.get('mine') === '1';
-
-      const searchInput = document.getElementById('searchQuery');
-      const mineCheckbox = document.getElementById('onlyMine');
-
-      if (searchInput) searchInput.value = q;
-      if (mineCheckbox) mineCheckbox.checked = mine;
-    }
-
     window.onload = function () {
       const ok = loadAuthOrRedirect();
       if (!ok) return;
-      initialiseSearchFromURL();
+
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q') || '';
+      const mine = params.get('mine') === '1';
+      const qEl = document.getElementById('searchQuery');
+      const mineEl = document.getElementById('onlyMine');
+      if (qEl) qEl.value = q;
+      if (mineEl) mineEl.checked = mine;
+
       loadListings();
-      setupPullToRefresh();
     };
   </script>
 </body>
