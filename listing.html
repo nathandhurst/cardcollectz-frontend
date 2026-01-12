@@ -22,7 +22,7 @@
       color: var(--cc-text);
     }
 
-    /* NAVBAR (same as catalog.html) */
+    /* NAVBAR */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -44,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .logo {
       font-size: 22px;
@@ -56,31 +56,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .nav-links a {
-      font-size: 13px;
-      margin-right: 10px;
-      color: rgba(209,213,219,0.9);
-      text-decoration: none;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover {
-      border-color: rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.9);
-    }
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
+      flex: 2 1 0;
       justify-content: center;
-      max-width: 420px;
+      max-width: 640px;
     }
     .nav-search input[type="text"] {
       flex: 1;
       min-width: 0;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
@@ -125,6 +112,35 @@
       gap: 10px;
       font-size: 12px;
       white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .icon-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-btn:hover {
+      border-color: var(--cc-primary);
+    }
+    .icon-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97373;
+      box-shadow: 0 0 6px rgba(248,113,113,0.9);
+      display: none;
     }
     .nav-user {
       display: flex;
@@ -150,9 +166,7 @@
       background-position: center;
       box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .nav-username {
-      opacity: 0.9;
-    }
+    .nav-username { opacity: 0.9; }
     .nav-dropdown {
       position: absolute;
       right: 0;
@@ -196,39 +210,47 @@
       color: #020617;
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
 
     .page {
       max-width: 1120px;
       margin: 0 auto;
       padding: 16px 16px 32px;
     }
-    .listing-layout {
+    .detail-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 16px;
+      gap: 18px;
     }
-    .listing-card,
-    .side-card {
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
+    @media (max-width: 900px) {
+      .detail-layout { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
       padding: 14px;
       border-radius: 14px;
       border: 1px solid rgba(15,23,42,0.9);
       box-shadow: 0 20px 60px rgba(15,23,42,0.85);
     }
-    .listing-image-wrapper {
-      width: 100%;
-      background: radial-gradient(circle at top, #020617, #000);
+    .listing-image-wrap {
+      background: #020617;
       border-radius: 12px;
       border: 1px solid rgba(30,64,175,0.7);
       overflow: hidden;
-      aspect-ratio: 3/4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
+      padding-top: 130%;
     }
-    .listing-image-wrapper img {
-      width: 100%;
-      height: 100%;
+    .listing-image-wrap img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
     }
     .listing-title {
@@ -236,9 +258,9 @@
       font-weight: 700;
       margin-bottom: 4px;
     }
-    .listing-sub {
-      font-size: 12px;
-      color: rgba(156,163,175,0.95);
+    .listing-meta {
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
       margin-bottom: 10px;
     }
     .listing-price {
@@ -248,38 +270,54 @@
     }
     .listing-condition {
       font-size: 13px;
-      color: #2FDBA5;
+      color: var(--cc-success);
       margin-bottom: 8px;
     }
     .listing-desc {
       font-size: 13px;
-      color: rgba(209,213,219,0.95);
-      white-space: pre-wrap;
+      line-height: 1.5;
+      color: rgba(229,231,235,0.93);
     }
-    .listing-meta {
-      font-size: 11px;
-      color: rgba(148,163,184,0.9);
+    .seller-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       margin-top: 8px;
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
     }
-    .seller-link {
-      color: #93c5fd;
+    .seller-row span.username {
       cursor: pointer;
-      text-decoration: none;
+      color: #e5e7eb;
     }
-    .seller-link:hover {
+    .seller-row span.username:hover {
       text-decoration: underline;
     }
+    .btn {
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(55,65,81,0.9);
+      color: #e5e7eb;
+    }
     .offer-form {
-      margin-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-    }
-    .offer-form label {
-      font-size: 12px;
-      color: rgba(209,213,219,0.9);
+      gap: 8px;
+      margin-top: 8px;
     }
     .offer-form input[type="number"] {
+      width: 100%;
       padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
@@ -287,37 +325,16 @@
       color: #e5e7eb;
       font-size: 14px;
     }
-    .offer-form input:focus {
+    .offer-form input[type="number"]:focus {
       outline: none;
       border-color: var(--cc-primary);
       box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
     }
-    .offer-form button {
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      color: #020617;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .offer-message {
+    .status-text {
       font-size: 12px;
-      margin-top: 4px;
+      color: rgba(148,163,184,0.95);
+      margin-top: 6px;
       min-height: 16px;
-    }
-    .offer-message.error {
-      color: #fecaca;
-    }
-    .offer-message.success {
-      color: #bbf7d0;
-    }
-
-    @media (max-width: 900px) {
-      .listing-layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
     }
   </style>
 </head>
@@ -327,12 +344,6 @@
       <div class="nav-left">
         <div class="logo" onclick="window.location.href='catalog.html'">
           CardCollectz
-        </div>
-        <div class="nav-links">
-          <a href="catalog.html">Listings</a>
-          <a href="my-listings.html">My listings</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="my-offers.html">My offers</a>
         </div>
       </div>
 
@@ -351,14 +362,32 @@
       </div>
 
       <div class="nav-right">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='messages.html'"
+          title="Messages"
+        >
+          ✉
+          <span id="navMsgDot" class="icon-dot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='my-offers.html'"
+          title="My offers"
+        >
+          🔔
+          <span id="navOffersDot" class="icon-dot"></span>
+        </button>
+
         <div id="navProfileBtn" class="nav-user">
           <div id="navAvatar" class="nav-avatar"></div>
           <span id="navUser" class="nav-username">…</span>
           <div id="navDropdown" class="nav-dropdown">
             <a id="navProfileLink" href="#">View profile</a>
             <a href="account.html">Account settings</a>
-            <a href="my-listings.html">My listings</a>
-            <a href="my-offers.html">My offers</a>
             <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
@@ -372,28 +401,43 @@
   </div>
 
   <main class="page">
-    <section class="listing-layout">
-      <div class="listing-card">
-        <div class="listing-image-wrapper" id="listingImageWrapper">
-          <span style="font-size:12px;color:#9ca3af;">Loading image…</span>
+    <section class="detail-layout">
+      <div class="card">
+        <div class="listing-image-wrap">
+          <img id="listingImage" alt="Listing image" />
         </div>
       </div>
-      <div class="side-card">
+
+      <div class="card">
         <div class="listing-title" id="listingTitle">Loading…</div>
-        <div class="listing-sub" id="listingSeller"></div>
+        <div class="listing-meta" id="listingMeta"></div>
         <div class="listing-price" id="listingPrice"></div>
         <div class="listing-condition" id="listingCondition"></div>
-        <div class="listing-desc" id="listingDescription"></div>
-        <div class="listing-meta" id="listingMeta"></div>
+        <p class="listing-desc" id="listingDesc"></p>
 
-        <hr style="border-color:rgba(31,41,55,0.9);margin:12px 0;" />
+        <div class="seller-row">
+          <span>Seller:</span>
+          <span id="listingSeller" class="username"></span>
+        </div>
 
-        <form class="offer-form" onsubmit="handleOfferSubmit(event)">
-          <label for="offerAmount">Make an offer</label>
-          <input id="offerAmount" type="number" step="0.01" min="0" placeholder="£ Amount" />
-          <button type="submit">Send offer</button>
-          <div id="offerMessage" class="offer-message"></div>
-        </form>
+        <div class="offer-form">
+          <label for="offerAmount">Make an offer:</label>
+          <input
+            type="number"
+            id="offerAmount"
+            min="0"
+            step="0.01"
+            placeholder="Enter your offer amount"
+          />
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary" type="button" onclick="submitOffer()">Send offer</button>
+            <button class="btn btn-secondary" type="button"
+              onclick="window.location.href='messages.html'">
+              Message seller
+            </button>
+          </div>
+          <div id="offerStatus" class="status-text"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -404,7 +448,8 @@
     let currentUsername = null;
     let currentEmail = null;
     let authToken = null;
-    let currentListingId = null;
+    let listingId = null;
+    let listingData = null;
 
     function handleSearchClick() {
       const qInput = document.getElementById('searchQuery');
@@ -419,6 +464,15 @@
       if (mine) params.push('mine=1');
       if (params.length) url += '?' + params.join('&');
       window.location.href = url;
+    }
+
+    function updateNavBadges() {
+      const msgDot = document.getElementById('navMsgDot');
+      const offersDot = document.getElementById('navOffersDot');
+      const hasUnreadMessages = localStorage.getItem('cc_unread_messages') === '1';
+      const hasUnreadOffers = localStorage.getItem('cc_unread_offers') === '1';
+      if (msgDot) msgDot.style.display = hasUnreadMessages ? 'block' : 'none';
+      if (offersDot) offersDot.style.display = hasUnreadOffers ? 'block' : 'none';
     }
 
     function loadAuthOrRedirect() {
@@ -457,6 +511,7 @@
       }
 
       fetchNavAvatar();
+      updateNavBadges();
       return true;
     }
 
@@ -486,83 +541,71 @@
       }
     }
 
-    function getListingIdFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const idStr = params.get('id');
-      return idStr ? Number(idStr) : null;
-    }
-
     async function loadListing() {
-      const id = getListingIdFromUrl();
-      if (!id) {
-        document.getElementById('listingTitle').textContent = 'Listing not found.';
+      const params = new URLSearchParams(window.location.search);
+      listingId = params.get('id');
+      if (!listingId) {
+        document.getElementById('listingTitle').textContent = 'Listing not found';
         return;
       }
-      currentListingId = id;
+
       try {
-        const res = await fetch(API_BASE + '/listings/' + id);
+        const res = await fetch(API_BASE + '/listings/' + listingId);
         if (!res.ok) {
-          document.getElementById('listingTitle').textContent = 'Listing not found.';
+          document.getElementById('listingTitle').textContent = 'Failed to load listing';
           return;
         }
-        const item = await res.json();
+        listingData = await res.json();
 
-        const imgWrapper = document.getElementById('listingImageWrapper');
-        imgWrapper.innerHTML = '';
+        const imgEl = document.getElementById('listingImage');
         const mainImage =
-          item.imageData ||
-          (item.images && item.images.length > 0 ? item.images[0] : null);
+          listingData.imageData ||
+          (listingData.images && listingData.images.length > 0
+            ? listingData.images[0]
+            : null);
         if (mainImage) {
-          const img = document.createElement('img');
-          img.src = 'data:image/*;base64,' + mainImage;
-          imgWrapper.appendChild(img);
+          imgEl.src = 'data:image/*;base64,' + mainImage;
         } else {
-          imgWrapper.textContent = 'No image.';
+          imgEl.style.display = 'none';
         }
 
-        document.getElementById('listingTitle').textContent = item.title || 'Untitled';
-        document.getElementById('listingPrice').textContent = '£' + item.price;
-        document.getElementById('listingCondition').textContent =
-          item.condition || 'Condition not set';
-        document.getElementById('listingDescription').textContent =
-          item.description || 'No description provided.';
-
-        const seller = item.sellerUsername || 'Unknown';
-        const sellerEl = document.getElementById('listingSeller');
-        sellerEl.innerHTML =
-          'Sold by ' +
-          `<a class="seller-link" href="profile.html?username=${encodeURIComponent(
-            seller,
-          )}">@${seller}</a>`;
-
+        document.getElementById('listingTitle').textContent = listingData.title;
         document.getElementById('listingMeta').textContent =
-          'Posted on ' + new Date(item.createdAt).toLocaleString();
+          'Created ' + new Date(listingData.createdAt).toLocaleString();
+        document.getElementById('listingPrice').textContent = '£' + listingData.price;
+        document.getElementById('listingCondition').textContent =
+          'Condition: ' + (listingData.condition || 'Not set');
+        document.getElementById('listingDesc').textContent =
+          listingData.description || 'No description provided.';
+
+        const sellerEl = document.getElementById('listingSeller');
+        sellerEl.textContent = '@' + listingData.sellerUsername;
+        sellerEl.onclick = () => {
+          window.location.href =
+            'profile.html?username=' +
+            encodeURIComponent(listingData.sellerUsername);
+        };
       } catch (err) {
         console.error(err);
-        document.getElementById('listingTitle').textContent = 'Error loading listing.';
+        document.getElementById('listingTitle').textContent = 'Error loading listing';
       }
     }
 
-    async function handleOfferSubmit(e) {
-      e.preventDefault();
-      const msgBox = document.getElementById('offerMessage');
-      msgBox.textContent = '';
-      msgBox.className = 'offer-message';
-
-      const amountInput = document.getElementById('offerAmount');
-      const value = parseFloat(amountInput.value);
-      if (!value || value <= 0) {
-        msgBox.textContent = 'Enter a valid offer amount.';
-        msgBox.classList.add('error');
+    async function submitOffer() {
+      const statusEl = document.getElementById('offerStatus');
+      const amountEl = document.getElementById('offerAmount');
+      const amount = parseFloat(amountEl.value);
+      if (!amount || amount <= 0) {
+        statusEl.textContent = 'Please enter a valid amount.';
         return;
       }
-      if (!currentListingId) {
-        msgBox.textContent = 'Listing not loaded.';
-        msgBox.classList.add('error');
+      if (!listingId) {
+        statusEl.textContent = 'No listing selected.';
         return;
       }
 
       try {
+        statusEl.textContent = 'Sending offer…';
         const res = await fetch(API_BASE + '/offers', {
           method: 'POST',
           headers: {
@@ -570,31 +613,24 @@
             Authorization: 'Bearer ' + authToken,
           },
           body: JSON.stringify({
-            listingId: currentListingId,
-            amount: value,
+            listingId: Number(listingId),
+            amount,
           }),
         });
 
         if (!res.ok) {
-          let msg = 'Failed to send offer.';
-          try {
-            const data = await res.json();
-            if (data && data.message) {
-              msg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
-            }
-          } catch {}
-          msgBox.textContent = msg;
-          msgBox.classList.add('error');
+          const txt = await res.text();
+          console.error('Offer failed', txt);
+          statusEl.textContent = 'Failed to send offer.';
           return;
         }
-
-        msgBox.textContent = 'Offer sent!';
-        msgBox.classList.add('success');
-        amountInput.value = '';
+        statusEl.textContent = 'Offer sent!';
+        amountEl.value = '';
+        localStorage.setItem('cc_unread_offers', '1');
+        updateNavBadges();
       } catch (err) {
         console.error(err);
-        msgBox.textContent = 'Could not reach server.';
-        msgBox.classList.add('error');
+        statusEl.textContent = 'Failed to send offer.';
       }
     }
 

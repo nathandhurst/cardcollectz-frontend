@@ -22,7 +22,7 @@
       color: var(--cc-text);
     }
 
-    /* NAVBAR (same as catalog.html) */
+    /* NAVBAR (same as catalog) */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -44,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .logo {
       font-size: 22px;
@@ -56,32 +56,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .nav-links a {
-      font-size: 13px;
-      margin-right: 10px;
-      color: rgba(209,213,219,0.9);
-      text-decoration: none;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover {
-      border-color: rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.9);
-    }
-
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
+      flex: 2 1 0;
       justify-content: center;
-      max-width: 420px;
+      max-width: 640px;
     }
     .nav-search input[type="text"] {
       flex: 1;
       min-width: 0;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
@@ -120,13 +106,41 @@
     .nav-search input[type="checkbox"] {
       width: 14px; height: 14px;
     }
-
     .nav-right {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 12px;
       white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .icon-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-btn:hover {
+      border-color: var(--cc-primary);
+    }
+    .icon-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97373;
+      box-shadow: 0 0 6px rgba(248,113,113,0.9);
+      display: none;
     }
     .nav-user {
       display: flex;
@@ -152,9 +166,7 @@
       background-position: center;
       box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .nav-username {
-      opacity: 0.9;
-    }
+    .nav-username { opacity: 0.9; }
     .nav-dropdown {
       position: absolute;
       right: 0;
@@ -198,6 +210,14 @@
       color: #020617;
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
 
     .page {
       max-width: 1120px;
@@ -227,79 +247,63 @@
       font-size: 12px;
       color: rgba(148,163,184,0.9);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .offer-tile {
+      border-radius: 12px;
+      background: #020617;
+      border: 1px solid rgba(30,64,175,0.55);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       font-size: 13px;
-      margin-top: 6px;
     }
-    th, td {
-      padding: 8px 6px;
-      border-bottom: 1px solid rgba(31,41,55,0.9);
+    .offer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
     }
-    th {
-      text-align: left;
+    .offer-title {
       font-weight: 600;
-      color: rgba(209,213,219,0.9);
+      cursor: pointer;
     }
-    tr:hover td {
-      background: rgba(15,23,42,0.8);
+    .offer-title:hover {
+      text-decoration: underline;
     }
-    .status-pill {
+    .offer-price {
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .offer-status-pill {
       display: inline-flex;
-      border-radius: 999px;
       padding: 2px 8px;
+      border-radius: 999px;
       font-size: 11px;
       font-weight: 600;
     }
-    .status-pending {
-      background-color: #2D8CFF;
-      color: #fff;
+    .offer-status-pending {
+      background: rgba(59,130,246,0.2);
+      color: #bfdbfe;
     }
-    .status-accepted {
-      background-color: #2FDBA5;
-      color: #111827;
+    .offer-status-accepted {
+      background: rgba(34,197,94,0.2);
+      color: #bbf7d0;
     }
-    .status-rejected {
-      background-color: #CFA64A;
-      color: #111827;
+    .offer-status-rejected {
+      background: rgba(248,113,113,0.2);
+      color: #fecaca;
     }
-    a.link {
-      color: #93c5fd;
-      text-decoration: none;
-    }
-    a.link:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 720px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        border: 1px solid rgba(31,41,55,0.9);
-        border-radius: 10px;
-        margin-bottom: 8px;
-        overflow: hidden;
-      }
-      td {
-        border: none;
-        border-bottom: 1px solid rgba(31,41,55,0.9);
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      td:last-child {
-        border-bottom: none;
-      }
-      td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: rgba(156,163,175,0.9);
-      }
+    .offer-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: rgba(148,163,184,0.9);
     }
   </style>
 </head>
@@ -309,12 +313,6 @@
       <div class="nav-left">
         <div class="logo" onclick="window.location.href='catalog.html'">
           CardCollectz
-        </div>
-        <div class="nav-links">
-          <a href="catalog.html">Listings</a>
-          <a href="my-listings.html">My listings</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="my-offers.html">My offers</a>
         </div>
       </div>
 
@@ -333,14 +331,32 @@
       </div>
 
       <div class="nav-right">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='messages.html'"
+          title="Messages"
+        >
+          ✉
+          <span id="navMsgDot" class="icon-dot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='my-offers.html'"
+          title="My offers"
+        >
+          🔔
+          <span id="navOffersDot" class="icon-dot"></span>
+        </button>
+
         <div id="navProfileBtn" class="nav-user">
           <div id="navAvatar" class="nav-avatar"></div>
           <span id="navUser" class="nav-username">…</span>
           <div id="navDropdown" class="nav-dropdown">
             <a id="navProfileLink" href="#">View profile</a>
             <a href="account.html">Account settings</a>
-            <a href="my-listings.html">My listings</a>
-            <a href="my-offers.html">My offers</a>
             <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
@@ -357,23 +373,9 @@
     <section class="card">
       <div class="card-header">
         <div class="card-title">My Offers</div>
-        <div class="card-meta" id="offersMeta">Loading your offers…</div>
+        <div class="card-meta" id="cardMeta">Loading offers…</div>
       </div>
-      <div style="overflow-x:auto;">
-        <table id="offersTable">
-          <thead>
-            <tr>
-              <th>Listing</th>
-              <th>Seller</th>
-              <th>Offered</th>
-              <th>Status</th>
-              <th>Created</th>
-            </tr>
-          </thead>
-          <tbody id="offersBody">
-          </tbody>
-        </table>
-      </div>
+      <div id="offersContainer" class="offers-grid"></div>
     </section>
   </main>
 
@@ -383,6 +385,7 @@
     let currentUsername = null;
     let currentEmail = null;
     let authToken = null;
+    let myOffers = [];
 
     function handleSearchClick() {
       const qInput = document.getElementById('searchQuery');
@@ -397,6 +400,18 @@
       if (mine) params.push('mine=1');
       if (params.length) url += '?' + params.join('&');
       window.location.href = url;
+    }
+
+    function updateNavBadges() {
+      const msgDot = document.getElementById('navMsgDot');
+      const offersDot = document.getElementById('navOffersDot');
+
+      // If you later hook this to real "unseen offers", adjust here:
+      const hasUnreadMessages = localStorage.getItem('cc_unread_messages') === '1';
+      const hasUnreadOffers = myOffers.some((o) => o.status === 'PENDING');
+
+      if (msgDot) msgDot.style.display = hasUnreadMessages ? 'block' : 'none';
+      if (offersDot) offersDot.style.display = hasUnreadOffers ? 'block' : 'none';
     }
 
     function loadAuthOrRedirect() {
@@ -464,88 +479,89 @@
       }
     }
 
-    function statusClass(status) {
-      const s = String(status || '').toLowerCase();
-      if (s === 'accepted') return 'status-accepted';
-      if (s === 'rejected') return 'status-rejected';
-      return 'status-pending';
+    function statusPillClass(status) {
+      if (status === 'ACCEPTED') return 'offer-status-pill offer-status-accepted';
+      if (status === 'REJECTED') return 'offer-status-pill offer-status-rejected';
+      return 'offer-status-pill offer-status-pending';
     }
 
-    function renderOffers(offers) {
-      const tbody = document.getElementById('offersBody');
-      const meta = document.getElementById('offersMeta');
-      tbody.innerHTML = '';
+    function renderOffers() {
+      const container = document.getElementById('offersContainer');
+      const meta = document.getElementById('cardMeta');
+      container.innerHTML = '';
 
-      if (!offers || offers.length === 0) {
+      if (!myOffers || myOffers.length === 0) {
+        container.textContent = 'You have not made any offers yet.';
         if (meta) meta.textContent = '0 offers';
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 5;
-        td.textContent = 'You have not made any offers yet.';
-        tr.appendChild(td);
-        tbody.appendChild(tr);
+        updateNavBadges();
         return;
       }
 
-      if (meta) meta.textContent = `${offers.length} offer${offers.length === 1 ? '' : 's'}`;
+      if (meta) meta.textContent = `${myOffers.length} offer${myOffers.length === 1 ? '' : 's'}`;
 
-      offers.forEach((offer) => {
-        const tr = document.createElement('tr');
+      myOffers.forEach((offer) => {
+        const el = document.createElement('article');
+        el.className = 'offer-tile';
 
-        const listingCell = document.createElement('td');
-        listingCell.dataset.label = 'Listing';
-        const listingLink = document.createElement('a');
-        listingLink.href = 'listing.html?id=' + offer.listingId;
-        listingLink.textContent = offer.listingTitle || 'Listing #' + offer.listingId;
-        listingLink.className = 'link';
-        listingCell.appendChild(listingLink);
+        const top = document.createElement('div');
+        top.className = 'offer-top';
 
-        const sellerCell = document.createElement('td');
-        sellerCell.dataset.label = 'Seller';
-        sellerCell.textContent = offer.sellerUsername || '';
+        const title = document.createElement('span');
+        title.className = 'offer-title';
+        title.textContent = offer.listingTitle || 'Listing #' + offer.listingId;
+        title.onclick = () => {
+          window.location.href = 'listing.html?id=' + offer.listingId;
+        };
 
-        const amountCell = document.createElement('td');
-        amountCell.dataset.label = 'Offered';
-        amountCell.textContent = '£' + offer.amount;
+        const price = document.createElement('span');
+        price.className = 'offer-price';
+        price.textContent = '£' + offer.amount;
 
-        const statusCell = document.createElement('td');
-        statusCell.dataset.label = 'Status';
-        const pill = document.createElement('span');
-        pill.className = 'status-pill ' + statusClass(offer.status);
-        pill.textContent = offer.status || 'PENDING';
-        statusCell.appendChild(pill);
+        top.appendChild(title);
+        top.appendChild(price);
 
-        const createdCell = document.createElement('td');
-        createdCell.dataset.label = 'Created';
-        createdCell.textContent = new Date(offer.createdAt).toLocaleString();
+        const status = document.createElement('span');
+        status.className = statusPillClass(offer.status);
+        status.textContent =
+          offer.status === 'PENDING'
+            ? 'Pending'
+            : offer.status === 'ACCEPTED'
+            ? 'Accepted'
+            : 'Rejected';
 
-        tr.appendChild(listingCell);
-        tr.appendChild(sellerCell);
-        tr.appendChild(amountCell);
-        tr.appendChild(statusCell);
-        tr.appendChild(createdCell);
+        const footer = document.createElement('div');
+        footer.className = 'offer-footer';
+        footer.innerHTML = `
+          <span>Seller: @${offer.sellerUsername || 'unknown'}</span>
+          <span>${new Date(offer.createdAt).toLocaleString()}</span>
+        `;
 
-        tbody.appendChild(tr);
+        el.appendChild(top);
+        el.appendChild(status);
+        el.appendChild(footer);
+        container.appendChild(el);
       });
+
+      updateNavBadges();
     }
 
-    async function loadMyOffers() {
+    async function loadOffers() {
       try {
-        const res = await fetch(API_BASE + '/offers/mine', {
+        const res = await fetch(API_BASE + '/offers/my', {
           headers: { Authorization: 'Bearer ' + authToken },
         });
         if (!res.ok) {
-          console.error('Failed to load offers', res.status);
-          const meta = document.getElementById('offersMeta');
+          console.error('Failed to load offers', await res.text());
+          const meta = document.getElementById('cardMeta');
           if (meta) meta.textContent = 'Failed to load offers.';
           return;
         }
         const data = await res.json();
-        const offers = Array.isArray(data) ? data : [];
-        renderOffers(offers);
+        myOffers = Array.isArray(data) ? data : [];
+        renderOffers();
       } catch (err) {
         console.error(err);
-        const meta = document.getElementById('offersMeta');
+        const meta = document.getElementById('cardMeta');
         if (meta) meta.textContent = 'Failed to load offers.';
       }
     }
@@ -553,7 +569,7 @@
     window.onload = function () {
       const ok = loadAuthOrRedirect();
       if (!ok) return;
-      loadMyOffers();
+      loadOffers();
     };
   </script>
 </body>

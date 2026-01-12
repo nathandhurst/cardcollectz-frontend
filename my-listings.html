@@ -22,7 +22,7 @@
       color: var(--cc-text);
     }
 
-    /* NAVBAR (same as catalog.html) */
+    /* NAVBAR (same as catalog) */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -44,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .logo {
       font-size: 22px;
@@ -56,32 +56,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .nav-links a {
-      font-size: 13px;
-      margin-right: 10px;
-      color: rgba(209,213,219,0.9);
-      text-decoration: none;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover {
-      border-color: rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.9);
-    }
-
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
+      flex: 2 1 0;
       justify-content: center;
-      max-width: 420px;
+      max-width: 640px;
     }
     .nav-search input[type="text"] {
       flex: 1;
       min-width: 0;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
@@ -120,13 +106,41 @@
     .nav-search input[type="checkbox"] {
       width: 14px; height: 14px;
     }
-
     .nav-right {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 12px;
       white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .icon-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-btn:hover {
+      border-color: var(--cc-primary);
+    }
+    .icon-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97373;
+      box-shadow: 0 0 6px rgba(248,113,113,0.9);
+      display: none;
     }
     .nav-user {
       display: flex;
@@ -197,6 +211,14 @@
       background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
       color: #020617;
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
+    }
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
 
     .page {
@@ -301,20 +323,6 @@
       color: rgba(148,163,184,0.7);
       margin-top: 2px;
     }
-
-    @media (max-width: 900px) {
-      .nav {
-        flex-wrap: wrap;
-      }
-      .nav-right {
-        order: 3;
-        width: 100%;
-        justify-content: flex-end;
-      }
-      .nav-left {
-        flex-wrap: wrap;
-      }
-    }
   </style>
 </head>
 <body>
@@ -323,12 +331,6 @@
       <div class="nav-left">
         <div class="logo" onclick="window.location.href='catalog.html'">
           CardCollectz
-        </div>
-        <div class="nav-links">
-          <a href="catalog.html">Listings</a>
-          <a href="my-listings.html">My listings</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="my-offers.html">My offers</a>
         </div>
       </div>
 
@@ -347,14 +349,32 @@
       </div>
 
       <div class="nav-right">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='messages.html'"
+          title="Messages"
+        >
+          ✉
+          <span id="navMsgDot" class="icon-dot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='my-offers.html'"
+          title="My offers"
+        >
+          🔔
+          <span id="navOffersDot" class="icon-dot"></span>
+        </button>
+
         <div id="navProfileBtn" class="nav-user">
           <div id="navAvatar" class="nav-avatar"></div>
           <span id="navUser" class="nav-username">…</span>
           <div id="navDropdown" class="nav-dropdown">
             <a id="navProfileLink" href="#">View profile</a>
             <a href="account.html">Account settings</a>
-            <a href="my-listings.html">My listings</a>
-            <a href="my-offers.html">My offers</a>
             <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
@@ -400,6 +420,15 @@
       window.location.href = url;
     }
 
+    function updateNavBadges() {
+      const msgDot = document.getElementById('navMsgDot');
+      const offersDot = document.getElementById('navOffersDot');
+      const hasUnreadMessages = localStorage.getItem('cc_unread_messages') === '1';
+      const hasUnreadOffers = localStorage.getItem('cc_unread_offers') === '1';
+      if (msgDot) msgDot.style.display = hasUnreadMessages ? 'block' : 'none';
+      if (offersDot) offersDot.style.display = hasUnreadOffers ? 'block' : 'none';
+    }
+
     function loadAuthOrRedirect() {
       authToken = localStorage.getItem('cc_token');
       currentUsername = localStorage.getItem('cc_username');
@@ -436,6 +465,7 @@
       }
 
       fetchNavAvatar();
+      updateNavBadges();
       return true;
     }
 
@@ -468,7 +498,6 @@
     function renderListings(listings) {
       const container = document.getElementById('listingsContainer');
       const meta = document.getElementById('catalogMeta');
-
       container.innerHTML = '';
 
       if (!listings || listings.length === 0) {
@@ -522,6 +551,8 @@
         priceEl.className = 'tile-price';
         priceEl.textContent = '£' + item.price;
 
+        priceRow.appendChild(priceEl);
+
         const dateEl = document.createElement('div');
         dateEl.className = 'tile-date';
         dateEl.textContent = new Date(item.createdAt).toLocaleString();
@@ -536,7 +567,7 @@
       });
     }
 
-    async function loadMyListings() {
+    async function loadListings() {
       try {
         const res = await fetch(API_BASE + '/listings');
         const data = await res.json();
@@ -550,14 +581,14 @@
       } catch (err) {
         console.error(err);
         const meta = document.getElementById('catalogMeta');
-        if (meta) meta.textContent = 'Failed to load your listings.';
+        if (meta) meta.textContent = 'Failed to load listings.';
       }
     }
 
     window.onload = function () {
       const ok = loadAuthOrRedirect();
       if (!ok) return;
-      loadMyListings();
+      loadListings();
     };
   </script>
 </body>

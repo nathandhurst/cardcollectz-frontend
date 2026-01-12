@@ -22,7 +22,7 @@
       color: var(--cc-text);
     }
 
-    /* NAVBAR (same as catalog.html) */
+    /* NAVBAR */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -44,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
+      flex: 0 0 auto;
     }
     .logo {
       font-size: 22px;
@@ -56,31 +56,18 @@
       white-space: nowrap;
       cursor: pointer;
     }
-    .nav-links a {
-      font-size: 13px;
-      margin-right: 10px;
-      color: rgba(209,213,219,0.9);
-      text-decoration: none;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-    }
-    .nav-links a:hover {
-      border-color: rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.9);
-    }
     .nav-search {
       display: flex;
       align-items: center;
       gap: 8px;
-      flex: 1;
+      flex: 2 1 0;
       justify-content: center;
-      max-width: 420px;
+      max-width: 640px;
     }
     .nav-search input[type="text"] {
       flex: 1;
       min-width: 0;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
@@ -125,6 +112,35 @@
       gap: 10px;
       font-size: 12px;
       white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .icon-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .icon-btn:hover {
+      border-color: var(--cc-primary);
+    }
+    .icon-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #f97373;
+      box-shadow: 0 0 6px rgba(248,113,113,0.9);
+      display: none;
     }
     .nav-user {
       display: flex;
@@ -150,9 +166,7 @@
       background-position: center;
       box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .nav-username {
-      opacity: 0.9;
-    }
+    .nav-username { opacity: 0.9; }
     .nav-dropdown {
       position: absolute;
       right: 0;
@@ -196,123 +210,112 @@
       color: #020617;
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
+    @media (max-width: 900px) {
+      .nav { flex-wrap: wrap; }
+      .nav-right {
+        order: 3;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
 
     .page {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 16px 16px 32px;
     }
-    .account-card {
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
+    .card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
       padding: 16px;
       border-radius: 14px;
       border: 1px solid rgba(15,23,42,0.9);
       box-shadow: 0 20px 60px rgba(15,23,42,0.85);
     }
-    .account-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
-    .account-avatar-large {
-      width: 72px;
-      height: 72px;
-      border-radius: 999px;
-      border: 2px solid rgba(59,130,246,0.9);
-      background: radial-gradient(circle at top, #111827, #020617);
+    .profile-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .profile-avatar-big {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 2px solid rgba(59,130,246,0.8);
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      background-size: cover;
+      background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
-      color: #e5e7eb;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
     }
-    .account-title-wrap {
+    .profile-main {
       flex: 1;
+      min-width: 0;
     }
-    .account-title {
-      font-size: 19px;
+    .profile-username {
+      font-size: 18px;
       font-weight: 700;
+      margin-bottom: 4px;
     }
-    .account-sub {
-      font-size: 12px;
-      color: rgba(156,163,175,0.95);
-    }
-    form.account-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
+    .profile-email {
+      font-size: 13px;
+      color: rgba(148,163,184,0.9);
+      margin-bottom: 10px;
     }
     .field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
     .field label {
-      font-size: 13px;
+      display: block;
+      margin-bottom: 4px;
       color: rgba(209,213,219,0.9);
     }
-    .field input[type="text"],
-    .field textarea {
-      padding: 7px 10px;
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
       border-radius: 10px;
       border: 1px solid rgba(55,65,81,0.9);
       background: #020617;
       color: #e5e7eb;
-      font-size: 14px;
-      resize: vertical;
+      padding: 8px 10px;
+      font-size: 13px;
     }
-    .field input:focus,
-    .field textarea:focus {
+    textarea:focus {
       outline: none;
       border-color: var(--cc-primary);
       box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
     }
-    .field input[type="file"] {
-      font-size: 12px;
-      color: rgba(209,213,219,0.9);
-    }
-    .btn-row {
-      margin-top: 8px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn-primary {
+    .btn {
       border-radius: 999px;
       padding: 8px 14px;
       border: none;
       cursor: pointer;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      color: #020617;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
     }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+    }
     .btn-secondary {
-      border-radius: 999px;
-      padding: 8px 14px;
-      border: 1px solid rgba(55,65,81,0.9);
-      cursor: pointer;
       background: transparent;
+      border: 1px solid rgba(55,65,81,0.9);
       color: #e5e7eb;
-      font-size: 13px;
-      font-weight: 500;
     }
-    .status-message {
+    .status-text {
       font-size: 12px;
-      margin-top: 4px;
+      color: rgba(148,163,184,0.95);
+      margin-top: 6px;
       min-height: 16px;
-    }
-    .status-message.error {
-      color: #fecaca;
-    }
-    .status-message.success {
-      color: #bbf7d0;
     }
   </style>
 </head>
@@ -322,12 +325,6 @@
       <div class="nav-left">
         <div class="logo" onclick="window.location.href='catalog.html'">
           CardCollectz
-        </div>
-        <div class="nav-links">
-          <a href="catalog.html">Listings</a>
-          <a href="my-listings.html">My listings</a>
-          <a href="favourites.html">Favourites</a>
-          <a href="my-offers.html">My offers</a>
         </div>
       </div>
 
@@ -346,14 +343,32 @@
       </div>
 
       <div class="nav-right">
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='messages.html'"
+          title="Messages"
+        >
+          ✉
+          <span id="navMsgDot" class="icon-dot"></span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          onclick="window.location.href='my-offers.html'"
+          title="My offers"
+        >
+          🔔
+          <span id="navOffersDot" class="icon-dot"></span>
+        </button>
+
         <div id="navProfileBtn" class="nav-user">
           <div id="navAvatar" class="nav-avatar"></div>
           <span id="navUser" class="nav-username">…</span>
           <div id="navDropdown" class="nav-dropdown">
             <a id="navProfileLink" href="#">View profile</a>
             <a href="account.html">Account settings</a>
-            <a href="my-listings.html">My listings</a>
-            <a href="my-offers.html">My offers</a>
             <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
@@ -367,37 +382,34 @@
   </div>
 
   <main class="page">
-    <section class="account-card">
-      <div class="account-header">
-        <div id="accountAvatar" class="account-avatar-large">?</div>
-        <div class="account-title-wrap">
-          <div class="account-title" id="accountTitle">Your profile</div>
-          <div class="account-sub" id="accountSub">Loading profile…</div>
+    <section class="card">
+      <div class="card-title">Account</div>
+      <div class="profile-row">
+        <div id="bigAvatar" class="profile-avatar-big">?</div>
+        <div class="profile-main">
+          <div class="profile-username" id="profileUsername">@username</div>
+          <div class="profile-email" id="profileEmail">email@example.com</div>
+
+          <div class="field">
+            <label for="avatarInput">Profile picture</label>
+            <input type="file" id="avatarInput" accept="image/*" />
+            <button class="btn btn-secondary" type="button" onclick="uploadAvatar()">
+              Save avatar
+            </button>
+          </div>
+
+          <div class="field">
+            <label for="bioInput">Bio</label>
+            <textarea id="bioInput" placeholder="Tell buyers what you collect, rules, shipping etc."></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="button" onclick="saveProfile()">
+            Save profile
+          </button>
+
+          <div id="status" class="status-text"></div>
         </div>
       </div>
-
-      <form class="account-form" onsubmit="handleProfileSubmit(event)">
-        <div class="field">
-          <label for="usernameInput">Username</label>
-          <input id="usernameInput" type="text" autocomplete="username" required />
-        </div>
-
-        <div class="field">
-          <label for="bioInput">Bio</label>
-          <textarea id="bioInput" rows="3" placeholder="Tell people what you collect…"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="avatarInput">Profile picture</label>
-          <input id="avatarInput" type="file" accept="image/*" />
-        </div>
-
-        <div class="btn-row">
-          <button type="submit" class="btn-primary">Save profile</button>
-        </div>
-
-        <div id="statusMessage" class="status-message"></div>
-      </form>
     </section>
   </main>
 
@@ -423,11 +435,13 @@
       window.location.href = url;
     }
 
-    function setStatus(msg, type) {
-      const el = document.getElementById('statusMessage');
-      el.textContent = msg || '';
-      el.className = 'status-message';
-      if (type) el.classList.add(type);
+    function updateNavBadges() {
+      const msgDot = document.getElementById('navMsgDot');
+      const offersDot = document.getElementById('navOffersDot');
+      const hasUnreadMessages = localStorage.getItem('cc_unread_messages') === '1';
+      const hasUnreadOffers = localStorage.getItem('cc_unread_offers') === '1';
+      if (msgDot) msgDot.style.display = hasUnreadMessages ? 'block' : 'none';
+      if (offersDot) offersDot.style.display = hasUnreadOffers ? 'block' : 'none';
     }
 
     function loadAuthOrRedirect() {
@@ -445,6 +459,11 @@
 
       const navAvatar = document.getElementById('navAvatar');
       if (navAvatar) navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
+
+      const profileUsername = document.getElementById('profileUsername');
+      const profileEmail = document.getElementById('profileEmail');
+      profileUsername.textContent = '@' + currentUsername;
+      profileEmail.textContent = currentEmail;
 
       const navProfileBtn = document.getElementById('navProfileBtn');
       const dropdown = document.getElementById('navDropdown');
@@ -465,7 +484,9 @@
         navProfileLink.href = 'profile.html?username=' + encodeURIComponent(currentUsername);
       }
 
+      fetchProfile();
       fetchNavAvatar();
+      updateNavBadges();
       return true;
     }
 
@@ -483,138 +504,102 @@
         });
         if (!res.ok) return;
         const data = await res.json();
-        if (!data || !data.profileImage) return;
+        if (!data || !data.profileImage) {
+          const big = document.getElementById('bigAvatar');
+          big.textContent = (currentUsername[0] || '?').toUpperCase();
+          return;
+        }
         const navAvatar = document.getElementById('navAvatar');
+        const bigAvatar = document.getElementById('bigAvatar');
+        const url = 'data:image/*;base64,' + data.profileImage;
         if (navAvatar) {
-          navAvatar.style.backgroundImage =
-            'url("data:image/*;base64,' + data.profileImage + '")';
+          navAvatar.style.backgroundImage = 'url("' + url + '")';
           navAvatar.textContent = '';
         }
+        bigAvatar.style.backgroundImage = 'url("' + url + '")';
+        bigAvatar.textContent = '';
       } catch (err) {
         console.error('Failed to load nav avatar', err);
       }
     }
 
-    async function loadProfile() {
+    async function fetchProfile() {
       try {
         const res = await fetch(API_BASE + '/users/me', {
           headers: { Authorization: 'Bearer ' + authToken },
         });
-        if (!res.ok) {
-          setStatus('Failed to load profile.', 'error');
-          return;
-        }
+        if (!res.ok) return;
         const data = await res.json();
-
-        const username = data.username || currentUsername;
-        const email = data.email || currentEmail;
-        const bio = data.bio || '';
-
-        currentUsername = username;
-        currentEmail = email;
-
-        document.getElementById('usernameInput').value = username;
-        document.getElementById('bioInput').value = bio;
-
-        const title = document.getElementById('accountTitle');
-        const sub = document.getElementById('accountSub');
-        if (title) title.textContent = '@' + username;
-        if (sub) sub.textContent = email || 'No email on file.';
-
-        const avatarEl = document.getElementById('accountAvatar');
-        if (data.profileImage) {
-          avatarEl.style.backgroundImage =
-            'url("data:image/*;base64,' + data.profileImage + '")';
-          avatarEl.textContent = '';
-        } else {
-          avatarEl.textContent = (username[0] || '?').toUpperCase();
-        }
-        setStatus('', null);
+        const bioInput = document.getElementById('bioInput');
+        if (bioInput && data.bio) bioInput.value = data.bio;
       } catch (err) {
         console.error(err);
-        setStatus('Failed to load profile.', 'error');
       }
     }
 
-    async function handleProfileSubmit(e) {
-      e.preventDefault();
-      setStatus('', null);
-
-      const newUsername = document.getElementById('usernameInput').value.trim();
-      const newBio = document.getElementById('bioInput').value.trim();
-      const avatarFile = document.getElementById('avatarInput').files[0];
-
-      if (!newUsername) {
-        setStatus('Username is required.', 'error');
+    async function uploadAvatar() {
+      const statusEl = document.getElementById('status');
+      const input = document.getElementById('avatarInput');
+      if (!input.files || !input.files[0]) {
+        statusEl.textContent = 'Please choose an image first.';
         return;
       }
 
-      try {
-        // 1) Update text profile
-        const resProfile = await fetch(API_BASE + '/users/me', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + authToken,
-          },
-          body: JSON.stringify({
-            username: newUsername,
-            bio: newBio,
-          }),
-        });
-
-        if (!resProfile.ok) {
-          let msg = 'Failed to update profile.';
-          try {
-            const data = await resProfile.json();
-            if (data && data.message) {
-              msg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
-            }
-          } catch {}
-          setStatus(msg, 'error');
-          return;
-        }
-
-        // 2) Optionally upload avatar
-        if (avatarFile) {
-          const base64 = await fileToBase64(avatarFile);
-          const cleaned = base64.split(',')[1] || base64;
-          const resAvatar = await fetch(API_BASE + '/users/me/avatar', {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+        try {
+          statusEl.textContent = 'Saving avatar…';
+          const res = await fetch(API_BASE + '/users/me/avatar', {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
               Authorization: 'Bearer ' + authToken,
             },
-            body: JSON.stringify({ imageBase64: cleaned }),
+            body: JSON.stringify({ profileImage: base64 }),
           });
-          if (!resAvatar.ok) {
-            console.warn('Avatar update failed');
+          if (!res.ok) {
+            statusEl.textContent = 'Failed to save avatar.';
+            return;
           }
+          statusEl.textContent = 'Avatar updated!';
+          fetchNavAvatar();
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = 'Failed to save avatar.';
         }
+      };
+      reader.readAsDataURL(file);
+    }
 
-        // Update local storage username if changed
-        localStorage.setItem('cc_username', newUsername);
-        setStatus('Profile updated.', 'success');
-        loadProfile();
+    async function saveProfile() {
+      const statusEl = document.getElementById('status');
+      const bio = document.getElementById('bioInput').value.trim();
+
+      try {
+        statusEl.textContent = 'Saving profile…';
+        const res = await fetch(API_BASE + '/users/me/profile', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + authToken,
+          },
+          body: JSON.stringify({ bio }),
+        });
+        if (!res.ok) {
+          statusEl.textContent = 'Failed to save profile.';
+          return;
+        }
+        statusEl.textContent = 'Profile saved!';
       } catch (err) {
         console.error(err);
-        setStatus('Could not reach server.', 'error');
+        statusEl.textContent = 'Failed to save profile.';
       }
     }
 
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
     window.onload = function () {
-      const ok = loadAuthOrRedirect();
-      if (!ok) return;
-      loadProfile();
+      loadAuthOrRedirect();
     };
   </script>
 </body>
