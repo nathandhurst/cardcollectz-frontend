@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Messages – CardCollectz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --cc-bg: #020617;
+      --cc-bg-elevated: #020617;
+      --cc-bg-soft: #020617;
+      --cc-bg-strong: #020617;
+      --cc-border-subtle: rgba(148, 163, 184, 0.28);
+      --cc-border-strong: rgba(148, 163, 184, 0.48);
+      --cc-accent: #22c55e;
+      --cc-accent-soft: rgba(34, 197, 94, 0.12);
+      --cc-accent-border: rgba(74, 222, 128, 0.9);
+      --cc-text: #e5e7eb;
+      --cc-text-muted: #9ca3af;
+      --cc-danger: #ef4444;
+      --cc-danger-soft: rgba(248, 113, 113, 0.12);
+      --cc-radius-pill: 999px;
+      --cc-radius-lg: 18px;
+      --cc-shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
+      --cc-shadow-nav: 0 16px 50px rgba(15, 23, 42, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 46%, #000 100%);
+      color: var(--cc-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* NAVBAR (same across pages) -------------------------------------- */
+
+    .cc-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.85)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--cc-shadow-nav);
+    }
+
+    .cc-navbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cc-nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .cc-nav-logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 25% 15%, #4ade80, #22c55e 40%, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #022c22;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.75),
+        0 14px 30px rgba(34, 197, 94, 0.55);
+      font-size: 16px;
+    }
+
+    .cc-nav-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .cc-search-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px 6px 10px;
+      border-radius: var(--cc-radius-pill);
+      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+      border: 1px solid rgba(148, 163, 184, 0.38);
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.8);
+    }
+
+    .cc-search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--cc-text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .cc-search-input::placeholder {
+      color: var(--cc-text-muted);
+    }
+
+    .cc-search-mine {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--cc-text-muted);
+      padding: 4px 10px;
+      border-radius: var(--cc-radius-pill);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      white-space: nowrap;
+    }
+
+    .cc-search-mine input {
+      accent-color: var(--cc-accent);
+    }
+
+    .cc-search-button {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--cc-radius-pill);
+      border: none;
+      background: radial-gradient(circle at top, #22c55e, #16a34a);
+      color: #022c22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.7);
+      transition: transform 0.07s ease, box-shadow 0.07s ease;
+      flex-shrink: 0;
+    }
+
+    .cc-search-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(34, 197, 94, 0.9);
+    }
+
+    .cc-search-button:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 24px rgba(34, 197, 94, 0.65);
+    }
+
+    .cc-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cc-icon-button {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--cc-radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: radial-gradient(circle at top left, #020617, #020617 55%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 15px;
+    }
+
+    .cc-icon-dot {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 9px;
+      height: 9px;
+      border-radius: var(--cc-radius-pill);
+      background: #f97316;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 0 18px rgba(249, 115, 22, 0.9);
+      display: none;
+    }
+
+    .cc-icon-dot--visible {
+      display: block;
+    }
+
+    .cc-nav-avatar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: var(--cc-radius-pill);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      cursor: pointer;
+    }
+
+    .cc-nav-avatar-img {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--cc-radius-pill);
+      object-fit: cover;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: #020617;
+      flex-shrink: 0;
+    }
+
+    .cc-nav-avatar-placeholder {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--cc-radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      background: radial-gradient(circle at top left, #1d2536, #020617 65%);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      flex-shrink: 0;
+    }
+
+    .cc-nav-avatar-name {
+      font-size: 13px;
+      color: var(--cc-text-muted);
+      max-width: 110px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cc-nav-sell {
+      border-radius: var(--cc-radius-pill);
+      border: none;
+      padding: 6px 14px;
+      background: radial-gradient(circle at top, #22c55e, #16a34a);
+      color: #022c22;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 14px 36px rgba(34, 197, 94, 0.9);
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .cc-nav-sell {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+    }
+
+    .cc-nav-avatar-wrap {
+      position: relative;
+    }
+
+    .cc-nav-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: #020617;
+      border-radius: 14px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.95);
+      padding: 6px;
+      min-width: 150px;
+      display: none;
+      z-index: 60;
+    }
+
+    .cc-nav-dropdown-item {
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-nav-dropdown-item:hover {
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--cc-text);
+    }
+
+    /* PAGE LAYOUT ----------------------------------------------------- */
+
+    .cc-page {
+      max-width: 1120px;
+      margin: 16px auto 28px;
+      padding: 0 16px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .cc-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cc-page-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .cc-page-subtitle {
+      font-size: 12px;
+      color: var(--cc-text-muted);
+      margin-top: 3px;
+    }
+
+    .cc-page-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--cc-text-muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .cc-pill-online {
+      padding: 4px 10px;
+      border-radius: var(--cc-radius-pill);
+      background: var(--cc-accent-soft);
+      border: 1px solid var(--cc-accent-border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cc-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: var(--cc-radius-pill);
+      background: var(--cc-accent);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    .cc-page-user-label {
+      font-size: 11px;
+    }
+
+    .cc-status {
+      font-size: 11px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-status-error {
+      color: #fecaca;
+    }
+
+    /* MESSAGES SHELL -------------------------------------------------- */
+
+    .cc-messages-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, #0b1120, #020617 55%);
+      border: 1px solid var(--cc-border-subtle);
+      box-shadow: var(--cc-shadow-soft);
+      min-height: 480px;
+      max-height: 640px;
+    }
+
+    @media (max-width: 800px) {
+      .cc-messages-shell {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+        max-height: none;
+      }
+    }
+
+    /* LEFT: CONVERSATIONS --------------------------------------------- */
+
+    .cc-convo-pane {
+      border-right: 1px solid rgba(51, 65, 85, 0.9);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    @media (max-width: 800px) {
+      .cc-convo-pane {
+        border-right: none;
+        border-bottom: 1px solid rgba(51, 65, 85, 0.9);
+      }
+    }
+
+    .cc-convo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+    }
+
+    .cc-convo-header-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .cc-convo-header-meta {
+      font-size: 11px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-convo-search {
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .cc-convo-search input {
+      width: 100%;
+      padding: 6px 10px 6px 24px;
+      border-radius: var(--cc-radius-pill);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      color: var(--cc-text);
+      font-size: 11px;
+      outline: none;
+    }
+
+    .cc-convo-search input::placeholder {
+      color: var(--cc-text-muted);
+    }
+
+    .cc-convo-search-icon {
+      position: absolute;
+      top: 50%;
+      left: 9px;
+      transform: translateY(-50%);
+      font-size: 11px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-convo-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-right: -4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cc-convo-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      padding: 7px 8px;
+      border-radius: var(--cc-radius-pill);
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.08s ease, transform 0.08s ease;
+    }
+
+    .cc-convo-item:hover {
+      background: rgba(15, 23, 42, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .cc-convo-item--active {
+      background: rgba(15, 23, 42, 0.98);
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.85);
+    }
+
+    .cc-convo-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--cc-radius-pill);
+      object-fit: cover;
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      background: #020617;
+    }
+
+    .cc-convo-avatar-placeholder {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--cc-radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      background: radial-gradient(circle at top left, #1f2937, #020617 65%);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+    }
+
+    .cc-convo-text {
+      min-width: 0;
+    }
+
+    .cc-convo-name {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .cc-convo-snippet {
+      font-size: 11px;
+      color: var(--cc-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cc-convo-meta {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .cc-convo-time {
+      font-size: 10px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-convo-unread-pill {
+      padding: 2px 7px;
+      border-radius: var(--cc-radius-pill);
+      background: var(--cc-accent-soft);
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      font-size: 10px;
+      font-weight: 500;
+      color: #bbf7d0;
+    }
+
+    .cc-convo-empty {
+      font-size: 12px;
+      color: var(--cc-text-muted);
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* RIGHT: CHAT ----------------------------------------------------- */
+
+    .cc-chat-pane {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .cc-chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+    }
+
+    .cc-chat-header-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .cc-chat-header-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--cc-radius-pill);
+      object-fit: cover;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: #020617;
+    }
+
+    .cc-chat-header-avatar-placeholder {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--cc-radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      background: radial-gradient(circle at top left, #1d2536, #020617 65%);
+      border: 1px solid rgba(148, 163, 184, 0.9);
+    }
+
+    .cc-chat-header-text {
+      min-width: 0;
+    }
+
+    .cc-chat-header-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .cc-chat-header-sub {
+      font-size: 11px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-chat-header-meta {
+      font-size: 11px;
+      color: var(--cc-text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .cc-chat-header-pill {
+      padding: 3px 8px;
+      border-radius: var(--cc-radius-pill);
+      border: 1px solid var(--cc-border-strong);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .cc-chat-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 13px;
+      color: var(--cc-text-muted);
+      padding: 18px;
+    }
+
+    .cc-chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-right: -4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      scroll-behavior: smooth;
+    }
+
+    .cc-chat-day-divider {
+      text-align: center;
+      font-size: 10px;
+      color: var(--cc-text-muted);
+      margin: 8px 0;
+      position: relative;
+    }
+
+    .cc-chat-day-divider::before,
+    .cc-chat-day-divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 28%;
+      height: 1px;
+      background: rgba(51, 65, 85, 0.8);
+    }
+
+    .cc-chat-day-divider::before {
+      left: 0;
+    }
+
+    .cc-chat-day-divider::after {
+      right: 0;
+    }
+
+    .cc-chat-day-divider span {
+      padding: 2px 8px;
+      border-radius: var(--cc-radius-pill);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(51, 65, 85, 0.85);
+    }
+
+    .cc-chat-row {
+      display: flex;
+      gap: 6px;
+      padding: 1px 4px;
+    }
+
+    .cc-chat-row--mine {
+      justify-content: flex-end;
+    }
+
+    .cc-chat-bubble-wrap {
+      max-width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+
+    .cc-chat-row--mine .cc-chat-bubble-wrap {
+      align-items: flex-end;
+    }
+
+    .cc-chat-bubble {
+      padding: 7px 10px;
+      border-radius: 16px;
+      font-size: 12px;
+      line-height: 1.35;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.85);
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    .cc-chat-bubble--mine {
+      background: radial-gradient(circle at top left, #22c55e, #16a34a 70%);
+      border-color: var(--cc-accent-border);
+      color: #022c22;
+      box-shadow: 0 10px 26px rgba(34, 197, 94, 0.9);
+    }
+
+    .cc-chat-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      color: var(--cc-text-muted);
+    }
+
+    .cc-chat-meta-row span {
+      white-space: nowrap;
+    }
+
+    .cc-chat-meta-seen {
+      font-size: 9px;
+      opacity: 0.9;
+    }
+
+    /* INPUT ------------------------------------------------------------ */
+
+    .cc-chat-input-wrap {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(51, 65, 85, 0.85);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cc-chat-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cc-chat-input {
+      flex: 1;
+      border-radius: var(--cc-radius-pill);
+      border: 1px solid rgba(51, 65, 85, 0.95);
+      background: radial-gradient(circle at top left, #020617, #020617 60%);
+      color: var(--cc-text);
+      padding: 8px 12px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .cc-chat-input::placeholder {
+      color: var(--cc-text-muted);
+    }
+
+    .cc-chat-send-btn {
+      border-radius: var(--cc-radius-pill);
+      border: none;
+      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: radial-gradient(circle at top, #22c55e, #16a34a);
+      color: #022c22;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.85);
+      flex-shrink: 0;
+    }
+
+    .cc-chat-send-btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .cc-chat-hint {
+      font-size: 10px;
+      color: var(--cc-text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="cc-navbar">
+    <div class="cc-navbar-inner">
+      <a href="catalog.html" class="cc-nav-logo">
+        <div class="cc-nav-logo-mark">C</div>
+        <span>CardCollectz</span>
+      </a>
+
+      <div class="cc-nav-center">
+        <form id="cc-search-form" class="cc-search-wrapper">
+          <input
+            id="cc-search-input"
+            class="cc-search-input"
+            type="text"
+            placeholder="Search cards or sellers…"
+            autocomplete="off"
+          />
+          <label class="cc-search-mine">
+            <input id="cc-search-mine" type="checkbox" />
+            <span>Only my listings</span>
+          </label>
+          <button type="submit" class="cc-search-button" title="Search">
+            🔍
+          </button>
+        </form>
+      </div>
+
+      <div class="cc-nav-right">
+        <button
+          id="cc-nav-messages"
+          class="cc-icon-button"
+          title="Messages"
+          type="button"
+        >
+          ✉️
+          <span id="cc-nav-messages-dot" class="cc-icon-dot"></span>
+        </button>
+
+        <button
+          id="cc-nav-offers"
+          class="cc-icon-button"
+          title="Offers"
+          type="button"
+        >
+          🔔
+          <span id="cc-nav-offers-dot" class="cc-icon-dot"></span>
+        </button>
+
+        <button id="cc-nav-sell" class="cc-nav-sell" type="button">
+          <span>Sell now</span> ➜
+        </button>
+
+        <div class="cc-nav-avatar-wrap">
+          <button id="cc-nav-avatar" class="cc-nav-avatar" type="button">
+            <div id="cc-nav-avatar-img" class="cc-nav-avatar-placeholder">
+              ?
+            </div>
+            <span id="cc-nav-avatar-name" class="cc-nav-avatar-name">
+              Account
+            </span>
+          </button>
+          <div id="cc-nav-dropdown" class="cc-nav-dropdown">
+            <div
+              class="cc-nav-dropdown-item"
+              onclick="window.location.href='account.html'"
+            >
+              <span>Account</span><span>⚙️</span>
+            </div>
+            <div
+              class="cc-nav-dropdown-item"
+              onclick="window.location.href='my-listings.html'"
+            >
+              <span>My listings</span><span>📦</span>
+            </div>
+            <div
+              class="cc-nav-dropdown-item"
+              onclick="window.location.href='my-offers.html'"
+            >
+              <span>My offers</span><span>💬</span>
+            </div>
+            <div id="cc-nav-logout" class="cc-nav-dropdown-item">
+              <span>Logout</span><span>🚪</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE -->
+  <main class="cc-page">
+    <div class="cc-page-header">
+      <div>
+        <div class="cc-page-title">Messages</div>
+        <div class="cc-page-subtitle">
+          Chat directly with other collectors to negotiate trades and sales.
+        </div>
+      </div>
+      <div class="cc-page-header-right">
+        <div class="cc-pill-online">
+          <span class="cc-pill-dot"></span>
+          <span>Online</span>
+        </div>
+        <span id="cc-page-user-label" class="cc-page-user-label"></span>
+      </div>
+    </div>
+
+    <section class="cc-messages-shell">
+      <!-- LEFT: CONVERSATION LIST -->
+      <aside class="cc-convo-pane">
+        <div class="cc-convo-header">
+          <div>
+            <div class="cc-convo-header-title">Inbox</div>
+            <div class="cc-convo-header-meta">
+              Your threads with buyers and sellers
+            </div>
+          </div>
+          <div class="cc-status" id="cc-convo-status"></div>
+        </div>
+
+        <div class="cc-convo-search">
+          <span class="cc-convo-search-icon">🔎</span>
+          <input
+            id="cc-convo-filter"
+            type="text"
+            placeholder="Filter by username…"
+          />
+        </div>
+
+        <div id="cc-convo-list" class="cc-convo-list"></div>
+
+        <div id="cc-convo-empty" class="cc-convo-empty" style="display:none;">
+          No conversations yet.<br />
+          Use “Message seller” from a listing to start a chat.
+        </div>
+      </aside>
+
+      <!-- RIGHT: CHAT PANE -->
+      <section class="cc-chat-pane">
+        <div id="cc-chat-header" class="cc-chat-header" style="display:none;">
+          <div class="cc-chat-header-main">
+            <div id="cc-chat-avatar" class="cc-chat-header-avatar-placeholder">
+              ?
+            </div>
+            <div class="cc-chat-header-text">
+              <div id="cc-chat-name" class="cc-chat-header-name">Collector</div>
+              <div id="cc-chat-sub" class="cc-chat-header-sub">
+                Trading conversation
+              </div>
+            </div>
+          </div>
+          <div class="cc-chat-header-meta">
+            <div id="cc-chat-header-pill" class="cc-chat-header-pill">
+              Never trade outside CardCollectz.
+            </div>
+            <div id="cc-chat-header-meta-extra"></div>
+          </div>
+        </div>
+
+        <div id="cc-chat-empty" class="cc-chat-empty">
+          Select a conversation on the left to view messages.<br />
+          New conversations appear here once you contact another user.
+        </div>
+
+        <div id="cc-chat-scroll" class="cc-chat-scroll" style="display:none;"></div>
+
+        <div id="cc-chat-input-wrap" class="cc-chat-input-wrap" style="display:none;">
+          <form id="cc-chat-form" class="cc-chat-input-row">
+            <input
+              id="cc-chat-input"
+              type="text"
+              class="cc-chat-input"
+              placeholder="Type a message…"
+              autocomplete="off"
+            />
+            <button id="cc-chat-send" type="submit" class="cc-chat-send-btn">
+              <span>Send</span> ➤
+            </button>
+          </form>
+          <div class="cc-chat-hint">
+            <span id="cc-chat-status" class="cc-status">
+              Messages are private between you and the other collector.
+            </span>
+            <span>Press Enter to send</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = "https://cardcollectz-api.onrender.com";
+
+    let ccCurrentUser = null;
+    let ccMessages = [];
+    let ccConversations = new Map();
+    let ccSelectedUserId = null;
+    let ccPollIntervalId = null;
+
+    /* ---------------------------- UTILITIES ---------------------------- */
+
+    function ccGetToken() {
+      return window.localStorage.getItem("cc_token") || null;
+    }
+
+    function ccAuthHeaders() {
+      const token = ccGetToken();
+      return token ? { Authorization: "Bearer " + token } : {};
+    }
+
+    function ccFormatTime(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (Number.isNaN(d.getTime())) return "";
+      const now = new Date();
+      const sameDay =
+        d.getFullYear() === now.getFullYear() &&
+        d.getMonth() === now.getMonth() &&
+        d.getDate() === now.getDate();
+      const yesterday = new Date();
+      yesterday.setDate(now.getDate() - 1);
+      const isYesterday =
+        d.getFullYear() === yesterday.getFullYear() &&
+        d.getMonth() === yesterday.getMonth() &&
+        d.getDate() === yesterday.getDate();
+
+      const time = d.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      if (sameDay) return time;
+      if (isYesterday) return "Yesterday " + time;
+
+      return d.toLocaleDateString([], { day: "2-digit", month: "short" });
+    }
+
+    function ccFormatDay(dateStr) {
+      if (!dateStr) return "";
+      const d = new Date(dateStr);
+      if (Number.isNaN(d.getTime())) return "";
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      const sameDay =
+        d.getFullYear() === today.getFullYear() &&
+        d.getMonth() === today.getMonth() &&
+        d.getDate() === today.getDate();
+      const isYesterday =
+        d.getFullYear() === yesterday.getFullYear() &&
+        d.getMonth() === yesterday.getMonth() &&
+        d.getDate() === yesterday.getDate();
+
+      if (sameDay) return "Today";
+      if (isYesterday) return "Yesterday";
+
+      return d.toLocaleDateString([], {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+      });
+    }
+
+    function ccGetInitials(str) {
+      if (!str) return "?";
+      const parts = String(str)
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean);
+      if (!parts.length) return "?";
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return (
+        (parts[0][0] || "").toUpperCase() +
+        (parts[1][0] || "").toUpperCase()
+      );
+    }
+
+    function ccUpdateNavBadgesFromLocalStorage() {
+      const hasUnreadMessages =
+        window.localStorage.getItem("cc_unread_messages") === "1";
+      const hasUnreadOffers =
+        window.localStorage.getItem("cc_unread_offers") === "1";
+
+      const msgDot = document.getElementById("cc-nav-messages-dot");
+      const offDot = document.getElementById("cc-nav-offers-dot");
+
+      if (msgDot) {
+        msgDot.classList.toggle("cc-icon-dot--visible", !!hasUnreadMessages);
+      }
+      if (offDot) {
+        offDot.classList.toggle("cc-icon-dot--visible", !!hasUnreadOffers);
+      }
+    }
+
+    function ccSetMessagesUnreadFlag(value) {
+      const stringVal = value ? "1" : "0";
+      localStorage.setItem("cc_unread_messages", stringVal);
+      ccUpdateNavBadgesFromLocalStorage();
+    }
+
+    /* --------------------------- NAVBAR LOGIC -------------------------- */
+
+    function ccInitNavbar() {
+      const searchForm = document.getElementById("cc-search-form");
+      const searchInput = document.getElementById("cc-search-input");
+      const mineCheckbox = document.getElementById("cc-search-mine");
+
+      if (searchForm && searchInput && mineCheckbox) {
+        searchForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const q = searchInput.value.trim();
+          const mine = mineCheckbox.checked;
+          const params = new URLSearchParams();
+          if (q) params.set("q", q);
+          if (mine) params.set("mine", "1");
+          const query = params.toString();
+          const target = "catalog.html" + (query ? "?" + query : "");
+          window.location.href = target;
+        });
+      }
+
+      const navMessages = document.getElementById("cc-nav-messages");
+      const navOffers = document.getElementById("cc-nav-offers");
+      const navSell = document.getElementById("cc-nav-sell");
+      const avatar = document.getElementById("cc-nav-avatar");
+      const dropdown = document.getElementById("cc-nav-dropdown");
+      const logoutItem = document.getElementById("cc-nav-logout");
+
+      if (navMessages) {
+        navMessages.addEventListener("click", () => {
+          window.location.href = "messages.html";
+        });
+      }
+
+      if (navOffers) {
+        navOffers.addEventListener("click", () => {
+          window.location.href = "my-offers.html";
+        });
+      }
+
+      if (navSell) {
+        navSell.addEventListener("click", () => {
+          const token = ccGetToken();
+          if (token) {
+            window.location.href = "my-listings.html";
+          } else {
+            window.location.href = "login.html?next=my-listings.html";
+          }
+        });
+      }
+
+      if (avatar && dropdown) {
+        avatar.addEventListener("click", () => {
+          const isVisible = dropdown.style.display === "block";
+          dropdown.style.display = isVisible ? "none" : "block";
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!dropdown) return;
+          const avatarWrap = document.querySelector(".cc-nav-avatar-wrap");
+          if (!avatarWrap) return;
+          if (!avatarWrap.contains(e.target)) {
+            dropdown.style.display = "none";
+          }
+        });
+      }
+
+      if (logoutItem) {
+        logoutItem.addEventListener("click", () => {
+          localStorage.removeItem("cc_token");
+          localStorage.removeItem("cc_email");
+          localStorage.removeItem("cc_username");
+          ccSetMessagesUnreadFlag(false);
+          localStorage.removeItem("cc_unread_offers");
+          window.location.href = "login.html";
+        });
+      }
+
+      const avatarImg = document.getElementById("cc-nav-avatar-img");
+      const avatarName = document.getElementById("cc-nav-avatar-name");
+      const username = localStorage.getItem("cc_username");
+      const email = localStorage.getItem("cc_email");
+
+      if (avatarName) {
+        avatarName.textContent = username || email || "Account";
+      }
+
+      if (avatarImg) {
+        avatarImg.textContent = ccGetInitials(username || email || "A");
+      }
+
+      ccUpdateNavBadgesFromLocalStorage();
+    }
+
+    /* ------------------------- FETCH CURRENT USER ---------------------- */
+
+    async function ccFetchCurrentUser() {
+      const token = ccGetToken();
+      if (!token) {
+        window.location.href = "login.html?next=messages.html";
+        return;
+      }
+
+      try {
+        const res = await fetch(API_BASE + "/users/me", {
+          headers: {
+            "Content-Type": "application/json",
+            ...ccAuthHeaders(),
+          },
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            window.location.href = "login.html?next=messages.html";
+            return;
+          }
+          throw new Error("Failed to load profile");
+        }
+
+        const data = await res.json();
+        ccCurrentUser = data;
+
+        const label = document.getElementById("cc-page-user-label");
+        if (label && (data.username || data.email)) {
+          label.textContent = "Signed in as " + (data.username || data.email);
+        }
+
+        const avatarName = document.getElementById("cc-nav-avatar-name");
+        if (avatarName && (data.username || data.email)) {
+          avatarName.textContent = data.username || data.email;
+        }
+
+        const avatarNode = document.getElementById("cc-nav-avatar-img");
+        if (avatarNode) {
+          if (data.avatarUrl || data.image) {
+            const img = document.createElement("img");
+            img.src = data.avatarUrl || data.image;
+            img.alt = data.username || data.email || "User";
+            img.className = "cc-nav-avatar-img";
+            avatarNode.replaceWith(img);
+          } else {
+            avatarNode.textContent = ccGetInitials(
+              data.username || data.email || ""
+            );
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        const label = document.getElementById("cc-page-user-label");
+        if (label) {
+          label.textContent = "Could not load profile";
+          label.style.color = "#fecaca";
+        }
+      }
+    }
+
+    /* ---------------------------- FETCH MESSAGES ----------------------- */
+
+    async function ccFetchMessages(showErrors = true) {
+      const convoStatus = document.getElementById("cc-convo-status");
+      if (convoStatus) {
+        convoStatus.textContent = "Syncing…";
+        convoStatus.classList.remove("cc-status-error");
+      }
+
+      try {
+        const res = await fetch(API_BASE + "/messages", {
+          headers: {
+            "Content-Type": "application/json",
+            ...ccAuthHeaders(),
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch messages");
+        }
+
+        const data = await res.json();
+        ccMessages = Array.isArray(data) ? data : data.items || [];
+
+        ccBuildConversations();
+        ccRenderConversationList();
+        ccRenderSelectedChat();
+
+        if (convoStatus) {
+          convoStatus.textContent = "Up to date";
+        }
+
+        // Unread detection
+        const unread = ccMessages.some((m) => {
+          const toMe =
+            ccCurrentUser && (m.receiverId === ccCurrentUser.id ||
+              (m.receiver && m.receiver.id === ccCurrentUser.id));
+          const isUnread =
+            m.readAt == null && m.read === undefined
+              ? true
+              : m.read === false;
+          return toMe && isUnread;
+        });
+        ccSetMessagesUnreadFlag(unread);
+      } catch (err) {
+        console.error(err);
+        if (convoStatus && showErrors) {
+          convoStatus.textContent = "Sync failed";
+          convoStatus.classList.add("cc-status-error");
+        }
+      }
+    }
+
+    function ccBuildConversations() {
+      ccConversations = new Map();
+      if (!ccCurrentUser) return;
+      const myId = ccCurrentUser.id;
+
+      for (const msg of ccMessages) {
+        const senderId = msg.senderId || (msg.sender && msg.sender.id);
+        const receiverId = msg.receiverId || (msg.receiver && msg.receiver.id);
+        if (!senderId || !receiverId) continue;
+
+        const isMine = senderId === myId;
+        const otherUser = isMine
+          ? msg.receiver || { id: receiverId, username: msg.receiverUsername }
+          : msg.sender || { id: senderId, username: msg.senderUsername };
+
+        if (!otherUser || !otherUser.id) continue;
+        const otherId = otherUser.id;
+
+        if (!ccConversations.has(otherId)) {
+          ccConversations.set(otherId, {
+            user: otherUser,
+            messages: [],
+          });
+        }
+        ccConversations.get(otherId).messages.push(msg);
+      }
+
+      ccConversations.forEach((convo) => {
+        convo.messages.sort((a, b) => {
+          const da = new Date(a.createdAt || a.timestamp || 0).getTime();
+          const db = new Date(b.createdAt || b.timestamp || 0).getTime();
+          return da - db;
+        });
+      });
+
+      if (ccConversations.size && !ccSelectedUserId) {
+        let latestUserId = null;
+        let latestTs = 0;
+        ccConversations.forEach((convo, userId) => {
+          const last = convo.messages[convo.messages.length - 1];
+          if (!last) return;
+          const ts = new Date(
+            last.createdAt || last.timestamp || 0
+          ).getTime();
+          if (ts > latestTs) {
+            latestTs = ts;
+            latestUserId = userId;
+          }
+        });
+        ccSelectedUserId = latestUserId;
+      }
+
+      const emptyEl = document.getElementById("cc-convo-empty");
+      if (emptyEl) {
+        emptyEl.style.display = ccConversations.size === 0 ? "block" : "none";
+      }
+    }
+
+    /* ---------------------- RENDER: CONVERSATION LIST ------------------ */
+
+    function ccRenderConversationList() {
+      const listEl = document.getElementById("cc-convo-list");
+      if (!listEl) return;
+      listEl.innerHTML = "";
+
+      const filterInput = document.getElementById("cc-convo-filter");
+      const filterText = filterInput
+        ? filterInput.value.trim().toLowerCase()
+        : "";
+
+      const items = [];
+
+      ccConversations.forEach((convo, userId) => {
+        const messages = convo.messages;
+        if (!messages.length) return;
+        const user = convo.user || {};
+        const username = (user.username || user.name || "Collector").trim();
+        const displayName =
+          username || user.displayName || user.email || ("User " + userId);
+
+        if (
+          filterText &&
+          !displayName.toLowerCase().includes(filterText)
+        ) {
+          return;
+        }
+
+        const last = messages[messages.length - 1];
+        const lastText =
+          last.content || last.body || last.text || "(message)";
+        const lastTime = ccFormatTime(last.createdAt || last.timestamp);
+        const unreadCount = messages.filter((m) => {
+          const toMe =
+            ccCurrentUser &&
+            (m.receiverId === ccCurrentUser.id ||
+              (m.receiver && m.receiver.id === ccCurrentUser.id));
+          const isUnread =
+            m.readAt == null && m.read === undefined
+              ? true
+              : m.read === false;
+          return toMe && isUnread;
+        }).length;
+
+        items.push({
+          userId,
+          user,
+          displayName,
+          lastText,
+          lastTime,
+          unreadCount,
+          lastMessageTime: new Date(
+            last.createdAt || last.timestamp || 0
+          ).getTime(),
+        });
+      });
+
+      items.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
+
+      for (const item of items) {
+        const row = document.createElement("div");
+        row.className = "cc-convo-item";
+        if (String(item.userId) === String(ccSelectedUserId)) {
+          row.classList.add("cc-convo-item--active");
+        }
+
+        const avatarCol = document.createElement("div");
+        let avatarNode;
+        if (item.user.avatarUrl || item.user.image) {
+          avatarNode = document.createElement("img");
+          avatarNode.className = "cc-convo-avatar";
+          avatarNode.src = item.user.avatarUrl || item.user.image;
+          avatarNode.alt = item.displayName;
+        } else {
+          avatarNode = document.createElement("div");
+          avatarNode.className = "cc-convo-avatar-placeholder";
+          avatarNode.textContent = ccGetInitials(item.displayName);
+        }
+        avatarCol.appendChild(avatarNode);
+
+        const textCol = document.createElement("div");
+        textCol.className = "cc-convo-text";
+        const nameEl = document.createElement("div");
+        nameEl.className = "cc-convo-name";
+        nameEl.textContent = item.displayName;
+        const snippetEl = document.createElement("div");
+        snippetEl.className = "cc-convo-snippet";
+        snippetEl.textContent = item.lastText;
+        textCol.appendChild(nameEl);
+        textCol.appendChild(snippetEl);
+
+        const metaCol = document.createElement("div");
+        metaCol.className = "cc-convo-meta";
+        const timeEl = document.createElement("div");
+        timeEl.className = "cc-convo-time";
+        timeEl.textContent = item.lastTime || "";
+        metaCol.appendChild(timeEl);
+
+        if (item.unreadCount > 0) {
+          const unreadEl = document.createElement("div");
+          unreadEl.className = "cc-convo-unread-pill";
+          unreadEl.textContent =
+            item.unreadCount > 9 ? "9+" : String(item.unreadCount);
+          metaCol.appendChild(unreadEl);
+        }
+
+        row.appendChild(avatarCol);
+        row.appendChild(textCol);
+        row.appendChild(metaCol);
+
+        row.addEventListener("click", () => {
+          ccSelectedUserId = item.userId;
+          ccRenderConversationList();
+          ccRenderSelectedChat();
+        });
+
+        listEl.appendChild(row);
+      }
+
+      const emptyEl = document.getElementById("cc-convo-empty");
+      if (emptyEl) {
+        emptyEl.style.display = items.length ? "none" : "block";
+      }
+    }
+
+    /* --------------------- RENDER: SINGLE CONVERSATION ---------------- */
+
+    function ccRenderSelectedChat() {
+      const header = document.getElementById("cc-chat-header");
+      const empty = document.getElementById("cc-chat-empty");
+      const scrollEl = document.getElementById("cc-chat-scroll");
+      const inputWrap = document.getElementById("cc-chat-input-wrap");
+      const statusEl = document.getElementById("cc-chat-status");
+
+      if (!header || !empty || !scrollEl || !inputWrap) return;
+
+      if (!ccSelectedUserId || !ccConversations.has(ccSelectedUserId)) {
+        header.style.display = "none";
+        scrollEl.style.display = "none";
+        inputWrap.style.display = "none";
+        empty.style.display = "flex";
+        if (statusEl) {
+          statusEl.textContent =
+            "Messages are private between you and the other collector.";
+          statusEl.classList.remove("cc-status-error");
+        }
+        return;
+      }
+
+      const convo = ccConversations.get(ccSelectedUserId);
+      const user = convo.user || {};
+      const messages = convo.messages || [];
+
+      const avatar = document.getElementById("cc-chat-avatar");
+      const name = document.getElementById("cc-chat-name");
+      const sub = document.getElementById("cc-chat-sub");
+      const pill = document.getElementById("cc-chat-header-pill");
+      const metaExtra = document.getElementById("cc-chat-header-meta-extra");
+
+      if (avatar) {
+        if (user.avatarUrl || user.image) {
+          const img = document.createElement("img");
+          img.src = user.avatarUrl || user.image;
+          img.alt = user.username || user.name || "User";
+          img.className = "cc-chat-header-avatar";
+          avatar.replaceWith(img);
+        } else {
+          avatar.textContent = ccGetInitials(
+            user.username || user.name || user.email || "User"
+          );
+        }
+      }
+
+      if (name) {
+        name.textContent =
+          user.username || user.name || user.email || "Collector";
+      }
+
+      if (sub) {
+        sub.textContent =
+          "Use this thread to discuss listings and offers safely.";
+      }
+
+      if (pill) {
+        pill.textContent = "Never share payment details in chat.";
+      }
+
+      if (metaExtra) {
+        const unread = messages.filter((m) => {
+          const toMe =
+            ccCurrentUser &&
+            (m.receiverId === ccCurrentUser.id ||
+              (m.receiver && m.receiver.id === ccCurrentUser.id));
+        const isUnread =
+            m.readAt == null && m.read === undefined
+              ? true
+              : m.read === false;
+          return toMe && isUnread;
+        }).length;
+        metaExtra.textContent =
+          unread > 0
+            ? `${unread} message${unread === 1 ? "" : "s"} unread`
+            : "All caught up";
+      }
+
+      scrollEl.innerHTML = "";
+
+      let lastDayLabel = null;
+      messages.forEach((m) => {
+        const dayLabel = ccFormatDay(m.createdAt || m.timestamp);
+        if (dayLabel && dayLabel !== lastDayLabel) {
+          const divider = document.createElement("div");
+          divider.className = "cc-chat-day-divider";
+          const span = document.createElement("span");
+          span.textContent = dayLabel;
+          divider.appendChild(span);
+          scrollEl.appendChild(divider);
+          lastDayLabel = dayLabel;
+        }
+
+        const row = document.createElement("div");
+        const mine =
+          ccCurrentUser &&
+          (m.senderId === ccCurrentUser.id ||
+            (m.sender && m.sender.id === ccCurrentUser.id));
+        row.className = "cc-chat-row" + (mine ? " cc-chat-row--mine" : "");
+
+        const wrap = document.createElement("div");
+        wrap.className = "cc-chat-bubble-wrap";
+
+        const bubble = document.createElement("div");
+        bubble.className = "cc-chat-bubble";
+        if (mine) bubble.classList.add("cc-chat-bubble--mine");
+        bubble.textContent = m.content || m.body || m.text || "(message)";
+
+        const meta = document.createElement("div");
+        meta.className = "cc-chat-meta-row";
+        const timeEl = document.createElement("span");
+        timeEl.textContent = ccFormatTime(m.createdAt || m.timestamp);
+        meta.appendChild(timeEl);
+
+        if (mine) {
+          const seenEl = document.createElement("span");
+          seenEl.className = "cc-chat-meta-seen";
+          const isSeen =
+            m.readAt || m.seenAt || m.read === true || m.seen === true;
+          seenEl.textContent = isSeen ? "Seen" : "Sent";
+          meta.appendChild(seenEl);
+        }
+
+        wrap.appendChild(bubble);
+        wrap.appendChild(meta);
+        row.appendChild(wrap);
+        scrollEl.appendChild(row);
+      });
+
+      requestAnimationFrame(() => {
+        scrollEl.scrollTop = scrollEl.scrollHeight;
+      });
+
+      header.style.display = "flex";
+      scrollEl.style.display = "flex";
+      inputWrap.style.display = "flex";
+      empty.style.display = "none";
+
+      if (statusEl) {
+        statusEl.textContent =
+          "Messages are private between you and the other collector.";
+        statusEl.classList.remove("cc-status-error");
+      }
+    }
+
+    /* ---------------------------- SEND MESSAGE ------------------------ */
+
+    async function ccSendMessage(text) {
+      if (!text || !ccSelectedUserId) return;
+      const statusEl = document.getElementById("cc-chat-status");
+      const sendBtn = document.getElementById("cc-chat-send");
+
+      try {
+        if (sendBtn) sendBtn.disabled = true;
+        if (statusEl) {
+          statusEl.textContent = "Sending…";
+          statusEl.classList.remove("cc-status-error");
+        }
+
+        // Adjust keys if your API uses different names
+        const res = await fetch(API_BASE + "/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...ccAuthHeaders(),
+          },
+          body: JSON.stringify({
+            recipientId: ccSelectedUserId,
+            content: text,
+          }),
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to send message");
+        }
+
+        const created = await res.json();
+        ccMessages.push(created);
+        ccBuildConversations();
+        ccRenderConversationList();
+        ccRenderSelectedChat();
+
+        if (statusEl) statusEl.textContent = "Sent ✓";
+        ccSetMessagesUnreadFlag(false);
+      } catch (err) {
+        console.error(err);
+        if (statusEl) {
+          statusEl.textContent = "Failed to send. Try again.";
+          statusEl.classList.add("cc-status-error");
+        }
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
+      }
+    }
+
+    /* ----------------------------- POLLING ---------------------------- */
+
+    function ccStartPolling() {
+      if (ccPollIntervalId) clearInterval(ccPollIntervalId);
+      ccPollIntervalId = setInterval(() => {
+        ccFetchMessages(false);
+      }, 8000);
+    }
+
+    /* --------------------------- INIT PAGE ---------------------------- */
+
+    async function ccInitMessagesPage() {
+      ccInitNavbar();
+      ccUpdateNavBadgesFromLocalStorage();
+
+      const filterInput = document.getElementById("cc-convo-filter");
+      if (filterInput) {
+        filterInput.addEventListener("input", () => {
+          ccRenderConversationList();
+        });
+      }
+
+      const chatForm = document.getElementById("cc-chat-form");
+      const chatInput = document.getElementById("cc-chat-input");
+      if (chatForm && chatInput) {
+        chatForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const text = chatInput.value.trim();
+          if (!text) return;
+          chatInput.value = "";
+          ccSendMessage(text);
+        });
+      }
+
+      await ccFetchCurrentUser();
+      await ccFetchMessages();
+      ccStartPolling();
+    }
+
+    document.addEventListener("DOMContentLoaded", ccInitMessagesPage);
+  </script>
+</body>
+</html>
