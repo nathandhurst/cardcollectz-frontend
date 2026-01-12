@@ -23,7 +23,7 @@
       color: var(--cc-text);
     }
 
-    /* NAVBAR SHELL */
+    /* NAVBAR */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -197,11 +197,6 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
-    }
-    .nav-btn.secondary {
-      background: transparent;
-      border: 1px solid rgba(148,163,184,0.9);
-      color: #e5e7eb;
     }
     .nav-btn.primary {
       background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
@@ -401,7 +396,6 @@
           <a href="my-listings.html">My listings</a>
           <a href="favourites.html">Favourites</a>
           <a href="my-offers.html">My offers</a>
-          <a href="account.html">Account</a>
         </div>
       </div>
 
@@ -410,12 +404,11 @@
           id="searchQuery"
           type="text"
           placeholder="Search cards or sellers"
-          oninput="applyFilters()"
-          onkeydown="if (event.key === 'Enter') { event.preventDefault(); applyFilters(); }"
+          onkeydown="if (event.key === 'Enter') { event.preventDefault(); handleSearchClick(); }"
         />
-        <button class="search-btn" type="button" onclick="applyFilters()">🔍</button>
+        <button class="search-btn" type="button" onclick="handleSearchClick()">🔍</button>
         <label>
-          <input id="onlyMine" type="checkbox" onchange="applyFilters()" />
+          <input id="onlyMine" type="checkbox" onchange="handleSearchClick()" />
           Only my listings
         </label>
       </div>
@@ -453,7 +446,6 @@
   </main>
 
   <script>
-    // 🔴 LIVE API URL
     const API_BASE = 'https://cardcollectz-api.onrender.com';
 
     let currentUsername = null;
@@ -461,7 +453,21 @@
     let authToken = null;
     let allListings = [];
 
-    // ---------- FAVOURITES ----------
+    function handleSearchClick() {
+      const qInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+      if (!qInput) return;
+      const q = qInput.value.trim();
+      const mine = mineCheckbox && mineCheckbox.checked;
+
+      let url = 'catalog.html';
+      const params = [];
+      if (q) params.push('q=' + encodeURIComponent(q));
+      if (mine) params.push('mine=1');
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
+
     function getFavourites() {
       const raw = localStorage.getItem('cc_favourites');
       if (!raw) return [];
@@ -486,13 +492,12 @@
         favs.push(id);
       }
       setFavourites(favs);
-      applyFilters(); // re-render tiles with updated hearts
+      applyFilters();
     }
 
-    // ---------- AUTH ----------
     function logDebug(obj) {
       const box = document.getElementById('debug');
-      box.textContent = JSON.stringify(obj, null, 2);
+      if (box) box.textContent = JSON.stringify(obj, null, 2);
     }
 
     function loadAuthOrRedirect() {
@@ -506,14 +511,10 @@
       }
 
       const navUser = document.getElementById('navUser');
-      if (navUser) {
-        navUser.textContent = '@' + currentUsername;
-      }
+      if (navUser) navUser.textContent = '@' + currentUsername;
 
       const navAvatar = document.getElementById('navAvatar');
-      if (navAvatar) {
-        navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
-      }
+      if (navAvatar) navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
 
       const navProfileBtn = document.getElementById('navProfileBtn');
       const dropdown = document.getElementById('navDropdown');
@@ -553,7 +554,6 @@
         if (!res.ok) return;
         const data = await res.json();
         if (!data || !data.profileImage) return;
-
         const navAvatar = document.getElementById('navAvatar');
         if (navAvatar) {
           navAvatar.style.backgroundImage =
@@ -565,7 +565,6 @@
       }
     }
 
-    // ---------- LISTINGS ----------
     function renderListings(listings) {
       const container = document.getElementById('listingsContainer');
       const meta = document.getElementById('catalogMeta');
@@ -574,11 +573,11 @@
 
       if (!listings || listings.length === 0) {
         container.textContent = 'No listings match your filters.';
-        meta.textContent = '0 listings';
+        if (meta) meta.textContent = '0 listings';
         return;
       }
 
-      meta.textContent = `${listings.length} listing${listings.length === 1 ? '' : 's'}`;
+      if (meta) meta.textContent = `${listings.length} listing${listings.length === 1 ? '' : 's'}`;
 
       const favs = getFavourites();
 
@@ -675,8 +674,10 @@
     }
 
     function applyFilters() {
-      const q = document.getElementById('searchQuery').value.toLowerCase();
-      const onlyMine = document.getElementById('onlyMine').checked;
+      const searchInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+      const q = searchInput ? searchInput.value.toLowerCase() : '';
+      const onlyMine = mineCheckbox && mineCheckbox.checked;
 
       let filtered = allListings.slice();
 
@@ -705,7 +706,6 @@
       renderListings(filtered);
     }
 
-    // ---------- PULL-TO-REFRESH (mobile) ----------
     function setupPullToRefresh() {
       const indicator = document.getElementById('ptrIndicator');
       let startY = 0;
@@ -755,9 +755,22 @@
       });
     }
 
+    function initialiseSearchFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('q') || '';
+      const mine = params.get('mine') === '1';
+
+      const searchInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+
+      if (searchInput) searchInput.value = q;
+      if (mineCheckbox) mineCheckbox.checked = mine;
+    }
+
     window.onload = function () {
       const ok = loadAuthOrRedirect();
       if (!ok) return;
+      initialiseSearchFromURL();
       loadListings();
       setupPullToRefresh();
     };

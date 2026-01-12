@@ -7,612 +7,615 @@
     :root {
       --cc-primary: #2D8CFF;
       --cc-secondary: #00E2FF;
+      --cc-premium: #CFA64A;
+      --cc-success: #2FDBA5;
       --cc-text: #E6E6E6;
+      --cc-border: #1F2933;
       --cc-bg: #050505;
       --cc-card: #0B0B0B;
-      --cc-border: #1F2933;
-      --cc-success: #2FDBA5;
-      --cc-danger: #f97373;
     }
-
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
       color: var(--cc-text);
     }
 
-    /* header same as catalog */
-    .cc-header-shell {
+    /* NAVBAR (same as catalog.html) */
+    .nav-shell {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: #020617;
-      border-bottom: 1px solid rgba(15,23,42,0.9);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(3,7,18,0.96), rgba(3,7,18,0.92));
+      border-bottom: 1px solid rgba(15,23,42,0.75);
     }
-    .cc-header {
-      max-width: 1180px;
+    .nav {
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 10px 16px 8px;
-    }
-    .cc-header-top {
-      display: grid;
-      grid-template-columns: auto minmax(320px, 1.6fr) auto;
-      gap: 12px;
-      align-items: center;
-    }
-    .cc-logo {
+      padding: 10px 16px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      cursor: pointer;
+      justify-content: space-between;
+      gap: 12px;
     }
-    .cc-logo-text {
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+    .logo {
       font-size: 22px;
       font-weight: 900;
+      letter-spacing: 0.04em;
       background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
       -webkit-background-clip: text;
       color: transparent;
+      white-space: nowrap;
+      cursor: pointer;
     }
-    .cc-search-shell {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      background: #0b1220;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(15,23,42,1);
-    }
-    .cc-search-input {
-      border: none;
-      background: transparent;
-      color: #f9fafb;
-      padding: 8px 12px;
+    .nav-links a {
       font-size: 13px;
-      outline: none;
-    }
-    .cc-search-input::placeholder {
-      color: rgba(148,163,184,0.9);
-    }
-    .cc-search-icon {
-      width: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      color: rgba(148,163,184,0.9);
-      border-left: 1px solid rgba(30,64,175,0.7);
-    }
-    .cc-header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-    .cc-icon-btn {
-      width: 30px;
-      height: 30px;
+      margin-right: 10px;
+      color: rgba(209,213,219,0.9);
+      text-decoration: none;
+      padding: 5px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
+      border: 1px solid transparent;
+    }
+    .nav-links a:hover {
+      border-color: rgba(148,163,184,0.8);
+      background: rgba(15,23,42,0.9);
+    }
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+      max-width: 420px;
+    }
+    .nav-search input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
       color: #e5e7eb;
+      font-size: 14px;
+    }
+    .nav-search input[type="text"]:focus {
+      outline: none;
+      border-color: var(--cc-primary);
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
+    }
+    .search-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
       font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
     }
-    .cc-sell-btn {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      color: #020617;
-      box-shadow: 0 0 18px rgba(45,140,255,0.9);
+    .search-btn:hover {
+      border-color: var(--cc-primary);
+      background: #020617;
     }
-    .cc-avatar-wrap { position: relative; }
-    .cc-avatar {
-      width: 30px;
-      height: 30px;
+    .nav-search label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      color: rgba(209,213,219,0.9);
+    }
+    .nav-search input[type="checkbox"] {
+      width: 14px; height: 14px;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+    .nav-avatar {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       background: radial-gradient(circle at top, #1f2937, #020617);
       border: 1px solid rgba(148,163,184,0.8);
-      background-size: cover;
-      background-position: center;
-      box-shadow:
-        0 0 0 1px rgba(45,140,255,0.5),
-        0 0 16px rgba(0,226,255,0.6);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
       font-weight: 600;
       color: #e5e7eb;
-      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .cc-avatar-menu {
+    .nav-username {
+      opacity: 0.9;
+    }
+    .nav-dropdown {
       position: absolute;
-      top: 115%;
       right: 0;
-      background: rgba(3,7,18,0.98);
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,0.8);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+      top: 130%;
       min-width: 170px;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(31,41,55,0.9);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.9);
       padding: 6px 0;
-      display: none;
-      z-index: 60;
-    }
-    .cc-avatar-menu.open { display: block; }
-    .cc-avatar-menu button {
-      width: 100%;
-      border: none;
-      background: transparent;
-      color: #e5e7eb;
       font-size: 13px;
-      padding: 7px 12px;
+      display: none;
+      z-index: 70;
+    }
+    .nav-dropdown a,
+    .nav-dropdown button {
+      width: 100%;
       text-align: left;
+      padding: 6px 12px;
+      background: transparent;
+      border: none;
+      color: rgba(229,231,235,0.95);
       cursor: pointer;
+      display: block;
+      text-decoration: none;
     }
-    .cc-avatar-menu button:hover {
-      background: rgba(15,23,42,0.96);
+    .nav-dropdown a:hover,
+    .nav-dropdown button:hover {
+      background: rgba(30,64,175,0.35);
     }
-    .cc-menu-sep {
-      height: 1px;
-      margin: 4px 0;
-      background: rgba(31,41,55,0.95);
+    .nav-btn {
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .nav-btn.primary {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
 
     .page {
-      max-width: 1180px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 18px 18px 32px;
+      padding: 16px 16px 32px;
     }
-
-    .page-header {
-      margin-bottom: 14px;
+    .account-card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
+      padding: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 20px 60px rgba(15,23,42,0.85);
     }
-    .page-title {
-      font-size: 22px;
-      font-weight: 700;
+    .account-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
     }
-    .page-subtitle {
-      font-size: 13px;
-      color: rgba(148,163,184,0.9);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
-      gap: 18px;
-    }
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: rgba(15,23,42,0.97);
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.45);
-      box-shadow: 0 18px 60px rgba(0,0,0,0.7);
-      padding: 16px 16px 18px;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .card-subtitle {
-      font-size: 12px;
-      color: rgba(148,163,184,0.9);
-      margin-bottom: 10px;
-    }
-
-    .profile-avatar-big {
-      width: 110px;
-      height: 110px;
+    .account-avatar-large {
+      width: 72px;
+      height: 72px;
       border-radius: 999px;
+      border: 2px solid rgba(59,130,246,0.9);
       background: radial-gradient(circle at top, #111827, #020617);
-      border: 2px solid rgba(96,165,250,0.9);
-      background-size: cover;
-      background-position: center;
-      box-shadow:
-        0 0 0 2px rgba(15,23,42,1),
-        0 0 26px rgba(0,226,255,0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: 700;
       color: #e5e7eb;
-      margin-bottom: 12px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
     }
-
-    .btn-primary {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      color: #020617;
-      box-shadow: 0 0 16px rgba(37,99,235,0.7);
+    .account-title-wrap {
+      flex: 1;
     }
-
-    .btn-ghost {
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.8);
-      padding: 6px 12px;
+    .account-title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .account-sub {
       font-size: 12px;
-      background: transparent;
-      color: rgba(209,213,219,0.95);
-      cursor: pointer;
+      color: rgba(156,163,175,0.95);
     }
-
+    form.account-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
     .field {
-      margin-bottom: 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
     .field label {
-      font-size: 12px;
-      color: rgba(148,163,184,0.95);
-    }
-    .field input,
-    .field textarea {
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.7);
-      background: rgba(15,23,42,0.96);
-      color: #f9fafb;
-      padding: 7px 10px;
       font-size: 13px;
-      outline: none;
+      color: rgba(209,213,219,0.9);
     }
+    .field input[type="text"],
     .field textarea {
-      min-height: 90px;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 14px;
       resize: vertical;
     }
-
-    .status {
-      margin-top: 8px;
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--cc-primary);
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
+    }
+    .field input[type="file"] {
       font-size: 12px;
+      color: rgba(209,213,219,0.9);
+    }
+    .btn-row {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: 1px solid rgba(55,65,81,0.9);
+      cursor: pointer;
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .status-message {
+      font-size: 12px;
+      margin-top: 4px;
       min-height: 16px;
     }
-    .status.error { color: var(--cc-danger); }
-    .status.success { color: var(--cc-success); }
+    .status-message.error {
+      color: #fecaca;
+    }
+    .status-message.success {
+      color: #bbf7d0;
+    }
   </style>
 </head>
 <body>
-
-<div class="cc-header-shell">
-  <div class="cc-header">
-    <div class="cc-header-top">
-      <div class="cc-logo" onclick="location.href='catalog.html'">
-        <span class="cc-logo-text">CardCollectz</span>
+  <div class="nav-shell">
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo" onclick="window.location.href='catalog.html'">
+          CardCollectz
+        </div>
+        <div class="nav-links">
+          <a href="catalog.html">Listings</a>
+          <a href="my-listings.html">My listings</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="my-offers.html">My offers</a>
+        </div>
       </div>
 
-      <div class="cc-search-shell">
+      <div class="nav-search">
         <input
-          id="navSearch"
-          class="cc-search-input"
+          id="searchQuery"
           type="text"
-          placeholder="Search cards…"
+          placeholder="Search cards or sellers"
+          onkeydown="if (event.key === 'Enter') { event.preventDefault(); handleSearchClick(); }"
         />
-        <div class="cc-search-icon">🔍</div>
+        <button class="search-btn" type="button" onclick="handleSearchClick()">🔍</button>
+        <label>
+          <input id="onlyMine" type="checkbox" onchange="handleSearchClick()" />
+          Only my listings
+        </label>
       </div>
 
-      <div class="cc-header-actions">
-        <button class="cc-icon-btn" type="button" title="Messages">✉️</button>
-        <button class="cc-icon-btn" type="button" title="Notifications">🔔</button>
-        <button class="cc-icon-btn" type="button" title="Favourites" onclick="location.href='favourites.html'">♥</button>
-
-        <div class="cc-avatar-wrap">
-          <div id="navAvatar" class="cc-avatar"></div>
-          <div id="avatarMenu" class="cc-avatar-menu">
-            <button type="button" onclick="location.href='account.html'">Account</button>
-            <button type="button" onclick="location.href='my-listings.html'">My listings</button>
-            <button type="button" onclick="location.href='favourites.html'">Favourites</button>
-            <button type="button" onclick="location.href='my-offers.html'">My offers</button>
-            <div class="cc-menu-sep"></div>
-            <button type="button" id="logoutBtn">Logout</button>
+      <div class="nav-right">
+        <div id="navProfileBtn" class="nav-user">
+          <div id="navAvatar" class="nav-avatar"></div>
+          <span id="navUser" class="nav-username">…</span>
+          <div id="navDropdown" class="nav-dropdown">
+            <a id="navProfileLink" href="#">View profile</a>
+            <a href="account.html">Account settings</a>
+            <a href="my-listings.html">My listings</a>
+            <a href="my-offers.html">My offers</a>
+            <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
 
-        <button class="cc-sell-btn" type="button" onclick="location.href='index.html#sellSection'">
+        <button class="nav-btn primary" type="button"
+          onclick="window.location.href='index.html#sellSection'">
           Sell now
         </button>
       </div>
-    </div>
+    </header>
   </div>
-</div>
 
-<main class="page">
-  <header class="page-header">
-    <div class="page-title">Account</div>
-    <div class="page-subtitle">Manage your profile, avatar and bio.</div>
-  </header>
-
-  <section class="layout">
-    <!-- Avatar card -->
-    <article class="card">
-      <div class="card-title">Profile picture</div>
-      <div class="card-subtitle">
-        This avatar is used in the top bar and on your listings.
-      </div>
-      <div id="profileAvatar" class="profile-avatar-big">?</div>
-      <div style="display:flex; flex-direction:column; gap:6px;">
-        <input id="avatarInput" type="file" accept="image/*" />
-        <button class="btn-primary" type="button" onclick="uploadAvatar()">
-          Upload new avatar
-        </button>
-        <button class="btn-ghost" type="button" onclick="clearAvatar()">
-          Remove avatar
-        </button>
-      </div>
-      <div id="avatarStatus" class="status"></div>
-    </article>
-
-    <!-- Details card -->
-    <article class="card">
-      <div class="card-title">Profile details</div>
-      <div class="card-subtitle">
-        These details are shown on your seller profile.
+  <main class="page">
+    <section class="account-card">
+      <div class="account-header">
+        <div id="accountAvatar" class="account-avatar-large">?</div>
+        <div class="account-title-wrap">
+          <div class="account-title" id="accountTitle">Your profile</div>
+          <div class="account-sub" id="accountSub">Loading profile…</div>
+        </div>
       </div>
 
-      <div class="field">
-        <label>Username</label>
-        <input id="username" type="text" disabled />
-      </div>
+      <form class="account-form" onsubmit="handleProfileSubmit(event)">
+        <div class="field">
+          <label for="usernameInput">Username</label>
+          <input id="usernameInput" type="text" autocomplete="username" required />
+        </div>
 
-      <div class="field">
-        <label>Display name</label>
-        <input id="displayName" type="text" placeholder="How buyers see you" />
-      </div>
+        <div class="field">
+          <label for="bioInput">Bio</label>
+          <textarea id="bioInput" rows="3" placeholder="Tell people what you collect…"></textarea>
+        </div>
 
-      <div class="field">
-        <label>Bio</label>
-        <textarea id="bio" placeholder="Tell buyers about what you collect or sell."></textarea>
-      </div>
+        <div class="field">
+          <label for="avatarInput">Profile picture</label>
+          <input id="avatarInput" type="file" accept="image/*" />
+        </div>
 
-      <button class="btn-primary" type="button" onclick="saveProfile()">
-        Save profile
-      </button>
+        <div class="btn-row">
+          <button type="submit" class="btn-primary">Save profile</button>
+        </div>
 
-      <div id="profileStatus" class="status"></div>
-    </article>
-  </section>
-</main>
+        <div id="statusMessage" class="status-message"></div>
+      </form>
+    </section>
+  </main>
 
-<script>
-  const API_BASE = 'https://cardcollectz-api.onrender.com';
-  const authToken = localStorage.getItem("cc_token");
-  const currentUsername = localStorage.getItem("cc_username");
+  <script>
+    const API_BASE = 'https://cardcollectz-api.onrender.com';
 
-  if (!authToken || !currentUsername) {
-    window.location.href = "login.html";
-  }
+    let currentUsername = null;
+    let currentEmail = null;
+    let authToken = null;
 
-  function logout() {
-    localStorage.removeItem("cc_token");
-    localStorage.removeItem("cc_username");
-    localStorage.removeItem("cc_email");
-    window.location.href = "login.html";
-  }
+    function handleSearchClick() {
+      const qInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+      if (!qInput) return;
+      const q = qInput.value.trim();
+      const mine = mineCheckbox && mineCheckbox.checked;
 
-  function initAvatarNav() {
-    const avatar = document.getElementById("navAvatar");
-    const menu = document.getElementById("avatarMenu");
-    const logoutBtn = document.getElementById("logoutBtn");
+      let url = 'catalog.html';
+      const params = [];
+      if (q) params.push('q=' + encodeURIComponent(q));
+      if (mine) params.push('mine=1');
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
 
-    if (logoutBtn) logoutBtn.onclick = logout;
+    function setStatus(msg, type) {
+      const el = document.getElementById('statusMessage');
+      el.textContent = msg || '';
+      el.className = 'status-message';
+      if (type) el.classList.add(type);
+    }
 
-    if (authToken && avatar) {
-      fetch(API_BASE + "/users/me", {
-        headers: { Authorization: "Bearer " + authToken },
-      })
-        .then((r) => r.json())
-        .then((user) => {
-          const navInitial =
-            user?.username?.[0] || currentUsername?.[0] || "?";
-          if (user?.profileImage) {
-            avatar.style.backgroundImage =
-              `url(data:image/*;base64,${user.profileImage})`;
-            avatar.textContent = "";
-          } else {
-            avatar.textContent = navInitial.toUpperCase();
+    function loadAuthOrRedirect() {
+      authToken = localStorage.getItem('cc_token');
+      currentUsername = localStorage.getItem('cc_username');
+      currentEmail = localStorage.getItem('cc_email');
+
+      if (!authToken || !currentUsername || !currentEmail) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      const navUser = document.getElementById('navUser');
+      if (navUser) navUser.textContent = '@' + currentUsername;
+
+      const navAvatar = document.getElementById('navAvatar');
+      if (navAvatar) navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
+
+      const navProfileBtn = document.getElementById('navProfileBtn');
+      const dropdown = document.getElementById('navDropdown');
+      const navProfileLink = document.getElementById('navProfileLink');
+
+      if (navProfileBtn && dropdown) {
+        navProfileBtn.onclick = () => {
+          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+        document.addEventListener('click', (e) => {
+          if (!navProfileBtn.contains(e.target)) {
+            dropdown.style.display = 'none';
           }
-        })
-        .catch(() => {
-          avatar.textContent = (currentUsername?.[0] || "?").toUpperCase();
         });
+      }
+
+      if (navProfileLink) {
+        navProfileLink.href = 'profile.html?username=' + encodeURIComponent(currentUsername);
+      }
+
+      fetchNavAvatar();
+      return true;
     }
 
-    if (avatar && menu) {
-      avatar.addEventListener("click", (e) => {
-        e.stopPropagation();
-        menu.classList.toggle("open");
-      });
-      document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target) && e.target !== avatar) {
-          menu.classList.remove("open");
+    function logout() {
+      localStorage.removeItem('cc_token');
+      localStorage.removeItem('cc_email');
+      localStorage.removeItem('cc_username');
+      window.location.href = 'login.html';
+    }
+
+    async function fetchNavAvatar() {
+      try {
+        const res = await fetch(API_BASE + '/users/me', {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || !data.profileImage) return;
+        const navAvatar = document.getElementById('navAvatar');
+        if (navAvatar) {
+          navAvatar.style.backgroundImage =
+            'url("data:image/*;base64,' + data.profileImage + '")';
+          navAvatar.textContent = '';
         }
-      });
-    }
-  }
-
-  function searchToCatalog() {
-    const q = (document.getElementById("navSearch")?.value || "").trim();
-    const params = new URLSearchParams();
-    if (q) params.set("q", q);
-    const url = "catalog.html" + (params.toString() ? "?" + params : "");
-    window.location.href = url;
-  }
-
-  async function loadProfile() {
-    try {
-      const res = await fetch(API_BASE + "/users/me", {
-        headers: { Authorization: "Bearer " + authToken },
-      });
-      const user = await res.json();
-      document.getElementById("username").value = user.username || "";
-      document.getElementById("displayName").value = user.displayName || "";
-      document.getElementById("bio").value = user.bio || "";
-
-      const avatarBig = document.getElementById("profileAvatar");
-      if (user.profileImage) {
-        avatarBig.style.backgroundImage =
-          `url(data:image/*;base64,${user.profileImage})`;
-        avatarBig.textContent = "";
-      } else {
-        avatarBig.style.backgroundImage = "";
-        avatarBig.textContent =
-          (user.username?.[0] || currentUsername?.[0] || "?").toUpperCase();
+      } catch (err) {
+        console.error('Failed to load nav avatar', err);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result || "";
-        const base64 = String(result).split(",").pop();
-        resolve(base64);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function uploadAvatar() {
-    const input = document.getElementById("avatarInput");
-    const status = document.getElementById("avatarStatus");
-    status.textContent = "";
-    status.className = "status";
-
-    if (!input.files || !input.files[0]) {
-      status.textContent = "Choose an image first.";
-      status.classList.add("error");
-      return;
     }
 
-    const file = input.files[0];
-    status.textContent = "Uploading avatar…";
-
-    try {
-      const base64 = await fileToBase64(file);
-      const res = await fetch(API_BASE + "/users/me/avatar", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authToken,
-        },
-        body: JSON.stringify({ profileImageBase64: base64 }),
-      });
-      if (!res.ok) {
-        status.textContent = "Failed to upload avatar.";
-        status.classList.add("error");
-        return;
-      }
-      status.textContent = "Avatar updated!";
-      status.classList.add("success");
-      await loadProfile();
-      initAvatarNav();
-    } catch (err) {
-      console.error(err);
-      status.textContent = "Error uploading avatar.";
-      status.classList.add("error");
-    }
-  }
-
-  async function clearAvatar() {
-    const status = document.getElementById("avatarStatus");
-    status.textContent = "Removing avatar…";
-    status.className = "status";
-
-    try {
-      // send empty string to clear
-      const res = await fetch(API_BASE + "/users/me/avatar", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authToken,
-        },
-        body: JSON.stringify({ profileImageBase64: "" }),
-      });
-      if (!res.ok) {
-        status.textContent = "Failed to remove avatar.";
-        status.classList.add("error");
-        return;
-      }
-      status.textContent = "Avatar removed.";
-      status.classList.add("success");
-      await loadProfile();
-      initAvatarNav();
-    } catch (err) {
-      console.error(err);
-      status.textContent = "Error removing avatar.";
-      status.classList.add("error");
-    }
-  }
-
-  async function saveProfile() {
-    const displayName = document.getElementById("displayName").value.trim();
-    const bio = document.getElementById("bio").value.trim();
-    const status = document.getElementById("profileStatus");
-    status.textContent = "Saving…";
-    status.className = "status";
-
-    try {
-      const res = await fetch(API_BASE + "/users/me/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + authToken,
-        },
-        body: JSON.stringify({ displayName, bio }),
-      });
-      if (!res.ok) {
-        status.textContent = "Failed to save profile.";
-        status.classList.add("error");
-        return;
-      }
-      status.textContent = "Profile updated.";
-      status.classList.add("success");
-    } catch (err) {
-      console.error(err);
-      status.textContent = "Error saving profile.";
-      status.classList.add("error");
-    }
-  }
-
-  window.addEventListener("load", () => {
-    initAvatarNav();
-    loadProfile();
-
-    const searchInput = document.getElementById("navSearch");
-    if (searchInput) {
-      searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          searchToCatalog();
+    async function loadProfile() {
+      try {
+        const res = await fetch(API_BASE + '/users/me', {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        if (!res.ok) {
+          setStatus('Failed to load profile.', 'error');
+          return;
         }
+        const data = await res.json();
+
+        const username = data.username || currentUsername;
+        const email = data.email || currentEmail;
+        const bio = data.bio || '';
+
+        currentUsername = username;
+        currentEmail = email;
+
+        document.getElementById('usernameInput').value = username;
+        document.getElementById('bioInput').value = bio;
+
+        const title = document.getElementById('accountTitle');
+        const sub = document.getElementById('accountSub');
+        if (title) title.textContent = '@' + username;
+        if (sub) sub.textContent = email || 'No email on file.';
+
+        const avatarEl = document.getElementById('accountAvatar');
+        if (data.profileImage) {
+          avatarEl.style.backgroundImage =
+            'url("data:image/*;base64,' + data.profileImage + '")';
+          avatarEl.textContent = '';
+        } else {
+          avatarEl.textContent = (username[0] || '?').toUpperCase();
+        }
+        setStatus('', null);
+      } catch (err) {
+        console.error(err);
+        setStatus('Failed to load profile.', 'error');
+      }
+    }
+
+    async function handleProfileSubmit(e) {
+      e.preventDefault();
+      setStatus('', null);
+
+      const newUsername = document.getElementById('usernameInput').value.trim();
+      const newBio = document.getElementById('bioInput').value.trim();
+      const avatarFile = document.getElementById('avatarInput').files[0];
+
+      if (!newUsername) {
+        setStatus('Username is required.', 'error');
+        return;
+      }
+
+      try {
+        // 1) Update text profile
+        const resProfile = await fetch(API_BASE + '/users/me', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + authToken,
+          },
+          body: JSON.stringify({
+            username: newUsername,
+            bio: newBio,
+          }),
+        });
+
+        if (!resProfile.ok) {
+          let msg = 'Failed to update profile.';
+          try {
+            const data = await resProfile.json();
+            if (data && data.message) {
+              msg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+            }
+          } catch {}
+          setStatus(msg, 'error');
+          return;
+        }
+
+        // 2) Optionally upload avatar
+        if (avatarFile) {
+          const base64 = await fileToBase64(avatarFile);
+          const cleaned = base64.split(',')[1] || base64;
+          const resAvatar = await fetch(API_BASE + '/users/me/avatar', {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + authToken,
+            },
+            body: JSON.stringify({ imageBase64: cleaned }),
+          });
+          if (!resAvatar.ok) {
+            console.warn('Avatar update failed');
+          }
+        }
+
+        // Update local storage username if changed
+        localStorage.setItem('cc_username', newUsername);
+        setStatus('Profile updated.', 'success');
+        loadProfile();
+      } catch (err) {
+        console.error(err);
+        setStatus('Could not reach server.', 'error');
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
       });
     }
-  });
-</script>
 
+    window.onload = function () {
+      const ok = loadAuthOrRedirect();
+      if (!ok) return;
+      loadProfile();
+    };
+  </script>
 </body>
 </html>

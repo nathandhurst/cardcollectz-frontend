@@ -7,550 +7,554 @@
     :root {
       --cc-primary: #2D8CFF;
       --cc-secondary: #00E2FF;
+      --cc-premium: #CFA64A;
+      --cc-success: #2FDBA5;
       --cc-text: #E6E6E6;
+      --cc-border: #1F2933;
       --cc-bg: #050505;
       --cc-card: #0B0B0B;
-      --cc-border: #1F2933;
-      --cc-success: #2FDBA5;
-      --cc-danger: #f97373;
-      --cc-warning: #facc15;
     }
-
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
       color: var(--cc-text);
     }
 
-    /* ===== HEADER (same as catalog, no dropdown in search) ===== */
-    .cc-header-shell {
+    /* NAVBAR (same as catalog.html) */
+    .nav-shell {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: #020617;
-      border-bottom: 1px solid rgba(15,23,42,0.9);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(3,7,18,0.96), rgba(3,7,18,0.92));
+      border-bottom: 1px solid rgba(15,23,42,0.75);
     }
-    .cc-header {
-      max-width: 1180px;
+    .nav {
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 10px 16px 8px;
-    }
-    .cc-header-top {
-      display: grid;
-      grid-template-columns: auto minmax(320px, 1.6fr) auto;
-      gap: 12px;
+      padding: 10px 16px;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
-    .cc-logo {
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .nav-links a {
+      font-size: 13px;
+      margin-right: 10px;
+      color: rgba(209,213,219,0.9);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+    .nav-links a:hover {
+      border-color: rgba(148,163,184,0.8);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .nav-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+      max-width: 420px;
+    }
+    .nav-search input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 14px;
+    }
+    .nav-search input[type="text"]:focus {
+      outline: none;
+      border-color: var(--cc-primary);
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
+    }
+    .search-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-btn:hover {
+      border-color: var(--cc-primary);
+      background: #020617;
+    }
+    .nav-search label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      color: rgba(209,213,219,0.9);
+    }
+    .nav-search input[type="checkbox"] {
+      width: 14px; height: 14px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .nav-user {
       display: flex;
       align-items: center;
       gap: 6px;
       cursor: pointer;
+      position: relative;
     }
-    .cc-logo-text {
-      font-size: 22px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .cc-search-shell {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      background: #0b1220;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.7);
-      overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(15,23,42,1);
-    }
-    .cc-search-input {
-      border: none;
-      background: transparent;
-      color: #f9fafb;
-      padding: 8px 12px;
-      font-size: 13px;
-      outline: none;
-    }
-    .cc-search-input::placeholder {
-      color: rgba(148,163,184,0.9);
-    }
-    .cc-search-icon {
-      width: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      color: rgba(148,163,184,0.9);
-      border-left: 1px solid rgba(30,64,175,0.7);
-    }
-    .cc-header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      justify-content: flex-end;
-    }
-    .cc-icon-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      color: #e5e7eb;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .cc-sell-btn {
-      border-radius: 999px;
-      border: none;
-      padding: 7px 16px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
-      color: #020617;
-      box-shadow: 0 0 18px rgba(45,140,255,0.9);
-    }
-    .cc-avatar-wrap { position: relative; }
-    .cc-avatar {
-      width: 30px;
-      height: 30px;
+    .nav-avatar {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       background: radial-gradient(circle at top, #1f2937, #020617);
       border: 1px solid rgba(148,163,184,0.8);
-      background-size: cover;
-      background-position: center;
-      box-shadow:
-        0 0 0 1px rgba(45,140,255,0.5),
-        0 0 16px rgba(0,226,255,0.6);
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
       font-weight: 600;
       color: #e5e7eb;
-      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .cc-avatar-menu {
+    .nav-username {
+      opacity: 0.9;
+    }
+    .nav-dropdown {
       position: absolute;
-      top: 115%;
       right: 0;
-      background: rgba(3,7,18,0.98);
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,0.8);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.9);
+      top: 130%;
       min-width: 170px;
+      background: #020617;
+      border-radius: 12px;
+      border: 1px solid rgba(31,41,55,0.9);
+      box-shadow: 0 20px 50px rgba(15,23,42,0.9);
       padding: 6px 0;
-      display: none;
-      z-index: 60;
-    }
-    .cc-avatar-menu.open { display: block; }
-    .cc-avatar-menu button {
-      width: 100%;
-      border: none;
-      background: transparent;
-      color: #e5e7eb;
       font-size: 13px;
-      padding: 7px 12px;
+      display: none;
+      z-index: 70;
+    }
+    .nav-dropdown a,
+    .nav-dropdown button {
+      width: 100%;
       text-align: left;
+      padding: 6px 12px;
+      background: transparent;
+      border: none;
+      color: rgba(229,231,235,0.95);
       cursor: pointer;
+      display: block;
+      text-decoration: none;
     }
-    .cc-avatar-menu button:hover {
-      background: rgba(15,23,42,0.96);
+    .nav-dropdown a:hover,
+    .nav-dropdown button:hover {
+      background: rgba(30,64,175,0.35);
     }
-    .cc-menu-sep {
-      height: 1px;
-      margin: 4px 0;
-      background: rgba(31,41,55,0.95);
+    .nav-btn {
+      border-radius: 999px;
+      padding: 7px 14px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .nav-btn.primary {
+      background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+      color: #020617;
+      box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
 
     .page {
-      max-width: 1180px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 16px 18px 32px;
+      padding: 16px 16px 32px;
     }
-    .page-header {
+    .card {
+      background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 20px 60px rgba(15,23,42,0.85);
+    }
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      gap: 10px;
+      margin-bottom: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
-    .page-title {
-      font-size: 22px;
+    .card-title {
+      font-size: 20px;
       font-weight: 700;
     }
-    .page-meta {
-      font-size: 13px;
+    .card-meta {
+      font-size: 12px;
       color: rgba(148,163,184,0.9);
     }
-
-    .offers-list {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .offer-card {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1.6fr) auto;
-      gap: 10px;
-      align-items: center;
-      padding: 8px 10px;
-      border-radius: 14px;
-      background: rgba(15,23,42,0.97);
-      border: 1px solid rgba(37,99,235,0.7);
-      box-shadow:
-        0 0 0 1px rgba(15,23,42,1),
-        0 0 18px rgba(0,226,255,0.28);
-    }
-    @media (max-width: 800px) {
-      .offer-card {
-        grid-template-columns: minmax(0, 1fr);
-        align-items: flex-start;
-      }
-    }
-
-    .offer-thumb {
-      width: 80px;
-      height: 104px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: #020617;
-      border: 1px solid rgba(148,163,184,0.7);
-      cursor: pointer;
-    }
-    .offer-thumb img {
+    table {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 6px;
     }
-
-    .offer-main-title {
-      font-size: 14px;
+    th, td {
+      padding: 8px 6px;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+    th {
+      text-align: left;
       font-weight: 600;
-      cursor: pointer;
+      color: rgba(209,213,219,0.9);
     }
-    .offer-main-title:hover {
-      text-decoration: underline;
+    tr:hover td {
+      background: rgba(15,23,42,0.8);
     }
-    .offer-meta-line {
-      font-size: 12px;
-      color: rgba(148,163,184,0.9);
-      margin-top: 3px;
-    }
-    .offer-meta-line span.price {
-      font-weight: 600;
-      color: var(--cc-success);
-    }
-    .offer-meta-line span.seller {
-      cursor: pointer;
-      color: rgba(96,165,250,0.98);
-    }
-    .offer-meta-line span.seller:hover {
-      text-decoration: underline;
-    }
-
-    .offer-status {
-      font-size: 12px;
-      font-weight: 600;
+    .status-pill {
+      display: inline-flex;
       border-radius: 999px;
-      padding: 3px 9px;
-      display: inline-block;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 600;
     }
     .status-pending {
-      background: rgba(250,204,21,0.1);
-      color: var(--cc-warning);
-      border: 1px solid rgba(250,204,21,0.8);
+      background-color: #2D8CFF;
+      color: #fff;
     }
     .status-accepted {
-      background: rgba(34,197,94,0.1);
-      color: var(--cc-success);
-      border: 1px solid rgba(34,197,94,0.8);
+      background-color: #2FDBA5;
+      color: #111827;
     }
     .status-rejected {
-      background: rgba(248,113,113,0.1);
-      color: var(--cc-danger);
-      border: 1px solid rgba(248,113,113,0.8);
+      background-color: #CFA64A;
+      color: #111827;
+    }
+    a.link {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+    a.link:hover {
+      text-decoration: underline;
     }
 
-    .offer-amount {
-      font-size: 16px;
-      font-weight: 700;
-      text-align: right;
-      margin-bottom: 4px;
-    }
-    .offer-date {
-      font-size: 11px;
-      color: rgba(148,163,184,0.9);
-      text-align: right;
+    @media (max-width: 720px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        border: 1px solid rgba(31,41,55,0.9);
+        border-radius: 10px;
+        margin-bottom: 8px;
+        overflow: hidden;
+      }
+      td {
+        border: none;
+        border-bottom: 1px solid rgba(31,41,55,0.9);
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      td:last-child {
+        border-bottom: none;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: rgba(156,163,175,0.9);
+      }
     }
   </style>
 </head>
 <body>
-
-<div class="cc-header-shell">
-  <div class="cc-header">
-    <div class="cc-header-top">
-      <div class="cc-logo" onclick="location.href='catalog.html'">
-        <span class="cc-logo-text">CardCollectz</span>
+  <div class="nav-shell">
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo" onclick="window.location.href='catalog.html'">
+          CardCollectz
+        </div>
+        <div class="nav-links">
+          <a href="catalog.html">Listings</a>
+          <a href="my-listings.html">My listings</a>
+          <a href="favourites.html">Favourites</a>
+          <a href="my-offers.html">My offers</a>
+        </div>
       </div>
 
-      <div class="cc-search-shell">
+      <div class="nav-search">
         <input
-          id="navSearch"
-          class="cc-search-input"
+          id="searchQuery"
           type="text"
-          placeholder="Search your offers…"
+          placeholder="Search cards or sellers"
+          onkeydown="if (event.key === 'Enter') { event.preventDefault(); handleSearchClick(); }"
         />
-        <div class="cc-search-icon">🔍</div>
+        <button class="search-btn" type="button" onclick="handleSearchClick()">🔍</button>
+        <label>
+          <input id="onlyMine" type="checkbox" onchange="handleSearchClick()" />
+          Only my listings
+        </label>
       </div>
 
-      <div class="cc-header-actions">
-        <button class="cc-icon-btn" type="button" title="Messages">✉️</button>
-        <button class="cc-icon-btn" type="button" title="Notifications">🔔</button>
-        <button class="cc-icon-btn" type="button" title="Favourites" onclick="location.href='favourites.html'">♥</button>
-
-        <div class="cc-avatar-wrap">
-          <div id="navAvatar" class="cc-avatar"></div>
-          <div id="avatarMenu" class="cc-avatar-menu">
-            <button type="button" onclick="location.href='account.html'">Account</button>
-            <button type="button" onclick="location.href='my-listings.html'">My listings</button>
-            <button type="button" onclick="location.href='favourites.html'">Favourites</button>
-            <button type="button" onclick="location.href='my-offers.html'">My offers</button>
-            <div class="cc-menu-sep"></div>
-            <button type="button" id="logoutBtn">Logout</button>
+      <div class="nav-right">
+        <div id="navProfileBtn" class="nav-user">
+          <div id="navAvatar" class="nav-avatar"></div>
+          <span id="navUser" class="nav-username">…</span>
+          <div id="navDropdown" class="nav-dropdown">
+            <a id="navProfileLink" href="#">View profile</a>
+            <a href="account.html">Account settings</a>
+            <a href="my-listings.html">My listings</a>
+            <a href="my-offers.html">My offers</a>
+            <button type="button" onclick="logout()">Logout</button>
           </div>
         </div>
 
-        <button class="cc-sell-btn" type="button" onclick="location.href='index.html#sellSection'">
+        <button class="nav-btn primary" type="button"
+          onclick="window.location.href='index.html#sellSection'">
           Sell now
         </button>
       </div>
-    </div>
+    </header>
   </div>
-</div>
 
-<main class="page">
-  <header class="page-header">
-    <h1 class="page-title">My offers</h1>
-    <div id="meta" class="page-meta">Loading…</div>
-  </header>
+  <main class="page">
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">My Offers</div>
+        <div class="card-meta" id="offersMeta">Loading your offers…</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="offersTable">
+          <thead>
+            <tr>
+              <th>Listing</th>
+              <th>Seller</th>
+              <th>Offered</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody id="offersBody">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-  <section id="offersContainer" class="offers-list"></section>
-</main>
+  <script>
+    const API_BASE = 'https://cardcollectz-api.onrender.com';
 
-<script>
-  const API_BASE = 'https://cardcollectz-api.onrender.com';
-  const authToken = localStorage.getItem("cc_token");
-  const currentUsername = localStorage.getItem("cc_username");
+    let currentUsername = null;
+    let currentEmail = null;
+    let authToken = null;
 
-  if (!authToken || !currentUsername) {
-    window.location.href = "login.html";
-  }
+    function handleSearchClick() {
+      const qInput = document.getElementById('searchQuery');
+      const mineCheckbox = document.getElementById('onlyMine');
+      if (!qInput) return;
+      const q = qInput.value.trim();
+      const mine = mineCheckbox && mineCheckbox.checked;
 
-  function logout() {
-    localStorage.removeItem("cc_token");
-    localStorage.removeItem("cc_username");
-    localStorage.removeItem("cc_email");
-    window.location.href = "login.html";
-  }
+      let url = 'catalog.html';
+      const params = [];
+      if (q) params.push('q=' + encodeURIComponent(q));
+      if (mine) params.push('mine=1');
+      if (params.length) url += '?' + params.join('&');
+      window.location.href = url;
+    }
 
-  function initAvatar() {
-    const avatar = document.getElementById("navAvatar");
-    const menu = document.getElementById("avatarMenu");
-    const logoutBtn = document.getElementById("logoutBtn");
+    function loadAuthOrRedirect() {
+      authToken = localStorage.getItem('cc_token');
+      currentUsername = localStorage.getItem('cc_username');
+      currentEmail = localStorage.getItem('cc_email');
 
-    if (logoutBtn) logoutBtn.onclick = logout;
+      if (!authToken || !currentUsername || !currentEmail) {
+        window.location.href = 'login.html';
+        return false;
+      }
 
-    if (authToken && avatar) {
-      fetch(API_BASE + "/users/me", {
-        headers: { Authorization: "Bearer " + authToken },
-      })
-        .then((r) => r.json())
-        .then((user) => {
-          if (user?.profileImage) {
-            avatar.style.backgroundImage =
-              `url(data:image/*;base64,${user.profileImage})`;
-            avatar.textContent = "";
-          } else if (currentUsername) {
-            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
-          }
-        })
-        .catch(() => {
-          if (currentUsername) {
-            avatar.textContent = (currentUsername[0] || "?").toUpperCase();
+      const navUser = document.getElementById('navUser');
+      if (navUser) navUser.textContent = '@' + currentUsername;
+
+      const navAvatar = document.getElementById('navAvatar');
+      if (navAvatar) navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
+
+      const navProfileBtn = document.getElementById('navProfileBtn');
+      const dropdown = document.getElementById('navDropdown');
+      const navProfileLink = document.getElementById('navProfileLink');
+
+      if (navProfileBtn && dropdown) {
+        navProfileBtn.onclick = () => {
+          dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        };
+        document.addEventListener('click', (e) => {
+          if (!navProfileBtn.contains(e.target)) {
+            dropdown.style.display = 'none';
           }
         });
-    }
-
-    if (avatar && menu) {
-      avatar.addEventListener("click", (e) => {
-        e.stopPropagation();
-        menu.classList.toggle("open");
-      });
-      document.addEventListener("click", (e) => {
-        if (!menu.contains(e.target) && e.target !== avatar) {
-          menu.classList.remove("open");
-        }
-      });
-    }
-  }
-
-  let allOffers = [];
-
-  async function loadOffers() {
-    try {
-      const res = await fetch(API_BASE + "/offers/my", {
-        headers: { Authorization: "Bearer " + authToken },
-      });
-      const data = await res.json();
-      allOffers = Array.isArray(data) ? data : [];
-      applyFilters();
-    } catch (err) {
-      console.error(err);
-      document.getElementById("meta").textContent =
-        "Failed to load offers.";
-    }
-  }
-
-  function applyFilters() {
-    const q = (document.getElementById("navSearch")?.value || "").toLowerCase();
-    let list = allOffers.slice();
-
-    if (q) {
-      list = list.filter((o) => {
-        const t = String(o.listing?.title || "").toLowerCase();
-        const seller = String(o.listing?.sellerUsername || "").toLowerCase();
-        const status = String(o.status || "").toLowerCase();
-        return (
-          t.includes(q) || seller.includes(q) || status.includes(q)
-        );
-      });
-    }
-
-    renderOffers(list);
-  }
-
-  function renderOffers(list) {
-    const container = document.getElementById("offersContainer");
-    const meta = document.getElementById("meta");
-    container.innerHTML = "";
-
-    meta.textContent =
-      list.length + " offer" + (list.length === 1 ? "" : "s");
-
-    if (list.length === 0) {
-      const empty = document.createElement("div");
-      empty.style.fontSize = "13px";
-      empty.style.color = "rgba(148,163,184,0.9)";
-      empty.textContent = "You haven't made any offers yet.";
-      container.appendChild(empty);
-      return;
-    }
-
-    list.forEach((offer) => {
-      const card = document.createElement("article");
-      card.className = "offer-card";
-
-      const listing = offer.listing || {};
-      const main =
-        listing.imageData ||
-        (listing.images && listing.images.length ? listing.images[0] : null);
-
-      const thumb = document.createElement("div");
-      thumb.className = "offer-thumb";
-      if (main) {
-        const img = document.createElement("img");
-        img.src = "data:image/*;base64," + main;
-        thumb.appendChild(img);
-      }
-      thumb.onclick = () => {
-        if (listing.id) window.location.href = "listing.html?id=" + listing.id;
-      };
-
-      const mainCol = document.createElement("div");
-      const title = document.createElement("div");
-      title.className = "offer-main-title";
-      title.textContent = listing.title || "Listing";
-      title.onclick = () => {
-        if (listing.id) window.location.href = "listing.html?id=" + listing.id;
-      };
-
-      const metaLine = document.createElement("div");
-      metaLine.className = "offer-meta-line";
-      const sellerText = document.createElement("span");
-      sellerText.className = "seller";
-      sellerText.textContent = "@" + (listing.sellerUsername || "unknown");
-      sellerText.onclick = (e) => {
-        e.stopPropagation();
-        if (listing.sellerUsername) {
-          window.location.href =
-            "profile.html?username=" +
-            encodeURIComponent(listing.sellerUsername);
-        }
-      };
-
-      metaLine.innerHTML = `Listing price: <span class="price">£${listing.price || "0"}</span> · Seller: `;
-      metaLine.appendChild(sellerText);
-
-      mainCol.appendChild(title);
-      mainCol.appendChild(metaLine);
-
-      const side = document.createElement("div");
-      const amount = document.createElement("div");
-      amount.className = "offer-amount";
-      amount.textContent = "£" + offer.amount;
-
-      const status = document.createElement("div");
-      status.className = "offer-status";
-      const s = String(offer.status || "PENDING").toLowerCase();
-      if (s === "accepted") status.classList.add("status-accepted");
-      else if (s === "rejected") status.classList.add("status-rejected");
-      else status.classList.add("status-pending");
-      status.textContent =
-        s.charAt(0).toUpperCase() + s.slice(1);
-
-      const created = document.createElement("div");
-      created.className = "offer-date";
-      if (offer.createdAt) {
-        created.textContent =
-          "Sent " + new Date(offer.createdAt).toLocaleString();
       }
 
-      side.appendChild(amount);
-      side.appendChild(status);
-      side.appendChild(created);
+      if (navProfileLink) {
+        navProfileLink.href = 'profile.html?username=' + encodeURIComponent(currentUsername);
+      }
 
-      card.appendChild(thumb);
-      card.appendChild(mainCol);
-      card.appendChild(side);
-      container.appendChild(card);
-    });
-  }
+      fetchNavAvatar();
+      return true;
+    }
 
-  window.addEventListener("load", () => {
-    initAvatar();
-    loadOffers();
+    function logout() {
+      localStorage.removeItem('cc_token');
+      localStorage.removeItem('cc_email');
+      localStorage.removeItem('cc_username');
+      window.location.href = 'login.html';
+    }
 
-    const searchInput = document.getElementById("navSearch");
-    if (searchInput) {
-      searchInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          applyFilters();
+    async function fetchNavAvatar() {
+      try {
+        const res = await fetch(API_BASE + '/users/me', {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || !data.profileImage) return;
+        const navAvatar = document.getElementById('navAvatar');
+        if (navAvatar) {
+          navAvatar.style.backgroundImage =
+            'url("data:image/*;base64,' + data.profileImage + '")';
+          navAvatar.textContent = '';
         }
+      } catch (err) {
+        console.error('Failed to load nav avatar', err);
+      }
+    }
+
+    function statusClass(status) {
+      const s = String(status || '').toLowerCase();
+      if (s === 'accepted') return 'status-accepted';
+      if (s === 'rejected') return 'status-rejected';
+      return 'status-pending';
+    }
+
+    function renderOffers(offers) {
+      const tbody = document.getElementById('offersBody');
+      const meta = document.getElementById('offersMeta');
+      tbody.innerHTML = '';
+
+      if (!offers || offers.length === 0) {
+        if (meta) meta.textContent = '0 offers';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 5;
+        td.textContent = 'You have not made any offers yet.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      if (meta) meta.textContent = `${offers.length} offer${offers.length === 1 ? '' : 's'}`;
+
+      offers.forEach((offer) => {
+        const tr = document.createElement('tr');
+
+        const listingCell = document.createElement('td');
+        listingCell.dataset.label = 'Listing';
+        const listingLink = document.createElement('a');
+        listingLink.href = 'listing.html?id=' + offer.listingId;
+        listingLink.textContent = offer.listingTitle || 'Listing #' + offer.listingId;
+        listingLink.className = 'link';
+        listingCell.appendChild(listingLink);
+
+        const sellerCell = document.createElement('td');
+        sellerCell.dataset.label = 'Seller';
+        sellerCell.textContent = offer.sellerUsername || '';
+
+        const amountCell = document.createElement('td');
+        amountCell.dataset.label = 'Offered';
+        amountCell.textContent = '£' + offer.amount;
+
+        const statusCell = document.createElement('td');
+        statusCell.dataset.label = 'Status';
+        const pill = document.createElement('span');
+        pill.className = 'status-pill ' + statusClass(offer.status);
+        pill.textContent = offer.status || 'PENDING';
+        statusCell.appendChild(pill);
+
+        const createdCell = document.createElement('td');
+        createdCell.dataset.label = 'Created';
+        createdCell.textContent = new Date(offer.createdAt).toLocaleString();
+
+        tr.appendChild(listingCell);
+        tr.appendChild(sellerCell);
+        tr.appendChild(amountCell);
+        tr.appendChild(statusCell);
+        tr.appendChild(createdCell);
+
+        tbody.appendChild(tr);
       });
     }
-  });
-</script>
 
+    async function loadMyOffers() {
+      try {
+        const res = await fetch(API_BASE + '/offers/mine', {
+          headers: { Authorization: 'Bearer ' + authToken },
+        });
+        if (!res.ok) {
+          console.error('Failed to load offers', res.status);
+          const meta = document.getElementById('offersMeta');
+          if (meta) meta.textContent = 'Failed to load offers.';
+          return;
+        }
+        const data = await res.json();
+        const offers = Array.isArray(data) ? data : [];
+        renderOffers(offers);
+      } catch (err) {
+        console.error(err);
+        const meta = document.getElementById('offersMeta');
+        if (meta) meta.textContent = 'Failed to load offers.';
+      }
+    }
+
+    window.onload = function () {
+      const ok = loadAuthOrRedirect();
+      if (!ok) return;
+      loadMyOffers();
+    };
+  </script>
 </body>
 </html>
