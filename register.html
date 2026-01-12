@@ -7,197 +7,169 @@
     :root {
       --cc-primary: #2D8CFF;
       --cc-secondary: #00E2FF;
-      --cc-text: #E6E6E6;
       --cc-bg: #050505;
       --cc-card: #0B0B0B;
       --cc-border: #1F2933;
-      --cc-danger: #f97373;
+      --cc-text: #E6E6E6;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #020617, #050505);
+      color: var(--cc-text);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
-      color: var(--cc-text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
     }
     .card {
       width: 100%;
       max-width: 380px;
-      background: rgba(15,23,42,0.92);
-      border-radius: 16px;
-      border: 1px solid rgba(15,23,42,0.95);
-      box-shadow: 0 24px 80px rgba(15,23,42,0.9);
-      padding: 24px;
+      padding: 24px 20px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top left, #111827, #020617);
+      border: 1px solid var(--cc-border);
+      box-shadow: 0 22px 50px rgba(0,0,0,0.8);
     }
     .logo {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 900;
+      letter-spacing: 0.04em;
       background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 4px;
       text-align: center;
+      margin-bottom: 8px;
     }
-    .subtitle {
+    h1 {
       text-align: center;
-      font-size: 13px;
-      color: rgba(148,163,184,0.9);
-      margin-bottom: 16px;
+      font-size: 18px;
+      margin: 0 0 16px;
     }
-
     label {
+      display: block;
       font-size: 13px;
       margin-bottom: 4px;
-      display: block;
+      color: #9CA3AF;
     }
     input {
       width: 100%;
-      border-radius: 10px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.9);
-      color: var(--cc-text);
       padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #E5E7EB;
       font-size: 14px;
+      margin-bottom: 10px;
+    }
+    input:focus {
       outline: none;
+      border-color: var(--cc-primary);
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.6);
     }
-    input::placeholder {
-      color: rgba(148,163,184,0.8);
-    }
-    .field {
-      margin-bottom: 12px;
-    }
-    .btn {
+    button {
       width: 100%;
+      padding: 9px 12px;
       border-radius: 999px;
       border: none;
-      padding: 9px 16px;
-      margin-top: 6px;
-      font-size: 14px;
-      font-weight: 600;
       cursor: pointer;
       background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
       color: #020617;
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 4px;
     }
-    .link-row {
+    .muted {
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 12px;
       text-align: center;
-      color: rgba(148,163,184,0.9);
+      color: #9CA3AF;
     }
-    .link-row a {
+    .muted a {
       color: var(--cc-secondary);
       text-decoration: none;
     }
-    .link-row a:hover {
-      text-decoration: underline;
-    }
-
-    .status {
-      margin-top: 10px;
-      font-size: 13px;
-      padding: 8px;
-      border-radius: 8px;
-      display: none;
-    }
-    .status.error {
-      background: rgba(239,68,68,0.18);
-      border: 1px solid rgba(239,68,68,0.6);
+    .error {
+      margin-top: 8px;
+      font-size: 12px;
       color: #fecaca;
+      min-height: 16px;
     }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="logo">CardCollectz</div>
-    <div class="subtitle">Create your CardCollectz account.</div>
-
-    <div class="field">
+    <h1>Create your account</h1>
+    <form id="registerForm">
       <label for="username">Username</label>
-      <input id="username" type="text" placeholder="Pick a username" />
-    </div>
+      <input id="username" autocomplete="username" required />
 
-    <div class="field">
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="you@example.com" />
-    </div>
+      <label for="email">Email (optional)</label>
+      <input id="email" type="email" autocomplete="email" />
 
-    <div class="field">
       <label for="password">Password</label>
-      <input id="password" type="password" placeholder="At least 6 characters" />
-    </div>
+      <input id="password" type="password" autocomplete="new-password" required />
 
-    <button class="btn" onclick="register()">Create account</button>
-
-    <div id="status" class="status"></div>
-
-    <div class="link-row">
-      Already have an account?
-      <a href="login.html">Log in</a>
+      <button type="submit">Sign up</button>
+      <div id="error" class="error"></div>
+    </form>
+    <div class="muted">
+      Already have an account? <a href="login.html">Login</a>
     </div>
   </div>
 
   <script>
+    // 🔴 IMPORTANT: live API URL
     const API_BASE = 'https://cardcollectz-api.onrender.com';
 
-    async function register() {
-      const status = document.getElementById("status");
-      status.style.display = "none";
+    function showError(msg) {
+      document.getElementById('error').textContent = msg || '';
+    }
 
-      const username = document.getElementById("username").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showError('');
 
-      if (!username || !email || !password) {
-        status.textContent = "Please fill in all fields.";
-        status.className = "status error";
-        status.style.display = "block";
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        showError('Please fill in username and password.');
         return;
       }
 
+      const payload = { username, password };
+      if (email) payload.email = email; // backend can ignore if it doesn’t expect it
+
       try {
-        const res = await fetch(API_BASE + "/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, email, password }),
+        const res = await fetch(API_BASE + '/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         });
 
-        const rawText = await res.text();
-        let data;
-        try {
-          data = rawText ? JSON.parse(rawText) : null;
-        } catch {
-          data = null;
-        }
-
         if (!res.ok) {
-          let msg = "Registration failed.";
-          if (data && data.message) {
-            msg = Array.isArray(data.message) ? data.message.join(", ") : data.message;
-          } else if (rawText) {
-            msg = rawText;
-          }
-          status.textContent = msg;
-          status.className = "status error";
-          status.style.display = "block";
+          let msg = 'Registration failed.';
+          try {
+            const data = await res.json();
+            if (data && data.message) {
+              msg = Array.isArray(data.message) ? data.message.join(', ') : data.message;
+            }
+          } catch {}
+          showError(msg);
           return;
         }
 
-        // success: same shape as login
-        localStorage.setItem("cc_token", data.access_token);
-        localStorage.setItem("cc_username", data.username);
-        localStorage.setItem("cc_email", data.email);
-
-        window.location.href = "catalog.html";
+        // If registration succeeds, send them to login
+        window.location.href = 'login.html';
       } catch (err) {
-        status.textContent = "Network error. Please try again.";
-        status.className = "status error";
-        status.style.display = "block";
+        console.error(err);
+        showError('Could not reach server. Please try again.');
       }
-    }
+    });
   </script>
 </body>
 </html>
