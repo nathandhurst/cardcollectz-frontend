@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>CardCollectz – My Listings</title>
   <style>
     :root {
@@ -323,6 +325,34 @@
       color: rgba(148,163,184,0.7);
       margin-top: 2px;
     }
+    .tile-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .tile-btn {
+      flex: 1;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .tile-btn:hover {
+      border-color: rgba(59,130,246,0.9);
+    }
+    .tile-btn-edit {
+      /* Slight emphasis for edit */
+    }
+    .tile-btn-delete {
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -506,7 +536,9 @@
         return;
       }
 
-      if (meta) meta.textContent = `${listings.length} listing${listings.length === 1 ? '' : 's'}`;
+      if (meta) {
+        meta.textContent = `${listings.length} listing${listings.length === 1 ? '' : 's'}`;
+      }
 
       listings.forEach((item) => {
         const tile = document.createElement('article');
@@ -550,23 +582,158 @@
         const priceEl = document.createElement('span');
         priceEl.className = 'tile-price';
         priceEl.textContent = '£' + item.price;
-
         priceRow.appendChild(priceEl);
 
         const dateEl = document.createElement('div');
         dateEl.className = 'tile-date';
         dateEl.textContent = new Date(item.createdAt).toLocaleString();
 
+        const actionsRow = document.createElement('div');
+        actionsRow.className = 'tile-actions';
+
+        const editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'tile-btn tile-btn-edit';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = (event) => {
+          event.stopPropagation();
+          editListing(item);
+        };
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'tile-btn tile-btn-delete';
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.onclick = (event) => {
+          event.stopPropagation();
+          deleteListing(item);
+        };
+
+        actionsRow.appendChild(editBtn);
+        actionsRow.appendChild(deleteBtn);
+
         body.appendChild(topRow);
         body.appendChild(titleEl);
         body.appendChild(priceRow);
         body.appendChild(dateEl);
+        body.appendChild(actionsRow);
 
         tile.appendChild(body);
         container.appendChild(tile);
       });
     }
 
+    async function editListing(item) {
+      if (!item || !item.id) return;
+
+      const newTitle = window.prompt('Update title', item.title || '');
+      if (newTitle === null) return;
+
+      const currentPrice = item.price != null ? String(item.price) : '';
+      const newPriceStr = window.prompt('Update price (£)', currentPrice);
+      if (newPriceStr === null) return;
+
+      const parsed = parseFloat(newPriceStr);
+      if (!parsed || parsed <= 0) {
+        alert('Please enter a valid price.');
+        return;
+      }
+
+      const newCondition = window.prompt(
+        'Update condition',
+        item.condition || 'Condition not set'
+      );
+      if (newCondition === null) return;
+
+      try {
+        const res = await fetch(API_BASE + '/listings/' + item.id, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + authToken,
+          },
+          body: JSON.stringify({
+            title: newTitle,
+            price: parsed,
+            condition: newCondition,
+          }),
+        });
+
+        const text = await res.text();
+        let data;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch {
+          data = null;
+        }
+
+        if (!res.ok) {
+          let msg = 'Failed to update listing.';
+          if (data && data.message) {
+            msg = Array.isArray(data.message)
+              ? data.message.join(', ')
+              : data.message;
+          }
+          alert(msg);
+          return;
+        }
+
+        // Update local cache and re-render
+        item.title = newTitle;
+        item.price = parsed;
+        item.condition = newCondition;
+        renderListings(allListings);
+      } catch (err) {
+        console.error(err);
+        alert('Unexpected error updating listing.');
+      }
+    }
+
+    async function deleteListing(item) {
+      if (!item || !item.id) return;
+
+      const confirmed = window.confirm(
+        'Are you sure you want to delete this listing?'
+      );
+      if (!confirmed) return;
+
+      try {
+        const res = await fetch(API_BASE + '/listings/' + item.id, {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + authToken,
+          },
+        });
+
+        const text = await res.text();
+        let data;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch {
+          data = null;
+        }
+
+        if (!res.ok) {
+          let msg = 'Failed to delete listing.';
+          if (data && data.message) {
+            msg = Array.isArray(data.message)
+              ? data.message.join(', ')
+              : data.message;
+          }
+          alert(msg);
+          return;
+        }
+
+        allListings = allListings.filter((l) => l.id !== item.id);
+        renderListings(allListings);
+        if (typeof updateNavBadges === 'function') {
+          updateNavBadges();
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Unexpected error deleting listing.');
+      }
+    }
     async function loadListings() {
       try {
         const res = await fetch(API_BASE + '/listings');
