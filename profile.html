@@ -152,6 +152,7 @@
       align-items: center;
       gap: 6px;
       font-size: 13px;
+      text-decoration: none;
     }
     .nav-dropdown a:hover,
     .nav-dropdown button:hover {
@@ -242,41 +243,43 @@
       opacity: 0.8;
     }
     .profile-meta-value {
-      font-weight: 600;
-      color: #e5e7eb;
+      font-weight: 500;
+      color: rgba(229,231,235,0.95);
     }
+
     .rating-stars {
       display: inline-flex;
-      gap: 1px;
-      font-size: 14px;
+      gap: 2px;
+      font-size: 12px;
     }
-    .rating-star {
-      color: #4b5563;
-    }
-    .rating-star.full {
-      color: var(--cc-premium);
+    .rating-stars span {
+      color: #fbbf24;
     }
 
     .profile-actions {
-      margin-left: auto;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      align-items: flex-end;
     }
     .btn-message {
       border-radius: 999px;
       padding: 7px 14px;
-      border: 1px solid rgba(148,163,184,0.7);
+      border: 1px solid rgba(148,163,184,0.9);
       background: transparent;
-      color: rgba(226,232,240,0.9);
+      color: #e5e7eb;
       font-size: 13px;
+      font-weight: 600;
       cursor: pointer;
+    }
+    .btn-message:hover {
+      background: rgba(30,64,175,0.3);
     }
 
     .catalog-card {
       background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
-      border-radius: 14px;
       padding: 14px;
+      border-radius: 14px;
       border: 1px solid rgba(15,23,42,0.9);
       box-shadow: 0 20px 60px rgba(15,23,42,0.85);
     }
@@ -289,8 +292,8 @@
       flex-wrap: wrap;
     }
     .catalog-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
     }
     .catalog-meta {
       font-size: 12px;
@@ -298,100 +301,77 @@
     }
     .catalog-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
     }
     .listing-tile {
       position: relative;
-      background: #020617;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(30,64,175,0.55);
+      background: #020617;
+      border: 1px solid rgba(30,64,175,0.7);
+      cursor: pointer;
+      box-shadow: 0 14px 40px rgba(15,23,42,0.9);
       display: flex;
       flex-direction: column;
-      height: 100%;
-      cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.12s ease;
-    }
-    .listing-tile:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(15,23,42,0.9);
-      border-color: rgba(59,130,246,0.9);
     }
     .tile-img-wrap {
-      background: radial-gradient(circle at top, #020617, #000);
       position: relative;
-      padding-top: 132%;
+      padding-top: 130%;
       overflow: hidden;
+      background: #020617;
     }
     .tile-img-wrap img {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
     }
     .tile-body {
-      padding: 8px 9px 10px;
+      padding: 10px 10px 9px;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
     .tile-row-top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       font-size: 11px;
-      color: rgba(148,163,184,0.9);
-    }
-    .tile-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-top: 2px;
-      margin-bottom: 2px;
+      color: rgba(148,163,184,0.95);
     }
     .tile-condition {
-      font-size: 11px;
       color: var(--cc-success);
+    }
+    .tile-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
     }
     .tile-price-row {
       display: flex;
-      justify-content: space-between;
       align-items: baseline;
-      margin-top: 4px;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 13px;
     }
     .tile-price {
       font-weight: 700;
-      font-size: 15px;
-      color: #f9fafb;
     }
     .tile-date {
-      font-size: 10px;
-      color: rgba(148,163,184,0.7);
-      margin-top: 2px;
+      font-size: 11px;
+      color: rgba(148,163,184,0.9);
     }
 
-    .skeleton-card {
-      border-radius: 12px;
-      background: linear-gradient(90deg, #020617 25%, #111827 50%, #020617 75%);
-      background-size: 200% 100%;
-      animation: skeleton-loading 1.2s ease-in-out infinite;
-      height: 260px;
-    }
-    @keyframes skeleton-loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
     .debug {
       margin-top: 12px;
-      background: #020617;
-      color: #e5e7eb;
-      padding: 8px;
+      background: rgba(15,23,42,0.95);
       border-radius: 8px;
+      padding: 8px;
       font-size: 11px;
-      white-space: pre-wrap;
-      max-height: 200px;
+      color: rgba(148,163,184,0.95);
+      max-height: 180px;
       overflow-y: auto;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 900px) {
@@ -479,7 +459,11 @@
         </div>
       </div>
       <div class="profile-actions">
-        <button type="button" class="btn-message" onclick="alert('Messaging coming soon!')">
+        <button
+          type="button"
+          class="btn-message"
+          onclick="messageSellerFromProfile()"
+        >
           Message seller
         </button>
       </div>
@@ -499,8 +483,6 @@
     const API_BASE = 'https://cardcollectz-api.onrender.com';
     let authToken = null;
     let currentUsername = null;
-    let currentEmail = null;
-    let currentProfileImage = null;
     let allListings = [];
 
     function getQueryParam(name) {
@@ -508,24 +490,19 @@
       return params.get(name);
     }
 
-    function logDebug(obj) {
-      const box = document.getElementById('debug');
-      if (box) box.textContent = JSON.stringify(obj, null, 2);
-    }
-
-    function logout() {
-      localStorage.removeItem('cc_token');
-      localStorage.removeItem('cc_email');
-      localStorage.removeItem('cc_username');
-      window.location.href = 'login.html';
+    function messageSellerFromProfile() {
+      const username = getQueryParam('username');
+      if (!username) return;
+      const params = new URLSearchParams();
+      params.set('toUsername', username);
+      window.location.href = 'messages.html?' + params.toString();
     }
 
     function loadAuthOrRedirect() {
       authToken = localStorage.getItem('cc_token');
       currentUsername = localStorage.getItem('cc_username');
-      currentEmail = localStorage.getItem('cc_email');
 
-      if (!authToken || !currentUsername || !currentEmail) {
+      if (!authToken || !currentUsername) {
         window.location.href = 'login.html';
         return false;
       }
@@ -534,10 +511,7 @@
       if (navUser) navUser.textContent = '@' + currentUsername;
 
       const navAvatar = document.getElementById('navAvatar');
-      if (navAvatar) {
-        const initial = currentUsername[0]?.toUpperCase() || '?';
-        navAvatar.textContent = initial;
-      }
+      if (navAvatar) navAvatar.textContent = (currentUsername[0] || '?').toUpperCase();
 
       const navProfileBtn = document.getElementById('navProfileBtn');
       const dropdown = document.getElementById('navDropdown');
@@ -555,15 +529,21 @@
       }
 
       if (navProfileLink) {
-        navProfileLink.href =
-          'profile.html?username=' + encodeURIComponent(currentUsername);
+        navProfileLink.href = 'profile.html?username=' + encodeURIComponent(currentUsername);
       }
 
-      fetchProfileAvatar();
+      fetchNavAvatar();
       return true;
     }
 
-    async function fetchProfileAvatar() {
+    function logout() {
+      localStorage.removeItem('cc_token');
+      localStorage.removeItem('cc_email');
+      localStorage.removeItem('cc_username');
+      window.location.href = 'login.html';
+    }
+
+    async function fetchNavAvatar() {
       try {
         const res = await fetch(API_BASE + '/users/me', {
           headers: { Authorization: 'Bearer ' + authToken },
@@ -571,30 +551,32 @@
         if (!res.ok) return;
         const data = await res.json();
         if (!data || !data.profileImage) return;
-
-        currentProfileImage = data.profileImage;
         const navAvatar = document.getElementById('navAvatar');
         if (navAvatar) {
           navAvatar.style.backgroundImage =
-            'url("data:image/*;base64,' + currentProfileImage + '")';
+            'url("data:image/*;base64,' + data.profileImage + '")';
           navAvatar.textContent = '';
         }
       } catch (err) {
-        console.error('Failed to load avatar', err);
+        console.error('Failed to load nav avatar', err);
       }
     }
 
-    function renderStars(rating) {
-      const starsContainer = document.getElementById('ratingStars');
-      if (!starsContainer) return;
-      starsContainer.innerHTML = '';
-      const value = Math.round((rating || 0) * 2) / 2; // round to 0.5
+    function logDebug(obj) {
+      const debugEl = document.getElementById('debug');
+      if (!debugEl) return;
+      debugEl.textContent = JSON.stringify(obj, null, 2);
+    }
 
-      for (let i = 1; i <= 5; i++) {
+    function renderStars(rating) {
+      const starsEl = document.getElementById('ratingStars');
+      if (!starsEl) return;
+      starsEl.innerHTML = '';
+      const full = Math.round(rating);
+      for (let i = 0; i < 5; i++) {
         const span = document.createElement('span');
-        span.className = 'rating-star' + (i <= value ? ' full' : '');
-        span.textContent = '★';
-        starsContainer.appendChild(span);
+        span.textContent = i < full ? '★' : '☆';
+        starsEl.appendChild(span);
       }
     }
 
@@ -602,28 +584,25 @@
       const avatarEl = document.getElementById('profileAvatar');
       const usernameEl = document.getElementById('profileUsername');
       const handleEl = document.getElementById('profileHandle');
+      const bioEl = document.getElementById('profileBio');
+      const verifiedEl = document.getElementById('profileVerified');
       const listingsCountEl = document.getElementById('metaListingsCount');
       const tradesEl = document.getElementById('metaTrades');
       const sinceEl = document.getElementById('metaSince');
-      const bioEl = document.getElementById('profileBio');
-      const verifiedEl = document.getElementById('profileVerified');
       const ratingTextEl = document.getElementById('ratingText');
 
-      const username = user.username;
-      const rating = user.rating ?? 0;
-      const ratingCount = user.ratingCount ?? 0;
-      const tradesCount = user.tradesCount ?? 0;
+      if (!user) return;
 
-      if (usernameEl) usernameEl.textContent = '@' + username;
-      if (handleEl) handleEl.textContent = 'Seller on CardCollectz';
+      const uname = user.username || 'seller';
+      if (usernameEl) usernameEl.textContent = '@' + uname;
+      if (handleEl) handleEl.textContent = user.handle || 'Seller on CardCollectz';
 
       if (avatarEl) {
         if (user.profileImage) {
-          avatarEl.style.backgroundImage =
-            'url("data:image/*;base64,' + user.profileImage + '")';
+          avatarEl.style.backgroundImage = 'url("data:image/*;base64,' + user.profileImage + '")';
           avatarEl.textContent = '';
         } else {
-          avatarEl.textContent = username[0]?.toUpperCase() || '?';
+          avatarEl.textContent = (uname[0] || '?').toUpperCase();
         }
       }
 
@@ -637,12 +616,15 @@
       }
 
       if (verifiedEl) {
-        verifiedEl.style.display = user.isVerified ? 'inline-flex' : 'none';
+        verifiedEl.style.display = user.verified ? 'inline-flex' : 'none';
       }
 
-      if (listingsCountEl) {
-        listingsCountEl.textContent = String(user.listingsCount ?? listings.length);
-      }
+      const listingsCount = Array.isArray(listings) ? listings.length : 0;
+      if (listingsCountEl) listingsCountEl.textContent = String(listingsCount);
+
+      const tradesCount = user.tradesCount || 0;
+      const rating = typeof user.rating === 'number' ? user.rating : 0;
+      const ratingCount = user.ratingCount || 0;
 
       if (tradesEl) tradesEl.textContent = String(tradesCount);
 

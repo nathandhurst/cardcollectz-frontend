@@ -21,8 +21,7 @@
       background: radial-gradient(circle at top left, #020617 0, #050505 45%, #020617 100%);
       color: var(--cc-text);
     }
-
-    /* NAVBAR */
+    /* NAVBAR (same style as catalog) */
     .nav-shell {
       position: sticky;
       top: 0;
@@ -166,7 +165,9 @@
       background-position: center;
       box-shadow: 0 0 0 1px rgba(59,130,246,0.4), 0 0 12px rgba(37,99,235,0.6);
     }
-    .nav-username { opacity: 0.9; }
+    .nav-username {
+      opacity: 0.9;
+    }
     .nav-dropdown {
       position: absolute;
       right: 0;
@@ -211,7 +212,9 @@
       box-shadow: 0 0 12px rgba(0, 226, 255, 0.4);
     }
     @media (max-width: 900px) {
-      .nav { flex-wrap: wrap; }
+      .nav {
+        flex-wrap: wrap;
+      }
       .nav-right {
         order: 3;
         width: 100%;
@@ -227,11 +230,15 @@
     .detail-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 18px;
+      gap: 14px;
+      align-items: flex-start;
     }
     @media (max-width: 900px) {
-      .detail-layout { grid-template-columns: 1fr; }
+      .detail-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
+
     .card {
       background: radial-gradient(circle at top left, rgba(15,23,42,0.8), rgba(15,23,42,0.92));
       padding: 14px;
@@ -310,11 +317,42 @@
       border: 1px solid rgba(55,65,81,0.9);
       color: #e5e7eb;
     }
+
+    .listing-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .fav-btn {
+      border: none;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15,23,42,0.75);
+      color: #e5e7eb;
+      border-radius: 999px;
+    }
+    .fav-btn--active {
+      background: #f97316;
+      color: #111827;
+    }
+
     .offer-form {
       display: flex;
       flex-direction: column;
       gap: 8px;
       margin-top: 8px;
+    }
+    .offer-form label {
+      font-size: 13px;
+      color: rgba(148,163,184,0.95);
     }
     .offer-form input[type="number"] {
       width: 100%;
@@ -335,6 +373,12 @@
       color: rgba(148,163,184,0.95);
       margin-top: 6px;
       min-height: 16px;
+    }
+    .status-text.error {
+      color: #fecaca;
+    }
+    .status-text.success {
+      color: var(--cc-success);
     }
   </style>
 </head>
@@ -420,6 +464,23 @@
           <span id="listingSeller" class="username"></span>
         </div>
 
+        <div class="listing-actions">
+          <button
+            id="buyNowBtn"
+            class="btn btn-primary"
+            type="button"
+          >
+            Buy now
+          </button>
+          <button
+            id="favBtn"
+            class="btn btn-secondary fav-btn"
+            type="button"
+          >
+            ♡
+          </button>
+        </div>
+
         <div class="offer-form">
           <label for="offerAmount">Make an offer:</label>
           <input
@@ -430,9 +491,19 @@
             placeholder="Enter your offer amount"
           />
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-primary" type="button" onclick="submitOffer()">Send offer</button>
-            <button class="btn btn-secondary" type="button"
-              onclick="window.location.href='messages.html'">
+            <button
+              id="offerBtn"
+              class="btn btn-primary"
+              type="button"
+              onclick="submitOffer()"
+            >
+              Send offer
+            </button>
+            <button
+              id="messageSellerBtn"
+              class="btn btn-secondary"
+              type="button"
+            >
               Message seller
             </button>
           </div>
@@ -450,6 +521,162 @@
     let authToken = null;
     let listingId = null;
     let listingData = null;
+
+    function getFavourites() {
+      const raw = localStorage.getItem('cc_favourites');
+      if (!raw) return [];
+      try {
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setFavourites(arr) {
+      localStorage.setItem('cc_favourites', JSON.stringify(arr));
+    }
+
+    function syncFavButtonState() {
+      const favBtn = document.getElementById('favBtn');
+      if (!favBtn || !listingId) return;
+
+      const favs = getFavourites();
+      const idNum = Number(listingId);
+      const isFav = favs.includes(idNum);
+
+      favBtn.classList.toggle('fav-btn--active', isFav);
+      favBtn.textContent = isFav ? '♥' : '♡';
+    }
+
+    function handleToggleFavourite() {
+      if (!listingId) return;
+      const idNum = Number(listingId);
+      let favs = getFavourites();
+      if (favs.includes(idNum)) {
+        favs = favs.filter((x) => x !== idNum);
+      } else {
+        favs.push(idNum);
+      }
+      setFavourites(favs);
+      syncFavButtonState();
+    }
+
+    async function handleBuyNow() {
+      const statusEl = document.getElementById('offerStatus');
+
+      if (!listingId || !listingData) {
+        if (statusEl) {
+          statusEl.textContent = 'Listing not loaded yet.';
+          statusEl.classList.add('error');
+        }
+        return;
+      }
+
+      try {
+        if (statusEl) {
+          statusEl.textContent = 'Creating secure checkout…';
+          statusEl.classList.remove('error');
+          statusEl.classList.remove('success');
+        }
+
+        const res = await fetch(API_BASE + '/payments/checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + authToken,
+          },
+          body: JSON.stringify({
+            listingId: Number(listingId),
+          }),
+        });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          console.error('Checkout failed', txt);
+          if (statusEl) {
+            statusEl.textContent = 'Could not start checkout. Please try again.';
+            statusEl.classList.add('error');
+          }
+          return;
+        }
+
+        const data = await res.json();
+        const url = data.checkoutUrl || data.url;
+        if (!url) {
+          if (statusEl) {
+            statusEl.textContent = 'Checkout session did not return a URL.';
+            statusEl.classList.add('error');
+          }
+          return;
+        }
+
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        if (statusEl) {
+          statusEl.textContent = 'Checkout failed. Please try again.';
+          statusEl.classList.add('error');
+        }
+      }
+    }
+
+    function wireListingActions() {
+      const favBtn = document.getElementById('favBtn');
+      const buyBtn = document.getElementById('buyNowBtn');
+      const msgBtn = document.getElementById('messageSellerBtn');
+      const offerInput = document.getElementById('offerAmount');
+      const offerBtn = document.getElementById('offerBtn');
+      const statusEl = document.getElementById('offerStatus');
+
+      if (!listingData) return;
+
+      const sellerUsername = String(listingData.sellerUsername || '');
+      const isOwnListing =
+        currentUsername &&
+        sellerUsername.toLowerCase() === currentUsername.toLowerCase();
+
+      if (favBtn) {
+        favBtn.onclick = handleToggleFavourite;
+        syncFavButtonState();
+      }
+
+      if (msgBtn) {
+        msgBtn.onclick = () => {
+          const params = new URLSearchParams();
+          if (listingData.sellerId) {
+            params.set('toUserId', listingData.sellerId);
+          }
+          if (listingData.sellerUsername) {
+            params.set('toUsername', listingData.sellerUsername);
+          }
+          const qs = params.toString();
+          window.location.href = 'messages.html' + (qs ? '?' + qs : '');
+        };
+      }
+
+      if (isOwnListing) {
+        if (buyBtn) {
+          buyBtn.disabled = true;
+          buyBtn.textContent = 'This is your listing';
+        }
+        if (offerInput) offerInput.disabled = true;
+        if (offerBtn) offerBtn.disabled = true;
+        if (statusEl) {
+          statusEl.textContent = 'You cannot make an offer on your own listing.';
+          statusEl.classList.remove('error');
+          statusEl.classList.remove('success');
+        }
+      } else {
+        if (buyBtn) {
+          buyBtn.disabled = false;
+          buyBtn.textContent = 'Buy now';
+          buyBtn.onclick = handleBuyNow;
+        }
+        if (offerInput) offerInput.disabled = false;
+        if (offerBtn) offerBtn.disabled = false;
+      }
+    }
 
     function handleSearchClick() {
       const qInput = document.getElementById('searchQuery');
@@ -585,6 +812,8 @@
             'profile.html?username=' +
             encodeURIComponent(listingData.sellerUsername);
         };
+
+        wireListingActions();
       } catch (err) {
         console.error(err);
         document.getElementById('listingTitle').textContent = 'Error loading listing';
@@ -597,15 +826,20 @@
       const amount = parseFloat(amountEl.value);
       if (!amount || amount <= 0) {
         statusEl.textContent = 'Please enter a valid amount.';
+        statusEl.classList.add('error');
         return;
       }
       if (!listingId) {
         statusEl.textContent = 'No listing selected.';
+        statusEl.classList.add('error');
         return;
       }
 
       try {
         statusEl.textContent = 'Sending offer…';
+        statusEl.classList.remove('error');
+        statusEl.classList.remove('success');
+
         const res = await fetch(API_BASE + '/offers', {
           method: 'POST',
           headers: {
@@ -622,15 +856,18 @@
           const txt = await res.text();
           console.error('Offer failed', txt);
           statusEl.textContent = 'Failed to send offer.';
+          statusEl.classList.add('error');
           return;
         }
         statusEl.textContent = 'Offer sent!';
+        statusEl.classList.add('success');
         amountEl.value = '';
         localStorage.setItem('cc_unread_offers', '1');
         updateNavBadges();
       } catch (err) {
         console.error(err);
         statusEl.textContent = 'Failed to send offer.';
+        statusEl.classList.add('error');
       }
     }
 
